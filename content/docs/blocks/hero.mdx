@@ -1,0 +1,169 @@
+---
+title: Hero Section
+description: A hero section with heading, subheading, and call-to-action buttons
+---
+
+import { Hero } from '@/registry/abui/marketing/hero'
+import { Button } from '@/registry/abui/ui/button'
+
+## Preview
+
+<div className="p-6 border rounded-lg bg-background">
+  <Hero>
+    <div className="mx-auto max-w-4xl text-center">
+      <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+        Build Something Amazing
+      </h1>
+      <p className="mt-6 text-lg leading-8 text-muted-foreground">
+        Create beautiful, responsive websites with our component library.
+        Built on modern web standards and best practices.
+      </p>
+      <div className="mt-10 flex items-center justify-center gap-x-6">
+        <Button size="lg">Get Started</Button>
+        <Button variant="outline" size="lg">Learn More</Button>
+      </div>
+    </div>
+  </Hero>
+</div>
+
+## Installation
+
+<Tabs items={['CLI', 'Manual']}>
+<Tab value="CLI">
+
+```bash
+npx shadcn@latest add @abui/hero
+```
+
+</Tab>
+
+<Tab value="Manual">
+
+This component uses Next.js Image, which is included in Next.js by default.
+
+Copy and paste the following code into your project:
+
+```tsx title="components/marketing/hero.tsx"
+import { cn } from "@/lib/utils"
+import Image from "next/image"
+
+export function Hero({
+  heading,
+  subheading,
+  imageUrl,
+  className,
+  children,
+}: {
+  heading: string
+  subheading: string
+  imageUrl: string
+} & React.ComponentProps<"section">) {
+  return (
+    <section className={cn("w-full py-8 md:py-16", className)}>
+      <div className="container mx-auto px-4">
+        <div className="relative rounded-lg overflow-hidden">
+          <Image
+            src={imageUrl}
+            alt={heading}
+            width={1200}
+            height={450}
+            className="aspect-square md:aspect-[120/45] w-full object-cover rounded-lg"
+          />
+          <div className="py-8 md:absolute md:inset-0 md:bg-black/50 flex items-center justify-center">
+            <div className="flex flex-col items-center gap-2 max-w-xl text-center mx-auto text-balance md:text-white">
+              <h2 className="text-3xl tracking-tighter lg:text-5xl xl:text-6xl font-bold text-shadow">
+                {heading}
+              </h2>
+              <p className="text-balance text-shadow lg:text-xl">
+                {subheading}
+              </p>
+              {children}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+```
+
+</Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import { Hero } from "@/components/marketing/hero"
+import { Button } from "@/components/ui/button"
+
+export default function HeroSection() {
+  return (
+    <Hero>
+      <h1 className="text-4xl font-bold">Welcome to Our Platform</h1>
+      <p className="mt-4 text-lg text-muted-foreground">
+        Start building amazing things today
+      </p>
+      <div className="mt-8 flex gap-4">
+        <Button>Get Started</Button>
+        <Button variant="outline">Learn More</Button>
+      </div>
+    </Hero>
+  )
+}
+```
+
+## Examples
+
+### With Background Pattern
+
+Add a subtle background pattern for visual interest:
+
+```tsx
+<Hero className="bg-grid-pattern">
+  <h1 className="text-5xl font-bold">Create Without Limits</h1>
+  <p className="mt-4">Your ideas, our components</p>
+</Hero>
+```
+
+### With Image
+
+Include a hero image alongside your content:
+
+```tsx
+<Hero>
+  <div className="grid lg:grid-cols-2 gap-12 items-center">
+    <div>
+      <h1 className="text-5xl font-bold">Ship Faster</h1>
+      <p className="mt-4">Build production-ready apps in hours</p>
+      <Button className="mt-8">Start Building</Button>
+    </div>
+    <div>
+      <img src="/hero-image.png" alt="Hero" className="rounded-lg" />
+    </div>
+  </div>
+</Hero>
+```
+
+### Dark Hero
+
+Create a dark-themed hero section:
+
+```tsx
+<Hero className="bg-black text-white">
+  <h1 className="text-6xl font-bold">The Future is Here</h1>
+  <p className="mt-4 text-gray-300">Join thousands of developers</p>
+  <Button variant="secondary" className="mt-8">
+    Get Early Access
+  </Button>
+</Hero>
+```
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | - | The content to display in the hero |
+| `className` | `string` | - | Additional CSS classes |
+| `fullHeight` | `boolean` | `false` | Make hero full viewport height |

@@ -1,0 +1,9 @@
+{
+  "title": "Components",
+  "defaultOpen": true,
+  "pages": [
+    "button",
+    "input",
+    "card"
+  ]
+}
