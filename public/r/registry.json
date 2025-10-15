@@ -1,0 +1,315 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "abui",
+  "homepage": "https://alpine-registry.vercel.app",
+  "items": [
+    {
+      "name": "design-system",
+      "type": "registry:style",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": [
+        "@abui/button",
+        "@abui/input",
+        "@abui/calendar",
+        "@abui/card",
+        "@abui/label",
+        "@abui/popover",
+        "@abui/textarea"
+      ],
+      "cssVars": {
+        "light": {
+          "primary": "oklch(0.63 0.17 149)",
+          "primary-foreground": "oklch(0.985 0 0)",
+          "radius": "0.825rem"
+        },
+        "dark": {
+          "primary": "oklch(0.63 0.17 149)",
+          "primary-foreground": "oklch(0.985 0 0)"
+        }
+      },
+      "files": [
+        {
+          "path": "registry/alpine/rules/AGENTS.md",
+          "type": "registry:file",
+          "target": "~/AGENTS.md"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "A button component.",
+      "files": [
+        {
+          "path": "registry/alpine/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "A calendar component.",
+      "dependencies": ["react-day-picker"],
+      "files": [
+        {
+          "path": "registry/alpine/ui/calendar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "A card component.",
+      "files": [
+        {
+          "path": "registry/alpine/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "An input component.",
+      "files": [
+        {
+          "path": "registry/alpine/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "A label component.",
+      "files": [
+        {
+          "path": "registry/alpine/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "A popover component.",
+      "files": [
+        {
+          "path": "registry/alpine/ui/popover.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "A textarea component.",
+      "files": [
+        {
+          "path": "registry/alpine/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "login-form",
+      "type": "registry:block",
+      "title": "Login Form",
+      "description": "A login form with email and password fields.",
+      "files": [
+        {
+          "path": "registry/alpine/auth/login-form.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "logo",
+      "type": "registry:block",
+      "title": "Logo",
+      "description": "A logo component.",
+      "files": [
+        {
+          "path": "registry/alpine/branding/logo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "main-nav",
+      "type": "registry:block",
+      "title": "Main Nav",
+      "description": "A main navigation component.",
+      "files": [
+        {
+          "path": "registry/alpine/navigation/main-nav.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "site-header",
+      "type": "registry:block",
+      "title": "Site Header",
+      "description": "A site header component.",
+      "registryDependencies": ["@abui/logo", "@abui/main-nav"],
+      "files": [
+        {
+          "path": "registry/alpine/navigation/site-header.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "section",
+      "type": "registry:component",
+      "title": "Section",
+      "description": "A section component.",
+      "files": [
+        {
+          "path": "registry/alpine/marketing/section.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "hero",
+      "type": "registry:component",
+      "title": "Hero",
+      "description": "A hero component.",
+      "files": [
+        {
+          "path": "registry/alpine/marketing/hero.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "listing-card",
+      "type": "registry:block",
+      "title": "Listing Card",
+      "description": "A listing card with a name, location, rating, and review count.",
+      "files": [
+        {
+          "path": "registry/alpine/listing/listing-card.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "listing-grid",
+      "type": "registry:block",
+      "title": "Listing Grid",
+      "description": "A grid of listing cards.",
+      "registryDependencies": ["@abui/listing-card"],
+      "files": [
+        {
+          "path": "registry/alpine/listing/listing-grid.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/alpine/listing/listing-card.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "booking-form",
+      "type": "registry:block",
+      "title": "Booking Form",
+      "description": "A booking form with location, check-in, and check-out fields.",
+      "dependencies": ["date-fns"],
+      "files": [
+        {
+          "path": "registry/alpine/forms/booking-form.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "contact-form",
+      "type": "registry:block",
+      "title": "Contact Form",
+      "description": "A contact form with name, email, and message fields.",
+      "files": [
+        {
+          "path": "registry/alpine/forms/contact-form.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "example-listing-card",
+      "type": "registry:block",
+      "title": "Example Listing Card",
+      "description": "An example listing card.",
+      "files": [
+        {
+          "path": "registry/alpine/examples/example-listing-card.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "example-listing-grid",
+      "type": "registry:block",
+      "title": "Example Listing Grid",
+      "description": "An example listing grid.",
+      "registryDependencies": ["@abui/listing-card"],
+      "files": [
+        {
+          "path": "registry/alpine/examples/example-listing-grid.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "example-section-listing",
+      "type": "registry:block",
+      "title": "Section with Heading and Listing Grid",
+      "description": "An example section with a heading, subheading, and listing grid.",
+      "registryDependencies": ["@abui/listing-grid", "@abui/section"],
+      "files": [
+        {
+          "path": "registry/alpine/examples/example-section-listing.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "example-section-booking",
+      "type": "registry:block",
+      "title": "Section with Booking Form",
+      "description": "An example section with a booking form.",
+      "registryDependencies": ["@abui/booking-form", "@abui/section"],
+      "files": [
+        {
+          "path": "registry/alpine/examples/example-section-booking.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "example-hero",
+      "type": "registry:block",
+      "title": "Example Hero Section",
+      "description": "An example hero section with a heading, subheading, and two call to action buttons.",
+      "registryDependencies": ["@abui/hero"],
+      "files": [
+        {
+          "path": "registry/alpine/examples/example-hero.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}
