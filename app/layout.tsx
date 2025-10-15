@@ -1,9 +1,10 @@
 import type { Metadata } from "next"
 import { DM_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
+import { ThemeProvider } from "next-themes"
 import "./globals.css"
-import { RootProvider } from 'fumadocs-ui/provider'
 import { Toaster } from "@/registry/abui/ui/sonner"
+import { SiteHeader } from "@/registry/abui/navigation/site-header"
 
 const fontSans = DM_Sans({
   variable: "--font-sans",
@@ -50,10 +51,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${fontSans.variable} font-sans antialiased`}>
-        <RootProvider>
-          {children}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <SiteHeader />
+          <main className="flex-1">
+            {children}
+          </main>
           <Toaster position="top-center" />
-        </RootProvider>
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>

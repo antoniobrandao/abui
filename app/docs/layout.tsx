@@ -1,27 +1,19 @@
-import { DocsLayout } from 'fumadocs-ui/layouts/docs'
 import type { ReactNode } from 'react'
-import { source } from '@/app/source'
-import { Logo } from '@/registry/abui/branding/logo'
+import { DocsSidebar } from '@/components/docs-sidebar'
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function DocsLayout({ children }: { children: ReactNode }) {
   return (
-    <DocsLayout
-      tree={source.pageTree}
-      nav={{
-        title: (
-          <div className="flex items-center gap-0">
-            <Logo />
-            <span className="font-bold uppercase">Abui</span>
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex flex-col lg:flex-row gap-8">
+        <aside className="w-full lg:w-64 lg:shrink-0">
+          <div className="sticky top-8">
+            <DocsSidebar />
           </div>
-        ),
-        url: '/',
-        transparentMode: 'top',
-      }}
-      sidebar={{
-        defaultOpenLevel: 999,
-      }}
-    >
-      {children}
-    </DocsLayout>
+        </aside>
+        <main className="flex-1 max-w-none">
+          {children}
+        </main>
+      </div>
+    </div>
   )
 }
