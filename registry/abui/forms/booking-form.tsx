@@ -5,11 +5,7 @@ import { Button } from "@/registry/abui/ui/button"
 import { Input } from "@/registry/abui/ui/input"
 import { Label } from "@/registry/abui/ui/label"
 import { cn } from "@/lib/utils"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/registry/abui/ui/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "@/registry/abui/ui/popover"
 import { Calendar } from "@/registry/abui/ui/calendar"
 import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
@@ -48,7 +44,7 @@ export function ListingBookingForm({
     <form
       className={cn(
         "shadow-lg md:shadow-2xl bg-background ring ring-border p-6 rounded-lg flex flex-col gap-4 max-w-sm",
-        className
+        className,
       )}
       {...props}
     >
@@ -64,22 +60,13 @@ export function ListingBookingForm({
         <Label htmlFor="date">Date</Label>
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
-            <Button
-              id="date"
-              variant="outline"
-              className="w-full justify-start text-left font-normal"
-            >
+            <Button id="date" variant="outline" className="w-full justify-start text-left font-normal">
               <CalendarIcon />
               {dateDisplay}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="p-0 w-auto overflow-hidden" align="start">
-            <Calendar
-              mode="range"
-              selected={date}
-              onSelect={setDate}
-              captionLayout="dropdown"
-            />
+            <Calendar mode="range" selected={date} onSelect={setDate} captionLayout="dropdown" />
           </PopoverContent>
         </Popover>
       </div>

@@ -5,15 +5,12 @@ export const generateStaticParams = async () => {
   const registryData = await import("@/registry.json")
   const registry = registryData.default
 
-  return registry.items.map((item) => ({
+  return registry.items.map(item => ({
     name: item.name,
   }))
 }
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ name: string }> }
-) {
+export async function GET(request: Request, { params }: { params: Promise<{ name: string }> }) {
   try {
     const authHeader = request.headers.get("authorization")
 
@@ -23,7 +20,7 @@ export async function GET(
           error: "Unauthorized",
           message: "Invalid or missing authentication credentials",
         },
-        { status: 401 }
+        { status: 401 },
       )
     }
 
@@ -35,7 +32,7 @@ export async function GET(
           error: "Unauthorized",
           message: "Invalid or missing authentication credentials",
         },
-        { status: 401 }
+        { status: 401 },
       )
     }
 
@@ -48,7 +45,7 @@ export async function GET(
           error: "Not Found",
           message: `Component '${name}' not found in registry`,
         },
-        { status: 404 }
+        { status: 404 },
       )
     }
 

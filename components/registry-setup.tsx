@@ -14,20 +14,14 @@ import {
 } from "@/registry/abui/ui/dialog"
 import { CheckIcon, CopyIcon } from "lucide-react"
 
-export function RegistrySetup({
-  className,
-}: React.ComponentProps<typeof Button>) {
+export function RegistrySetup({ className }: React.ComponentProps<typeof Button>) {
   const { isCopied, copyToClipboard } = useCopyToClipboard()
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="ghost" size="sm" className={cn(className)}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 256 256"
-            className="size-4"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" className="size-4">
             <rect width="256" height="256" fill="none"></rect>
             <line
               x1="208"
@@ -58,14 +52,10 @@ export function RegistrySetup({
       <DialogContent className="md:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Setup Registry</DialogTitle>
-          <DialogDescription>
-            Use the code below to configure the @abui registry for your
-            project.
-          </DialogDescription>
+          <DialogDescription>Use the code below to configure the @abui registry for your project.</DialogDescription>
         </DialogHeader>
         <div className="font-medium">
-          Copy and paste the code into{" "}
-          <code className="font-mono text-foreground">components.json</code>
+          Copy and paste the code into <code className="font-mono text-foreground">components.json</code>
         </div>
         <div className="relative">
           <Button
@@ -82,17 +72,13 @@ export function RegistrySetup({
             </pre>
           </div>
         </div>
-        <div className="font-medium">
-          Then use the following command to add components:
-        </div>
+        <div className="font-medium">Then use the following command to add components:</div>
         <div className="overflow-x-auto bg-muted p-8 rounded-md min-h-[50px]">
           <pre className="text-sm font-mono">
             <code>npx shadcn@latest add @abui/[component-name]</code>
           </pre>
         </div>
-        <div className="font-medium">
-          To setup the MCP server, run the following command:
-        </div>
+        <div className="font-medium">To setup the MCP server, run the following command:</div>
         <div className="overflow-x-auto bg-muted p-8 rounded-md min-h-[50px]">
           <pre className="text-sm font-mono">
             <code>npx shadcn@latest mcp init</code>

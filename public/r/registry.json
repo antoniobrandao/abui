@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "abui",
-  "homepage": "https://alpine-registry.vercel.app",
+  "homepage": "https://abui-registry.vercel.app",
   "items": [
     {
       "name": "design-system",
@@ -29,7 +29,7 @@
       },
       "files": [
         {
-          "path": "registry/alpine/rules/AGENTS.md",
+          "path": "registry/abui/rules/AGENTS.md",
           "type": "registry:file",
           "target": "~/AGENTS.md"
         }
@@ -42,7 +42,7 @@
       "description": "A button component.",
       "files": [
         {
-          "path": "registry/alpine/ui/button.tsx",
+          "path": "registry/abui/ui/button.tsx",
           "type": "registry:ui"
         }
       ]
@@ -55,7 +55,7 @@
       "dependencies": ["react-day-picker"],
       "files": [
         {
-          "path": "registry/alpine/ui/calendar.tsx",
+          "path": "registry/abui/ui/calendar.tsx",
           "type": "registry:ui"
         }
       ]
@@ -67,7 +67,7 @@
       "description": "A card component.",
       "files": [
         {
-          "path": "registry/alpine/ui/card.tsx",
+          "path": "registry/abui/ui/card.tsx",
           "type": "registry:ui"
         }
       ]
@@ -79,7 +79,7 @@
       "description": "An input component.",
       "files": [
         {
-          "path": "registry/alpine/ui/input.tsx",
+          "path": "registry/abui/ui/input.tsx",
           "type": "registry:ui"
         }
       ]
@@ -91,7 +91,7 @@
       "description": "A label component.",
       "files": [
         {
-          "path": "registry/alpine/ui/label.tsx",
+          "path": "registry/abui/ui/label.tsx",
           "type": "registry:ui"
         }
       ]
@@ -103,7 +103,7 @@
       "description": "A popover component.",
       "files": [
         {
-          "path": "registry/alpine/ui/popover.tsx",
+          "path": "registry/abui/ui/popover.tsx",
           "type": "registry:ui"
         }
       ]
@@ -115,7 +115,7 @@
       "description": "A textarea component.",
       "files": [
         {
-          "path": "registry/alpine/ui/textarea.tsx",
+          "path": "registry/abui/ui/textarea.tsx",
           "type": "registry:ui"
         }
       ]
@@ -127,7 +127,7 @@
       "description": "A login form with email and password fields.",
       "files": [
         {
-          "path": "registry/alpine/auth/login-form.tsx",
+          "path": "registry/abui/auth/login-form.tsx",
           "type": "registry:component"
         }
       ]
@@ -139,7 +139,7 @@
       "description": "A logo component.",
       "files": [
         {
-          "path": "registry/alpine/branding/logo.tsx",
+          "path": "registry/abui/branding/logo.tsx",
           "type": "registry:component"
         }
       ]
@@ -151,7 +151,7 @@
       "description": "A main navigation component.",
       "files": [
         {
-          "path": "registry/alpine/navigation/main-nav.tsx",
+          "path": "registry/abui/navigation/main-nav.tsx",
           "type": "registry:component"
         }
       ]
@@ -164,7 +164,7 @@
       "registryDependencies": ["@abui/logo", "@abui/main-nav"],
       "files": [
         {
-          "path": "registry/alpine/navigation/site-header.tsx",
+          "path": "registry/abui/navigation/site-header.tsx",
           "type": "registry:component"
         }
       ]
@@ -176,7 +176,7 @@
       "description": "A section component.",
       "files": [
         {
-          "path": "registry/alpine/marketing/section.tsx",
+          "path": "registry/abui/marketing/section.tsx",
           "type": "registry:component"
         }
       ]
@@ -188,7 +188,7 @@
       "description": "A hero component.",
       "files": [
         {
-          "path": "registry/alpine/marketing/hero.tsx",
+          "path": "registry/abui/marketing/hero.tsx",
           "type": "registry:component"
         }
       ]
@@ -200,7 +200,7 @@
       "description": "A listing card with a name, location, rating, and review count.",
       "files": [
         {
-          "path": "registry/alpine/listing/listing-card.tsx",
+          "path": "registry/abui/listing/listing-card.tsx",
           "type": "registry:component"
         }
       ]
@@ -213,11 +213,11 @@
       "registryDependencies": ["@abui/listing-card"],
       "files": [
         {
-          "path": "registry/alpine/listing/listing-grid.tsx",
+          "path": "registry/abui/listing/listing-grid.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/alpine/listing/listing-card.tsx",
+          "path": "registry/abui/listing/listing-card.tsx",
           "type": "registry:component"
         }
       ]
@@ -230,7 +230,7 @@
       "dependencies": ["date-fns"],
       "files": [
         {
-          "path": "registry/alpine/forms/booking-form.tsx",
+          "path": "registry/abui/forms/booking-form.tsx",
           "type": "registry:component"
         }
       ]
@@ -242,7 +242,7 @@
       "description": "A contact form with name, email, and message fields.",
       "files": [
         {
-          "path": "registry/alpine/forms/contact-form.tsx",
+          "path": "registry/abui/forms/contact-form.tsx",
           "type": "registry:component"
         }
       ]
@@ -254,7 +254,7 @@
       "description": "An example listing card.",
       "files": [
         {
-          "path": "registry/alpine/examples/example-listing-card.tsx",
+          "path": "registry/abui/examples/example-listing-card.tsx",
           "type": "registry:component"
         }
       ]
@@ -267,7 +267,7 @@
       "registryDependencies": ["@abui/listing-card"],
       "files": [
         {
-          "path": "registry/alpine/examples/example-listing-grid.tsx",
+          "path": "registry/abui/examples/example-listing-grid.tsx",
           "type": "registry:component"
         }
       ]
@@ -280,7 +280,7 @@
       "registryDependencies": ["@abui/listing-grid", "@abui/section"],
       "files": [
         {
-          "path": "registry/alpine/examples/example-section-listing.tsx",
+          "path": "registry/abui/examples/example-section-listing.tsx",
           "type": "registry:component"
         }
       ]
@@ -293,7 +293,7 @@
       "registryDependencies": ["@abui/booking-form", "@abui/section"],
       "files": [
         {
-          "path": "registry/alpine/examples/example-section-booking.tsx",
+          "path": "registry/abui/examples/example-section-booking.tsx",
           "type": "registry:component"
         }
       ]
@@ -306,7 +306,7 @@
       "registryDependencies": ["@abui/hero"],
       "files": [
         {
-          "path": "registry/alpine/examples/example-hero.tsx",
+          "path": "registry/abui/examples/example-hero.tsx",
           "type": "registry:component"
         }
       ]

@@ -5,15 +5,12 @@ export const generateStaticParams = async () => {
   const registryData = await import("@/registry.json")
   const registry = registryData.default
 
-  return registry.items.map((item) => ({
+  return registry.items.map(item => ({
     name: item.name,
   }))
 }
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ name: string }> }
-) {
+export async function GET(request: Request, { params }: { params: Promise<{ name: string }> }) {
   try {
     const authHeader = request.headers.get("authorization")
 
@@ -25,14 +22,12 @@ export async function GET(
         },
         {
           status: 401,
-        }
+        },
       )
     }
 
     const base64Credentials = authHeader.substring(6)
-    const credentials = Buffer.from(base64Credentials, "base64").toString(
-      "utf-8"
-    )
+    const credentials = Buffer.from(base64Credentials, "base64").toString("utf-8")
     const [username, password] = credentials.split(":")
 
     if (username !== "admin" || password !== "password123") {
@@ -46,7 +41,7 @@ export async function GET(
           headers: {
             "WWW-Authenticate": 'Basic realm="Registry"',
           },
-        }
+        },
       )
     }
 
@@ -59,7 +54,7 @@ export async function GET(
           error: "Not Found",
           message: `Component '${name}' not found in registry`,
         },
-        { status: 404 }
+        { status: 404 },
       )
     }
 

@@ -2,13 +2,7 @@ import { Label } from "@/registry/abui/ui/label"
 import { Input } from "@/registry/abui/ui/input"
 import { Textarea } from "@/registry/abui/ui/textarea"
 import { Button } from "@/registry/abui/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/registry/abui/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/registry/abui/ui/card"
 
 export function ContactForm() {
   return (
@@ -16,8 +10,8 @@ export function ContactForm() {
       <CardHeader>
         <CardTitle>Contact Us</CardTitle>
         <CardDescription>
-          We would love to hear from you. Please fill out the form below and we
-          will get back to you as soon as possible.
+          We would love to hear from you. Please fill out the form below and we will get back to you as soon as
+          possible.
         </CardDescription>
       </CardHeader>
       <CardContent>

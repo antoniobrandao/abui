@@ -13,12 +13,7 @@ export async function GET(request: Request) {
         <div tw="flex border absolute border-stone-700 inset-x-0 h-[1px] top-16" />
         <div tw="flex border absolute border-stone-700 inset-x-0 h-[1px] bottom-16" />
         <div tw="flex absolute flex-row bottom-24 right-24 text-white">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 256 256"
-            width={48}
-            height={48}
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width={48} height={48}>
             <rect width="256" height="256" fill="none"></rect>
             <line
               x1="208"
@@ -71,6 +66,6 @@ export async function GET(request: Request) {
     {
       width: 1200,
       height: 628,
-    }
+    },
   )
 }

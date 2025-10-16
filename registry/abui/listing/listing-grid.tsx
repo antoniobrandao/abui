@@ -26,13 +26,8 @@ export function ListingGrid({
           {subheading && <p className="text-muted-foreground">{subheading}</p>}
         </div>
       ) : null}
-      <div
-        className={cn(
-          "grid sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full",
-          className
-        )}
-      >
-        {listings.map((listing) => (
+      <div className={cn("grid sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full", className)}>
+        {listings.map(listing => (
           <ListingCard key={listing.name} {...listing} />
         ))}
       </div>

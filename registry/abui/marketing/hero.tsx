@@ -25,12 +25,8 @@ export function Hero({
           />
           <div className="py-8 md:absolute md:inset-0 md:bg-black/50 flex items-center justify-center">
             <div className="flex flex-col items-center gap-2 max-w-xl text-center mx-auto text-balance md:text-white">
-              <h2 className="text-3xl tracking-tighter lg:text-5xl xl:text-6xl font-bold text-shadow">
-                {heading}
-              </h2>
-              <p className="text-balance text-shadow lg:text-xl">
-                {subheading}
-              </p>
+              <h2 className="text-3xl tracking-tighter lg:text-5xl xl:text-6xl font-bold text-shadow">{heading}</h2>
+              <p className="text-balance text-shadow lg:text-xl">{subheading}</p>
               {children}
             </div>
           </div>

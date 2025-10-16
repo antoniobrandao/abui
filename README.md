@@ -1,15 +1,15 @@
-# Abui Registry
+# ABUI Registry
 
 This is an example registry built using `shadcn/ui`.
 
 ## Usage
 
-To install components from the abui registry, you can use the following remote registries config in your `components.json` file:
+To install components from the ABUI registry, you can use the following remote registries config in your `components.json` file:
 
 ```json
 {
   "registries": {
-    "@abui": "https://abui.antoniobrandao.com/r/{name}.json"
+    "@abui": "https://abui-registry.vercel.app/r/{name}.json"
   }
 }
 ```

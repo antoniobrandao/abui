@@ -5,10 +5,7 @@ import { Button } from "@/registry/abui/ui/button"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
-export function ModeToggle({
-  className,
-  ...props
-}: React.ComponentProps<typeof Button>) {
+export function ModeToggle({ className, ...props }: React.ComponentProps<typeof Button>) {
   const { theme, setTheme } = useTheme()
 
   return (

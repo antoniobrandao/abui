@@ -6,26 +6,20 @@ export const generateStaticParams = async () => {
   const registryData = await import("@/registry.json")
   const registry = registryData.default
 
-  return registry.items.map((item) => ({
+  return registry.items.map(item => ({
     name: item.name,
   }))
 }
 
 // This shows an example for serving a registry item using a route handler.
-export async function GET(
-  _request: Request,
-  { params }: { params: Promise<{ name: string }> }
-) {
+export async function GET(_request: Request, { params }: { params: Promise<{ name: string }> }) {
   try {
     const { name } = await params
     const registryItem = await getItemFromRegistry(name)
 
     // If the component is not found, return a 404 error.
     if (!registryItem) {
-      return NextResponse.json(
-        { error: "Item not found in registry." },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: "Item not found in registry." }, { status: 404 })
     }
 
     // Return the component with the files.

@@ -7,11 +7,7 @@ import { registryItemSchema } from "shadcn/schema"
 import { toast } from "sonner"
 import { z } from "zod"
 
-export function AddCommand({
-  registryItem,
-}: {
-  registryItem: z.infer<typeof registryItemSchema>
-}) {
+export function AddCommand({ registryItem }: { registryItem: z.infer<typeof registryItemSchema> }) {
   const { isCopied, copyToClipboard } = useCopyToClipboard()
 
   return (

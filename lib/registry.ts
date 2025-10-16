@@ -10,7 +10,7 @@ export async function getItemFromRegistry(name: string) {
     return registry
   }
 
-  const component = registry.items.find((c) => c.name === name)
+  const component = registry.items.find(c => c.name === name)
 
   if (!component) {
     return null
@@ -27,11 +27,11 @@ export async function getItemFromRegistry(name: string) {
   }
 
   const filesWithContent = await Promise.all(
-    parsed.files.map(async (file) => {
+    parsed.files.map(async file => {
       const filePath = path.join(process.cwd(), file.path)
       const content = await fs.readFile(filePath, "utf8")
       return { ...file, content }
-    })
+    }),
   )
 
   return { ...parsed, files: filesWithContent }
