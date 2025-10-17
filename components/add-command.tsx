@@ -16,7 +16,7 @@ export function AddCommand({ registryItem }: { registryItem: z.infer<typeof regi
       size="sm"
       className="rounded-sm !pl-2"
       onClick={() => {
-        copyToClipboard(`npx shadcn@latest add https://www.abui.io/r/${registryItem.name}`)
+        copyToClipboard(`npx shadcn@latest add https://www.abui.io/r/${registryItem.name}.json`)
         toast.success(`npx command copied to clipboard`)
       }}
     >
@@ -49,7 +49,8 @@ export function AddCommand({ registryItem }: { registryItem: z.infer<typeof regi
           ></line>
         </svg>
       )}
-      {`@abui/${registryItem.name}`}
+      {`https://www.abui.io/r/${registryItem.name}.json`}
+      {/* {`@abui/${registryItem.name}`} */}
     </Button>
   )
 }
