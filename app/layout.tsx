@@ -9,9 +9,17 @@ import Link from "next/link"
 import { Logo } from "@/registry/abui/branding/logo"
 import { Toaster } from "@/registry/abui/ui/sonner"
 import { RegistrySetup } from "@/components/registry-setup"
+import { SidebarProvider } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/app-sidebar"
+import { Geist, Geist_Mono } from "next/font/google"
 
-const fontSans = DM_Sans({
-  variable: "--font-sans",
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+})
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
 })
 
@@ -25,7 +33,8 @@ export const metadata: Metadata = {
   },
   description,
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL!),
-  manifest: `${process.env.NEXT_PUBLIC_BASE_URL}/site.webmanifest`,
+  manifest: "/site.webmanifest",
+  // manifest: `${process.env.NEXT_PUBLIC_BASE_URL}/site.webmanifest`,
   openGraph: {
     images: [
       {
@@ -50,9 +59,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${fontSans.variable} font-sans antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
         <Providers>
-          <header>
+          {/* <header>
             <div className="max-w-7xl mx-auto flex items-center px-4 py-6">
               <div className="flex items-center gap-4">
                 <Link href="/">
@@ -68,8 +77,12 @@ export default function RootLayout({
                 <ModeToggle />
               </div>
             </div>
-          </header>
-          {children}
+          </header> */}
+
+          <SidebarProvider>
+            <AppSidebar />
+            <div className="h-screen overflow-x-hidden flex-1 bg-muted/50 md:min-h-min gap-4">{children}</div>
+          </SidebarProvider>
           <Toaster position="top-center" />
         </Providers>
         <Analytics />
