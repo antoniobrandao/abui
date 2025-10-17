@@ -1,4 +1,5 @@
-import { Star, KeyRound, ChartColumn, Home } from "lucide-react"
+// import { Star, KeyRound, ChartColumn, Home } from "lucide-react"
+import { Home } from "lucide-react"
 import { NavItems } from "@/components/nav-types"
 
 const navItems: NavItems = {

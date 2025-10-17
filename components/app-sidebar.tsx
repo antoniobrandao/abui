@@ -1,17 +1,17 @@
 "use client"
 
 import * as React from "react"
-import { GalleryVerticalEnd } from "lucide-react"
+// import { GalleryVerticalEnd } from "lucide-react"
 import navItems from "@/lib/constants/nav/nav-items"
 import { usePathname } from "next/navigation"
 import { Logo } from "@/registry/abui/branding/logo"
 import { NavBase } from "@/components/nav-base"
 import { NavSimple } from "@/components/nav-simple"
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar"
+import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/components/ui/sidebar"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
 import { ModeToggle } from "@/components/mode-toggle"
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar() {
   const { open } = useSidebar()
   const pathname = usePathname()
   console.log("pathname", pathname)
