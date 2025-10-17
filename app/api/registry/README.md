@@ -30,6 +30,7 @@ npx shadcn@latest add @abui/logo
 ## How it works
 
 The route handler:
+
 1. Uses `generateStaticParams` to pre-render all registry items at build time
 2. Fetches the requested component from `registry.json`
 3. Returns the component files and metadata as JSON
