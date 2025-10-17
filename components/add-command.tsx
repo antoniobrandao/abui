@@ -4,6 +4,7 @@ import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard"
 import { Button } from "@/registry/abui/ui/button"
 import { CheckIcon } from "lucide-react"
 import { registryItemSchema } from "shadcn/schema"
+import { getRegistryItemUrl } from "@/lib/utils"
 import { toast } from "sonner"
 import { z } from "zod"
 
@@ -16,7 +17,7 @@ export function AddCommand({ registryItem }: { registryItem: z.infer<typeof regi
       size="sm"
       className="rounded-sm !pl-2"
       onClick={() => {
-        copyToClipboard(`npx shadcn@latest add https://www.abui.io/r/${registryItem.name}.json`)
+        copyToClipboard(`npx shadcn@latest add ${getRegistryItemUrl(registryItem.name)}`)
         toast.success(`npx command copied to clipboard`)
       }}
     >
@@ -49,7 +50,7 @@ export function AddCommand({ registryItem }: { registryItem: z.infer<typeof regi
           ></line>
         </svg>
       )}
-      {`https://www.abui.io/r/${registryItem.name}.json`}
+      {getRegistryItemUrl(registryItem.name)}
       {/* {`@abui/${registryItem.name}`} */}
     </Button>
   )
