@@ -17,9 +17,7 @@ export function NavSimple({ items, label, pathname }: { items: NavItemsSet[]; la
       <SidebarMenu>
         {items.map(item => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton
-              asChild
-            >
+            <SidebarMenuButton asChild>
               <a href={item.url}>
                 {item.icon && <item.icon className={pathname === item.url ? "text-foreground" : ""} />}
                 <span className={pathname === item.url ? "text-foreground font-semibold" : ""}>{item.name}</span>

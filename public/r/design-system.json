@@ -3,15 +3,7 @@
   "name": "design-system",
   "type": "registry:style",
   "dependencies": ["radix-ui"],
-  "registryDependencies": [
-    "@abui/button",
-    "@abui/input",
-    "@abui/calendar",
-    "@abui/card",
-    "@abui/label",
-    "@abui/popover",
-    "@abui/textarea"
-  ],
+  "registryDependencies": ["@abui/button"],
   "files": [
     {
       "path": "registry/abui/rules/AGENTS.md",
