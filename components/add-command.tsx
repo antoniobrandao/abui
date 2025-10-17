@@ -16,7 +16,7 @@ export function AddCommand({ registryItem }: { registryItem: z.infer<typeof regi
       size="sm"
       className="rounded-sm !pl-2"
       onClick={() => {
-        copyToClipboard(`npx shadcn@latest add @abui/${registryItem.name}`)
+        copyToClipboard(`npx shadcn@latest add https://www.abui.io/r/${registryItem.name}`)
         toast.success(`npx command copied to clipboard`)
       }}
     >
