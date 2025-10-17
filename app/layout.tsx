@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: "%s | ABUI",
   },
   description,
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL!),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'),
   manifest: "/site.webmanifest",
   // manifest: `${process.env.NEXT_PUBLIC_BASE_URL}/site.webmanifest`,
   openGraph: {

@@ -1,77 +1,36 @@
 # Registry Routes
 
-This is example code for using route handlers to serve your registry. Each route handler implements a different authentication method.
+This is a public, open-source component registry using Next.js route handlers. No authentication required.
 
-## Routes
+## Route
 
-- `public/[name]/route.ts`: no authentication
-- `api/[name]/route.ts`: uses API key authentication
-- `bearer/[name]/route.ts`: uses Bearer token authentication
-- `basic/[name]/route.ts`: uses Basic authentication
-- `query/[name]/route.ts`: uses query parameters authentication
-- `custom/[name]/route.ts`: uses custom authentication
+- `default/[name]/route.ts`: Public registry endpoint for all components
 
 ## Usage
 
-To test the routes, you can use the following remote registries config in your `components.json` file:
+To use this registry, add the following to your `components.json` file:
 
 ```json
 {
   "$schema": "https://ui.shadcn.com/schema.json",
   "registries": {
-    "@public": "https://abui-registry.vercel.app/api/registry/public/{name}",
-    "@bearer": {
-      "url": "https://abui-registry.vercel.app/api/registry/bearer/{name}",
-      "headers": {
-        "Authorization": "Bearer ${REGISTRY_BEARER_TOKEN}"
-      }
-    },
-    "@apikey": {
-      "url": "https://abui-registry.vercel.app/api/registry/apikey/{name}",
-      "headers": {
-        "X-API-Key": "${REGISTRY_API_KEY}"
-      }
-    },
-    "@query": {
-      "url": "https://abui-registry.vercel.app/api/registry/query/{name}",
-      "params": {
-        "token": "${REGISTRY_QUERY_TOKEN}"
-      }
-    },
-    "@custom": {
-      "url": "https://abui-registry.vercel.app/api/registry/custom/{name}",
-      "headers": {
-        "X-Client-Id": "${REGISTRY_CLIENT_ID}",
-        "X-Client-Secret": "${REGISTRY_CLIENT_SECRET}"
-      }
-    },
-    "@basic": {
-      "url": "https://abui-registry.vercel.app/api/registry/basic/{name}",
-      "headers": {
-        "Authorization": "Basic ${REGISTRY_BASIC_AUTH}"
-      }
-    }
+    "@abui": "https://abui-registry.vercel.app/api/registry/default/{name}"
   }
 }
 ```
 
-Add the following environment variables to your `.env` file:
+Then install components with:
 
-```env
-REGISTRY_BEARER_TOKEN=abc123
-REGISTRY_API_KEY=xyz789
-REGISTRY_QUERY_TOKEN=secret123
-REGISTRY_CLIENT_ID=client123
-REGISTRY_CLIENT_SECRET=secret456
-REGISTRY_BASIC_AUTH=YWRtaW46cGFzc3dvcmQxMjM=
+```bash
+npx shadcn@latest add @abui/login-form
+npx shadcn@latest add @abui/hero
+npx shadcn@latest add @abui/logo
 ```
 
-Then use the following command to install components:
+## How it works
 
-- `public`: `npx shadcn@latest add @public/login-form`
-- `bearer`: `npx shadcn@latest add @bearer/login-form`
-- `apikey`: `npx shadcn@latest add @apikey/login-form`
-- `query`: `npx shadcn@latest add @query/login-form`
-- `custom`: `npx shadcn@latest add @custom/login-form`
-- `basic`: `npx shadcn@latest add @basic/login-form`
-  /
+The route handler:
+1. Uses `generateStaticParams` to pre-render all registry items at build time
+2. Fetches the requested component from `registry.json`
+3. Returns the component files and metadata as JSON
+4. Returns 404 if the component is not found
