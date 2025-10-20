@@ -17,22 +17,22 @@ export function getNavItemsFromRegistry(): NavItems {
   const items = registryData.items as RegistryItem[]
 
   const components = items
-    .filter((item) => item.type === "registry:component" && item.files)
-    .map((item) => ({
+    .filter(item => item.type === "registry:component" && item.files)
+    .map(item => ({
       name: item.title || item.name,
       url: `/components/${item.name}`,
     }))
 
   const utils = items
-    .filter((item) => item.type === "registry:component" && !item.files)
-    .map((item) => ({
+    .filter(item => item.type === "registry:component" && !item.files)
+    .map(item => ({
       name: item.title || item.name,
       url: `/utils/${item.name}`,
     }))
 
   const blocks = items
-    .filter((item) => item.type === "registry:block" && item.name !== "logo")
-    .map((item) => ({
+    .filter(item => item.type === "registry:block" && item.name !== "logo")
+    .map(item => ({
       name: item.title || item.name,
       url: `/blocks/${item.name}`,
     }))
@@ -49,4 +49,3 @@ export function getNavItemsFromRegistry(): NavItems {
     blocks,
   }
 }
-

@@ -1,9 +1,6 @@
 "use client"
 
-import { AddCommand } from "@/components/add-command"
-import { OpenInV0 } from "@/components/open-in-v0"
 import * as React from "react"
-import { Separator } from "@/components/ui/separator"
 import PageWithBreadcrumbs from "@/components/PageWithBreadcrumbs"
 import { getRegistryItemFromJson } from "@/lib/utils/registry"
 import Content from "@/components/custom/Content"

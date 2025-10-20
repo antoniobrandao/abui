@@ -1,4 +1,5 @@
 "use client"
+
 import type { BundledLanguage } from "@/components/ui/shadcn-io/code-block"
 import {
   CodeBlock,
@@ -15,32 +16,6 @@ import {
   CodeBlockSelectTrigger,
   CodeBlockSelectValue,
 } from "@/components/ui/shadcn-io/code-block"
-const exampleCode = [
-  {
-    language: "jsx",
-    filename: "MyComponent.jsx",
-    code: `function MyComponent(props) {
-  return (
-    <div>
-      <h1>Hello, {props.name}!</h1>
-      <p>This is an example React component.</p>
-    </div>
-  );
-}`,
-  },
-  {
-    language: "tsx",
-    filename: "MyComponent.tsx",
-    code: `function MyComponent(props: { name: string }) {
-  return (
-    <div>
-      <h1>Hello, {props.name}!</h1>
-      <p>This is an example React component.</p>
-    </div>
-  );
-}`,
-  },
-]
 
 interface CodeBlockComponentProps {
   code: {
@@ -50,7 +25,7 @@ interface CodeBlockComponentProps {
   }[]
 }
 const CodeBlockComponent = ({ code }: CodeBlockComponentProps) => (
-  <CodeBlock data={code as any} defaultValue={code[0].language}>
+  <CodeBlock data={code} defaultValue={code[0].language}>
     <CodeBlockHeader>
       <CodeBlockFiles>
         {item => (

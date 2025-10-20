@@ -14,10 +14,10 @@ interface RadioTabsProps extends React.ComponentProps<typeof RadioGroupPrimitive
 
 function RadioTabs({ className, stackAtBreakpoint, containerClassName, ...props }: RadioTabsProps) {
   // Detect if any children contain descriptions to adjust container height
-  const hasDescriptions = React.Children.toArray(props.children).some((child) => {
-    if (React.isValidElement(child) && child.props && typeof child.props === 'object' && 'children' in child.props) {
+  const hasDescriptions = React.Children.toArray(props.children).some(child => {
+    if (React.isValidElement(child) && child.props && typeof child.props === "object" && "children" in child.props) {
       const itemChildren = React.Children.toArray(child.props.children as React.ReactNode)
-      return itemChildren.some((itemChild) => {
+      return itemChildren.some(itemChild => {
         return React.isValidElement(itemChild) && itemChild.type === RadioTabsItemDescription
       })
     }
@@ -30,15 +30,11 @@ function RadioTabs({ className, stackAtBreakpoint, containerClassName, ...props 
     "bg-white dark:bg-zinc-900",
     "border",
     stackAtBreakpoint && getClassNamesForBreakpoint(stackAtBreakpoint),
-    containerClassName
+    containerClassName,
   )
 
   return (
-    <RadioGroupPrimitive.Root
-      data-slot="radio-tabs"
-      className={cn("w-full", className)}
-      {...props}
-    >
+    <RadioGroupPrimitive.Root data-slot="radio-tabs" className={cn("w-full", className)} {...props}>
       <div className={containerStyles}>{props.children}</div>
     </RadioGroupPrimitive.Root>
   )
@@ -50,9 +46,8 @@ interface RadioTabsItemProps extends React.ComponentProps<typeof RadioGroupPrimi
 
 function RadioTabsItem({ className, children, ...props }: RadioTabsItemProps) {
   // Check if children contain only text/simple content or structured components
-  const hasStructuredChildren = React.Children.toArray(children).some((child) => {
-    return React.isValidElement(child) && 
-      (child.type === RadioTabsItemLabel || child.type === RadioTabsItemDescription)
+  const hasStructuredChildren = React.Children.toArray(children).some(child => {
+    return React.isValidElement(child) && (child.type === RadioTabsItemLabel || child.type === RadioTabsItemDescription)
   })
 
   return (
@@ -61,7 +56,9 @@ function RadioTabsItem({ className, children, ...props }: RadioTabsItemProps) {
       className={cn(
         "group flex-1 overflow-hidden cursor-pointer",
         "px-[7px] py-[4px]",
-        hasStructuredChildren ? "flex flex-col justify-center items-center text-center" : "flex justify-center items-center",
+        hasStructuredChildren
+          ? "flex flex-col justify-center items-center text-center"
+          : "flex justify-center items-center",
         "select-none outline-none rounded-[4px]",
         "transition-colors",
         "data-[state=checked]:bg-blue-500/5 dark:data-[state=checked]:bg-blue-500/10",
@@ -70,7 +67,7 @@ function RadioTabsItem({ className, children, ...props }: RadioTabsItemProps) {
         "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         "disabled:cursor-not-allowed disabled:opacity-50",
         hasStructuredChildren && "px-10",
-        className
+        className,
       )}
       {...props}
     >
@@ -82,7 +79,7 @@ function RadioTabsItem({ className, children, ...props }: RadioTabsItemProps) {
             "font-semibold text-[13px]",
             "overflow-hidden whitespace-nowrap text-ellipsis",
             "group-data-[state=checked]:text-blue-500",
-            "text-muted-foreground"
+            "text-muted-foreground",
           )}
         >
           {children}
@@ -106,7 +103,7 @@ function RadioTabsItemLabel({ className, children, ...props }: RadioTabsItemLabe
         "w-full",
         "group-data-[state=checked]:text-foreground",
         "text-muted-foreground",
-        className
+        className,
       )}
       {...props}
     >
@@ -127,7 +124,7 @@ function RadioTabsItemDescription({ className, children, ...props }: RadioTabsIt
         "text-sm",
         "group-data-[state=checked]:text-blue-500",
         "text-muted-foreground opacity-50",
-        className
+        className,
       )}
       {...props}
     >

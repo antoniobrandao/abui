@@ -18,7 +18,7 @@ const breakpointDisplayVariants = cva(
     defaultVariants: {
       position: "fixed",
     },
-  }
+  },
 )
 
 // Canonical ordering of breakpoints from smallest to largest
@@ -54,17 +54,12 @@ interface BreakpointDisplayProps
   extraBreakpoints?: BreakpointKey[]
 }
 
-function BreakpointDisplay({ 
-  className, 
-  position, 
-  extraBreakpoints = [],
-  ...props 
-}: BreakpointDisplayProps) {
+function BreakpointDisplay({ className, position, extraBreakpoints = [], ...props }: BreakpointDisplayProps) {
   // Combine default and extra breakpoints, remove duplicates, and sort by semantic order
   const allBreakpoints = React.useMemo(() => {
     const combined = [...DEFAULT_BREAKPOINTS, ...extraBreakpoints]
     const unique = Array.from(new Set(combined))
-    
+
     // Sort by their position in the canonical BREAKPOINT_ORDER array
     return unique.sort((a, b) => {
       return BREAKPOINT_ORDER.indexOf(a) - BREAKPOINT_ORDER.indexOf(b)
@@ -74,56 +69,40 @@ function BreakpointDisplay({
   // Generate the display elements dynamically
   const breakpointElements = React.useMemo(() => {
     const elements: React.ReactNode[] = []
-    
+
     // First element: show "Minimum" below the smallest breakpoint
     const firstBreakpoint = allBreakpoints[0]
     elements.push(
-      <p 
-        key="minimum" 
-        className={cn("font-semibold block", `${firstBreakpoint}:hidden`)}
-      >
+      <p key="minimum" className={cn("font-semibold block", `${firstBreakpoint}:hidden`)}>
         Minimum
-      </p>
+      </p>,
     )
-    
+
     // Middle elements: show each breakpoint between its range
     for (let i = 0; i < allBreakpoints.length - 1; i++) {
       const current = allBreakpoints[i]
       const next = allBreakpoints[i + 1]
-      
+
       elements.push(
-        <p
-          key={current}
-          className={cn(
-            "font-semibold hidden",
-            `${current}:block`,
-            `${next}:hidden`
-          )}
-        >
+        <p key={current} className={cn("font-semibold hidden", `${current}:block`, `${next}:hidden`)}>
           {BREAKPOINT_LABELS[current]}
-        </p>
+        </p>,
       )
     }
-    
+
     // Last element: show largest breakpoint from its min-width up
     const lastBreakpoint = allBreakpoints[allBreakpoints.length - 1]
     elements.push(
-      <p
-        key={lastBreakpoint}
-        className={cn("font-semibold hidden", `${lastBreakpoint}:block`)}
-      >
+      <p key={lastBreakpoint} className={cn("font-semibold hidden", `${lastBreakpoint}:block`)}>
         {BREAKPOINT_LABELS[lastBreakpoint]}
-      </p>
+      </p>,
     )
-    
+
     return elements
   }, [allBreakpoints])
 
   return (
-    <div
-      className={cn(breakpointDisplayVariants({ position }), className)}
-      {...props}
-    >
+    <div className={cn(breakpointDisplayVariants({ position }), className)} {...props}>
       {breakpointElements}
     </div>
   )

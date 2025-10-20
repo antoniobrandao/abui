@@ -3,7 +3,7 @@ import { Logo } from "@/registry/abui/branding/logo"
 // import { MainNav } from "@/registry/abui/navigation/main-nav"
 // import { SiteHeader } from "@/registry/abui/navigation/site-header"
 // blocks
-import { ExampleHero } from "@/registry/abui/examples/example-hero"
+// import { ExampleHero } from "@/registry/abui/examples/example-hero"
 import ScrollRevealContentA from "@/registry/abui/marketing/scroll-reveal-content-a"
 import { RadioTabs } from "@/registry/abui/ui/radio-tabs"
 import { BreakpointDisplay } from "@/registry/abui/utils/breakpoint-display"

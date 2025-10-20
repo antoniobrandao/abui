@@ -1,21 +1,26 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "abui",
-  "homepage": "https://abui-registry.vercel.app",
+  "homepage": "https://abui.io",
   "items": [
     {
       "name": "design-system",
       "type": "registry:style",
       "dependencies": ["radix-ui"],
-      "registryDependencies": ["@abui/button"],
+      "registryDependencies": [
+        "@abui/debug-utils",
+        "@abui/breakpoint-display",
+        "@abui/extra-breakpoints",
+        "@abui/orientation-media-queries"
+      ],
       "cssVars": {
         "light": {
-          "primary": "oklch(0.63 0.17 149)",
+          "primary": "oklch(0.546 0.245 262.881)",
           "primary-foreground": "oklch(0.985 0 0)",
           "radius": "0.825rem"
         },
         "dark": {
-          "primary": "oklch(0.63 0.17 149)",
+          "primary": "oklch(0.600 0.214 259.815)",
           "primary-foreground": "oklch(0.985 0 0)"
         }
       },
@@ -28,38 +33,89 @@
       ]
     },
     {
-      "name": "logo",
-      "type": "registry:block",
-      "title": "Logo",
-      "description": "A logo component.",
-      "files": [
-        {
-          "path": "registry/abui/branding/logo.tsx",
-          "type": "registry:component"
+      "name": "extra-breakpoints",
+      "type": "registry:style",
+      "cssVars": {
+        "theme": {
+          "--breakpoint-xxs": "20rem",
+          "--breakpoint-xs": "30rem",
+          "--breakpoint-3xl": "116rem"
         }
-      ]
+      }
     },
     {
-      "name": "hero",
+      "name": "orientation-media-queries",
       "type": "registry:component",
-      "title": "Hero",
-      "description": "A hero component.",
+      "title": "Orientation Media Queries",
+      "description": "A set of device orientation media queries.",
+      "css": {
+        "@custom-variant portrait (@media (orientation: portrait))": {},
+        "@custom-variant landscape (@media (orientation: landscape))": {}
+      }
+    },
+    {
+      "name": "debug-utils",
+      "type": "registry:component",
+      "title": "Debug Utils",
+      "description": "A set of debug utility classes.",
+      "css": {
+        "@utility debug-red": {
+          "border": "1px dashed red"
+        },
+        "@utility debug-blue": {
+          "border": "1px dashed blue"
+        },
+        "@utility debug-green": {
+          "border": "1px dashed green"
+        },
+        "@utility debug-yellow": {
+          "border": "1px dashed yellow"
+        },
+        "@utility debug-purple": {
+          "border": "1px dashed purple"
+        },
+        "@utility debug-orange": {
+          "border": "1px dashed orange"
+        },
+        "@utility debug-pink": {
+          "border": "1px dashed pink"
+        }
+      }
+    },
+    {
+      "name": "breakpoint-display",
+      "type": "registry:component",
+      "title": "Breakpoint Display",
+      "description": "A breakpoint display component.",
       "files": [
         {
-          "path": "registry/abui/marketing/hero.tsx",
-          "type": "registry:component"
+          "path": "registry/abui/utils/breakpoint-display.tsx",
+          "type": "registry:ui"
         }
       ]
     },
     {
-      "name": "example-hero",
-      "type": "registry:block",
-      "title": "Example Hero Section",
-      "description": "An example hero section with a heading, subheading, and two call to action buttons.",
-      "registryDependencies": ["@abui/hero"],
+      "name": "radio-tabs",
+      "type": "registry:component",
+      "title": "Radio Tabs",
+      "description": "A radio tabs component.",
+      "registryDependencies": ["button"],
       "files": [
         {
-          "path": "registry/abui/examples/example-hero.tsx",
+          "path": "registry/abui/ui/radio-tabs.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "scroll-reveal-content-a",
+      "type": "registry:block",
+      "title": "Scroll Reveal Content A",
+      "description": "A block that shows 3 parts of content with a specific image for each part, and a fancy line grow expand during scroll.",
+      "dependencies": ["motion@12"],
+      "files": [
+        {
+          "path": "registry/abui/marketing/scroll-reveal-content-a.tsx",
           "type": "registry:component"
         }
       ]

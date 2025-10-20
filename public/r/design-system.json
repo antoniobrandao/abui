@@ -3,7 +3,12 @@
   "name": "design-system",
   "type": "registry:style",
   "dependencies": ["radix-ui"],
-  "registryDependencies": ["@abui/button"],
+  "registryDependencies": [
+    "@abui/debug-utils",
+    "@abui/breakpoint-display",
+    "@abui/extra-breakpoints",
+    "@abui/orientation-media-queries"
+  ],
   "files": [
     {
       "path": "registry/abui/rules/AGENTS.md",
@@ -14,12 +19,12 @@
   ],
   "cssVars": {
     "light": {
-      "primary": "oklch(0.63 0.17 149)",
+      "primary": "oklch(0.546 0.245 262.881)",
       "primary-foreground": "oklch(0.985 0 0)",
       "radius": "0.825rem"
     },
     "dark": {
-      "primary": "oklch(0.63 0.17 149)",
+      "primary": "oklch(0.600 0.214 259.815)",
       "primary-foreground": "oklch(0.985 0 0)"
     }
   }
