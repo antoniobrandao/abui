@@ -9,5 +9,6 @@ export interface NavItemsSet {
 export interface NavItems {
   main: NavItemsSet[]
   components: NavItemsSet[]
+  utils: NavItemsSet[]
   blocks: NavItemsSet[]
 }

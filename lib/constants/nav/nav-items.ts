@@ -1,59 +1,32 @@
-// import { Star, KeyRound, ChartColumn, Home } from "lucide-react"
-import { Home } from "lucide-react"
-import { NavItems } from "@/components/nav-types"
+// import { NavItems } from "@/components/nav-types"
 
-const navItems: NavItems = {
+const navItems = {
   main: [
     {
       name: "Overview",
       url: "/",
-      icon: Home,
     },
   ],
-  components: [
-    {
-      name: "Logo",
-      url: "/components/logo",
-      // icon: Star,
-    },
-    // {
-    //   name: "Calendar",
-    //   url: "/components/calendar",
-    //   // icon: Star,
-    // },
-    // {
-    //   name: "Card",
-    //   url: "/components/card",
-    //   // icon: Star,
-    // },
-    // {
-    //   name: "Dialog",
-    //   url: "/components/dialog",
-    //   // icon: Star,
-    // },
-    // {
-    //   name: "Input",
-    //   url: "/components/input",
-    //   // icon: Star,
-    // },
-    // {
-    //   name: "Label",
-    //   url: "/components/input",
-    //   // icon: Star,
-    // },
-  ],
-  blocks: [
-    {
-      name: "Hero",
-      url: "/blocks/hero",
-      // icon: Home,
-    },
-    // {
-    //   name: "Section",
-    //   url: "/blocks/section",
-    //   // icon: Star,
-    // },
-  ],
+  // components: [
+  //   {
+  //     name: "Logo",
+  //     url: "/components/logo",
+  //   },
+  //   {
+  //     name: "Breakpoint Display",
+  //     url: "/components/breakpoint-display",
+  //   },
+  //   {
+  //     name: "Radio Tabs",
+  //     url: "/components/radio-tabs",
+  //   },
+  // ],
+  // blocks: [
+  //   {
+  //     name: "Scroll Reveal Content A",
+  //     url: "/blocks/scroll-reveal-content-a",
+  //   },
+  // ],
 }
 
 export default navItems

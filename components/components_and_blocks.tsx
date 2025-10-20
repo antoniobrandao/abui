@@ -4,6 +4,9 @@ import { Logo } from "@/registry/abui/branding/logo"
 // import { SiteHeader } from "@/registry/abui/navigation/site-header"
 // blocks
 import { ExampleHero } from "@/registry/abui/examples/example-hero"
+import ScrollRevealContentA from "@/registry/abui/marketing/scroll-reveal-content-a"
+import { RadioTabs } from "@/registry/abui/ui/radio-tabs"
+import { BreakpointDisplay } from "@/registry/abui/utils/breakpoint-display"
 
 export const components = [
   {
@@ -18,6 +21,32 @@ export const components = [
     ],
     name: "logo",
     component: Logo,
+  },
+  {
+    title: "Breakpoint Display",
+    description: "A breakpoint display component.",
+    registryDependencies: ["@abui/breakpoint-display"],
+    files: [
+      {
+        path: "registry/abui/utils/breakpoint-display.tsx",
+        type: "registry:component",
+      },
+    ],
+    name: "breakpoint-display",
+    component: BreakpointDisplay,
+  },
+  {
+    title: "Radio Tabs",
+    description: "A radio tabs component with optional descriptions for rich variants.",
+    registryDependencies: ["@abui/radio-tabs"],
+    files: [
+      {
+        path: "registry/abui/ui/radio-tabs.tsx",
+        type: "registry:component",
+      },
+    ],
+    name: "radio-tabs",
+    component: RadioTabs,
   },
   // {
   //   title: "Main Nav",
@@ -49,16 +78,16 @@ export const components = [
 
 export const blocks = [
   {
-    name: "example-hero",
-    title: "Example Hero",
-    description: "An example hero block with a heading, subheading, and two call to action buttons.",
-    registryDependencies: ["@abui/hero"],
+    title: "Scroll Reveal Content A",
+    description: "A scroll reveal content block with a heading, subheading, and two call to action buttons.",
+    // registryDependencies: ["@abui/scroll-reveal-content-a"],
     files: [
       {
-        path: "registry/abui/examples/example-hero.tsx",
-        type: "registry:component",
+        path: "registry/abui/marketing/scroll-reveal-content-a.tsx",
+        type: "registry:block",
       },
     ],
-    component: ExampleHero,
+    name: "scroll-reveal-content-a",
+    component: ScrollRevealContentA,
   },
 ]

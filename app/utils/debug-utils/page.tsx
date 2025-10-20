@@ -1,23 +1,18 @@
 import { AddCommand } from "@/components/add-command"
 import { OpenInV0 } from "@/components/open-in-v0"
 import * as React from "react"
-import { components } from "@/components/components_and_blocks"
-import { Separator } from "@/registry/abui/ui/separator"
+import { Separator } from "@/components/ui/separator"
 import PageWithBreadcrumbs from "@/components/PageWithBreadcrumbs"
 import { getRegistryItemFromJson } from "@/lib/utils/registry"
 import Content from "@/components/custom/Content"
+import { Logo } from "@/registry/abui/branding/logo"
 
-const componentName = "logo"
+const componentName = "debug-utils"
 
 export default function Page() {
   const registryItem = getRegistryItemFromJson(componentName)
   if (!registryItem) {
     return <p>No registry item found</p>
-  }
-
-  const relatedComponent = components.find(component => component.name === componentName)
-  if (!relatedComponent) {
-    return <p>No related block found</p>
   }
 
   return (
@@ -35,7 +30,7 @@ export default function Page() {
           </div>
         </div>
         <div className="w-full flex items-center border rounded-lg justify-center min-h-[400px] p-4 md:p-10 relative bg-muted/30">
-          <relatedComponent.component />
+          <Logo />
         </div>
       </Content>
     </PageWithBreadcrumbs>

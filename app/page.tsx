@@ -1,7 +1,7 @@
 import * as React from "react"
 import { components, blocks } from "@/components/components_and_blocks"
 import registry from "@/registry.json"
-import { Separator } from "@/registry/abui/ui/separator"
+import { Separator } from "@/components/ui/separator"
 import { registryItemSchema } from "shadcn/schema"
 import PageWithBreadcrumbs from "@/components/PageWithBreadcrumbs"
 import Link from "next/link"

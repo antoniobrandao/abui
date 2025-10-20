@@ -1,7 +1,7 @@
 "use client"
 
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard"
-import { Button } from "@/registry/abui/ui/button"
+import { Button } from "@/components/ui/button"
 import { CheckIcon } from "lucide-react"
 import { registryItemSchema } from "shadcn/schema"
 import { getRegistryItemUrl } from "@/lib/utils"

@@ -2,12 +2,7 @@ import type { Metadata } from "next"
 import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 import { Providers } from "@/components/providers"
-// import { ModeToggle } from "@/components/mode-toggle"
-// import { Separator } from "@/registry/abui/ui/separator"
-// import Link from "next/link"
-// import { Logo } from "@/registry/abui/branding/logo"
-import { Toaster } from "@/registry/abui/ui/sonner"
-// import { RegistrySetup } from "@/components/registry-setup"
+import { Toaster } from "@/components/ui/sonner"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { Geist, Geist_Mono } from "next/font/google"
@@ -80,7 +75,7 @@ export default function RootLayout({
 
           <SidebarProvider>
             <AppSidebar />
-            <div className="h-screen overflow-x-hidden flex-1 bg-muted/50 md:min-h-min gap-4">{children}</div>
+            <div className="h-screen flex-1 bg-muted/50 md:min-h-min gap-4">{children}</div>
           </SidebarProvider>
           <Toaster position="top-center" />
         </Providers>

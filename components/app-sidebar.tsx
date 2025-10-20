@@ -2,7 +2,7 @@
 
 import * as React from "react"
 // import { GalleryVerticalEnd } from "lucide-react"
-import navItems from "@/lib/constants/nav/nav-items"
+import { getNavItemsFromRegistry } from "@/lib/utils/nav-from-registry"
 import { usePathname } from "next/navigation"
 import { Logo } from "@/registry/abui/branding/logo"
 import { NavBase } from "@/components/nav-base"
@@ -14,6 +14,7 @@ import { ModeToggle } from "@/components/mode-toggle"
 export function AppSidebar() {
   const { open } = useSidebar()
   const pathname = usePathname()
+  const navItems = getNavItemsFromRegistry()
   console.log("pathname", pathname)
   return (
     <Sidebar collapsible="icon">
@@ -39,6 +40,7 @@ export function AppSidebar() {
         <NavBase items={navItems.main} pathname={pathname} />
         <NavSimple items={navItems.components} label="Components" pathname={pathname} />
         <NavSimple items={navItems.blocks} label="Blocks" pathname={pathname} />
+        <NavSimple items={navItems.utils} label="Utils" pathname={pathname} />
       </SidebarContent>
       <SidebarRail />
     </Sidebar>

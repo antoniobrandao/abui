@@ -1,4 +1,4 @@
-import { Button } from "@/registry/abui/ui/button"
+import { Button } from "@/components/ui/button"
 import { cn, getRegistryItemUrl } from "@/lib/utils"
 
 export function OpenInV0({ name, className }: { name: string } & React.ComponentProps<typeof Button>) {
