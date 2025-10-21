@@ -1,0 +1,27 @@
+<svg width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    /* Dark mode (default) - black background, white logo */
+    .bg-outer { fill: white; }
+    .bg-inner { fill: black; }
+    .logo { fill: white; }
+    
+    /* Light mode - white background, black logo */
+    @media (prefers-color-scheme: light) {
+      .bg-outer { fill: black; }
+      .bg-inner { fill: white; }
+      .logo { fill: black; }
+    }
+  </style>
+  <g clip-path="url(#clip0_212_20)">
+    <circle cx="300" cy="300" r="300" class="bg-outer"/>
+    <path d="M299.571 26.8086C450.214 26.8086 572.335 148.929 572.335 299.571C572.335 450.214 450.214 572.335 299.571 572.335C148.928 572.335 26.8085 450.214 26.8085 299.571C26.8086 148.929 148.929 26.8087 299.571 26.8086Z" class="bg-inner"/>
+    <path d="M319.763 217.88L293.599 176.298H247.723L390.931 421.405L508.149 217.88H319.763ZM339.997 259.989H442.737L391.106 346.487L339.997 259.989Z" class="logo"/>
+    <path d="M281.336 379.823L307.611 421.405H353.681L209.692 176.298L91.9786 379.823H281.336ZM261.016 337.89H157.842L209.692 251.392L261.016 337.89Z" class="logo"/>
+  </g>
+  <defs>
+    <clipPath id="clip0_212_20">
+      <rect width="600" height="600" fill="white"/>
+    </clipPath>
+  </defs>
+</svg>
+
