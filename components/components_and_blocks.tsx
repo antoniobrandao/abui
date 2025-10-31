@@ -1,5 +1,4 @@
 // components
-import { Logo } from "@/registry/abui/branding/logo"
 // import { MainNav } from "@/registry/abui/navigation/main-nav"
 // import { SiteHeader } from "@/registry/abui/navigation/site-header"
 // blocks

@@ -12,7 +12,6 @@ const componentName = "radio-rows"
 
 export default function Page() {
   const [value, setValue] = React.useState("1")
-  const [value2, setValue2] = React.useState("daily")
   const [value3, setValue3] = React.useState("pro")
   const [value4, setValue4] = React.useState("standard")
   const [value5, setValue5] = React.useState("free")
