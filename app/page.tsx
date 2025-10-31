@@ -1,5 +1,5 @@
 import * as React from "react"
-import { components, blocks } from "@/components/components_and_blocks"
+import { components, blocks, utils } from "@/components/components_and_blocks"
 import registry from "@/registry.json"
 import { Separator } from "@/components/ui/separator"
 import { registryItemSchema } from "shadcn/schema"
@@ -55,6 +55,27 @@ export default function Home() {
               return (
                 <div key={block.name} className="flex flex-col gap-1">
                   <Link href={`/blocks/${block.name}`} className="text-sm text-foreground hover:underline">
+                    {registryItem.title}
+                  </Link>
+                  <span className="text-sm text-muted-foreground">{registryItem.description}</span>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+        <div>
+          <h2 className="text-2xl font-bold">Utils</h2>
+          <Separator className="my-4" />
+          <div className="grid grid-cols-3 gap-4">
+            {utils.map(util => {
+              const registryItem = getRegistryItemFromJson(util.name)
+              if (!registryItem) {
+                return null
+              }
+
+              return (
+                <div key={util.name} className="flex flex-col gap-1">
+                  <Link href={`/utils/${util.name}`} className="text-sm text-foreground hover:underline">
                     {registryItem.title}
                   </Link>
                   <span className="text-sm text-muted-foreground">{registryItem.description}</span>
