@@ -6,6 +6,8 @@ import PageWithBreadcrumbs from "@/components/PageWithBreadcrumbs"
 import { getRegistryItemFromJson } from "@/lib/utils/registry"
 import Content from "@/components/custom/Content"
 import { Logo } from "@/registry/abui/branding/logo"
+import CodeBlockComponent from "@/components/custom/CodeBlock"
+import { RegistryItemHeader } from "@/components/custom/RegistryItemHeader"
 
 const componentName = "debug-utils"
 
@@ -18,19 +20,86 @@ export default function Page() {
   return (
     <PageWithBreadcrumbs>
       <Content>
-        <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-2">
-            <div className="text-sm line-clamp-1 font-medium">{registryItem.title}</div>
-            <Separator orientation="vertical" className="!h-4 hidden lg:flex" />
-            <div className="text-sm text-muted-foreground line-clamp-1 hidden lg:flex">{registryItem.description}</div>
+        <RegistryItemHeader registryItem={registryItem} />
+
+        <div className="w-full flex flex-col gap-8">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <div className="text-sm font-medium">Debug-red</div>
+              <div className="w-full flex items-center border rounded-lg justify-center min-h-[100px] p-4 md:p-10 relative bg-muted/30">
+                <p className="debug-red">Debug-red</p>
+              </div>
+              <CodeBlockComponent
+                code={[
+                  {
+                    language: "tsx",
+                    filename: "basic-example.tsx",
+                    code: `<p className="debug-red">Test</p>`,
+                  },
+                ]}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="text-sm font-medium">Debug-green</div>
+              <div className="w-full flex items-center border rounded-lg justify-center min-h-[100px] p-4 md:p-10 relative bg-muted/30">
+                <p className="debug-green">Debug-green</p>
+              </div>
+              <CodeBlockComponent
+                code={[
+                  {
+                    language: "tsx",
+                    filename: "basic-example.tsx",
+                    code: `<p className="debug-green">Test</p>`,
+                  },
+                ]}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="text-sm font-medium">Debug-blue</div>
+              <div className="w-full flex items-center border rounded-lg justify-center min-h-[100px] p-4 md:p-10 relative bg-muted/30">
+                <p className="debug-blue">Debug-blue</p>
+              </div>
+              <CodeBlockComponent
+                code={[
+                  {
+                    language: "tsx",
+                    filename: "basic-example.tsx",
+                    code: `<p className="debug-blue">Test</p>`,
+                  },
+                ]}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="text-sm font-medium">Debug-purple</div>
+              <div className="w-full flex items-center border rounded-lg justify-center min-h-[100px] p-4 md:p-10 relative bg-muted/30">
+                <p className="debug-purple">Debug-purple</p>
+              </div>
+              <CodeBlockComponent
+                code={[
+                  {
+                    language: "tsx",
+                    filename: "basic-example.tsx",
+                    code: `<p className="debug-purple">Test</p>`,
+                  },
+                ]}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="text-sm font-medium">Debug-yellow</div>
+              <div className="w-full flex items-center border rounded-lg justify-center min-h-[100px] p-4 md:p-10 relative bg-muted/30">
+                <p className="debug-yellow">Debug-yellow</p>
+              </div>
+              <CodeBlockComponent
+                code={[
+                  {
+                    language: "tsx",
+                    filename: "basic-example.tsx",
+                    code: `<p className="debug-yellow">Test</p>`,
+                  },
+                ]}
+              />
+            </div>
           </div>
-          <div className="flex gap-2">
-            <AddCommand registryItem={registryItem} />
-            <OpenInV0 name={registryItem.name} className="w-fit" />
-          </div>
-        </div>
-        <div className="w-full flex items-center border rounded-lg justify-center min-h-[400px] p-4 md:p-10 relative bg-muted/30">
-          <Logo />
         </div>
       </Content>
     </PageWithBreadcrumbs>
