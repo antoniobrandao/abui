@@ -15,7 +15,7 @@ export function AppSidebar() {
   const { open } = useSidebar()
   const pathname = usePathname()
   const navItems = getNavItemsFromRegistry()
-  
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -29,7 +29,7 @@ export function AppSidebar() {
               )}
               <div className="flex items-center flex-1 text-left text-sm leading-tight">
                 <Logo />
-                <p className="truncate text-lg ml-2 font-semibold">ABUI</p>
+                <p className="truncate text-lg ml-2 font-bold">ABUI</p>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>

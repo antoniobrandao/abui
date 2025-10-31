@@ -108,6 +108,18 @@
       ]
     },
     {
+      "name": "radio-rows",
+      "type": "registry:component",
+      "title": "Radio Rows",
+      "description": "A radio rows component.",
+      "files": [
+        {
+          "path": "registry/abui/ui/radio-rows.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "scroll-reveal-content-a",
       "type": "registry:block",
       "title": "Scroll Reveal Content A",

@@ -23,18 +23,18 @@ export function getNavItemsFromRegistry(): NavItems {
       url: `/components/${item.name}`,
     }))
 
-  const utils = items
-    .filter(item => item.type === "registry:component" && !item.files)
-    .map(item => ({
-      name: item.title || item.name,
-      url: `/utils/${item.name}`,
-    }))
-
   const blocks = items
     .filter(item => item.type === "registry:block" && item.name !== "logo")
     .map(item => ({
       name: item.title || item.name,
       url: `/blocks/${item.name}`,
+    }))
+
+  const utils = items
+    .filter(item => item.type === "registry:component" && !item.files)
+    .map(item => ({
+      name: item.title || item.name,
+      url: `/utils/${item.name}`,
     }))
 
   return {

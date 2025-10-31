@@ -6,6 +6,7 @@ import { Logo } from "@/registry/abui/branding/logo"
 // import { ExampleHero } from "@/registry/abui/examples/example-hero"
 import ScrollRevealContentA from "@/registry/abui/marketing/scroll-reveal-content-a"
 import { RadioTabs } from "@/registry/abui/ui/radio-tabs"
+import { RadioRows } from "@/registry/abui/ui/radio-rows"
 import { BreakpointDisplay } from "@/registry/abui/utils/breakpoint-display"
 
 export const components = [
@@ -47,6 +48,19 @@ export const components = [
     ],
     name: "radio-tabs",
     component: RadioTabs,
+  },
+  {
+    title: "Radio Rows",
+    description: "A radio row component with optional descriptions for rich variants.",
+    registryDependencies: ["@abui/radio-rows"],
+    files: [
+      {
+        path: "registry/abui/ui/radio-rows.tsx",
+        type: "registry:component",
+      },
+    ],
+    name: "radio-rows",
+    component: RadioRows,
   },
   // {
   //   title: "Main Nav",
