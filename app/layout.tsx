@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 })
 
 const title = "ABUI"
-const description = "A component registry for distributing code using shadcn."
+const description = "Components, blocks, and utilities by Antonio Brandao."
 
 export const metadata: Metadata = {
   title: {

@@ -1,7 +1,7 @@
 {
   "name": "ABUI - Component Registry",
   "short_name": "ABUI",
-  "description": "A component registry for distributing code using shadcn.",
+  "description": "Components, blocks, and utilities by Antonio Brandao.",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
