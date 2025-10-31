@@ -91,3 +91,32 @@ export const blocks = [
     component: ScrollRevealContentA,
   },
 ]
+
+export const utils = [
+  {
+    title: "Orientation Media Queries",
+    description: "A set of device orientation media queries.",
+    registryDependencies: ["@abui/orientation-media-queries"],
+    files: [
+      {
+        path: "registry/abui/utils/orientation-media-queries.tsx",
+        type: "registry:component",
+      },
+    ],
+    name: "orientation-media-queries",
+    // component: OrientationMediaQueries,
+  },
+  {
+    title: "Debug utilities",
+    description: "A set of debug utilities.",
+    registryDependencies: ["@abui/debug-utils"],
+    files: [
+      {
+        path: "registry/abui/utils/debug-utils.tsx",
+        type: "registry:component",
+      },
+    ],
+    name: "debug-utils",
+    // component: DebugUtils,
+  },
+]
