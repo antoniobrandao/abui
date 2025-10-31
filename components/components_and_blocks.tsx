@@ -9,19 +9,19 @@ import { RadioTabs } from "@/registry/abui/ui/radio-tabs"
 import { BreakpointDisplay } from "@/registry/abui/utils/breakpoint-display"
 
 export const components = [
-  {
-    title: "Logo",
-    description: "A logo component.",
-    registryDependencies: ["@abui/logo"],
-    files: [
-      {
-        path: "registry/abui/branding/logo.tsx",
-        type: "registry:component",
-      },
-    ],
-    name: "logo",
-    component: Logo,
-  },
+  // {
+  //   title: "Logo",
+  //   description: "A logo component.",
+  //   registryDependencies: ["@abui/logo"],
+  //   files: [
+  //     {
+  //       path: "registry/abui/branding/logo.tsx",
+  //       type: "registry:component",
+  //     },
+  //   ],
+  //   name: "logo",
+  //   component: Logo,
+  // },
   {
     title: "Breakpoint Display",
     description: "A breakpoint display component.",
@@ -94,19 +94,6 @@ export const blocks = [
 
 export const utils = [
   {
-    title: "Orientation Media Queries",
-    description: "A set of device orientation media queries.",
-    registryDependencies: ["@abui/orientation-media-queries"],
-    files: [
-      {
-        path: "registry/abui/utils/orientation-media-queries.tsx",
-        type: "registry:component",
-      },
-    ],
-    name: "orientation-media-queries",
-    // component: OrientationMediaQueries,
-  },
-  {
     title: "Debug utilities",
     description: "A set of debug utilities.",
     registryDependencies: ["@abui/debug-utils"],
@@ -118,5 +105,18 @@ export const utils = [
     ],
     name: "debug-utils",
     // component: DebugUtils,
+  },
+  {
+    title: "Orientation Media Queries",
+    description: "A set of device orientation media queries.",
+    registryDependencies: ["@abui/orientation-media-queries"],
+    files: [
+      {
+        path: "registry/abui/utils/orientation-media-queries.tsx",
+        type: "registry:component",
+      },
+    ],
+    name: "orientation-media-queries",
+    // component: OrientationMediaQueries,
   },
 ]

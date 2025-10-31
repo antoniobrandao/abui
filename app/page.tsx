@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator"
 import { registryItemSchema } from "shadcn/schema"
 import PageWithBreadcrumbs from "@/components/PageWithBreadcrumbs"
 import Link from "next/link"
+import { CardTitle } from "@/components/ui/card"
 
 const getRegistryItemFromJson = React.cache((name: string) => {
   const registryItem = registry.items.find(item => item.name === name)
@@ -22,7 +23,7 @@ export default function Home() {
     <PageWithBreadcrumbs>
       <div className="flex flex-col gap-10">
         <div>
-          <h2 className="text-2xl font-bold">Components</h2>
+          <CardTitle>Components</CardTitle>
           <Separator className="my-4" />
           <div className="grid grid-cols-3 gap-4">
             {components.map(component => {
@@ -43,7 +44,7 @@ export default function Home() {
           </div>
         </div>
         <div>
-          <h2 className="text-2xl font-bold">Blocks</h2>
+          <CardTitle>Blocks</CardTitle>
           <Separator className="my-4" />
           <div className="grid grid-cols-3 gap-4">
             {blocks.map(block => {
@@ -64,7 +65,7 @@ export default function Home() {
           </div>
         </div>
         <div>
-          <h2 className="text-2xl font-bold">Utils</h2>
+          <CardTitle>Utils</CardTitle>
           <Separator className="my-4" />
           <div className="grid grid-cols-3 gap-4">
             {utils.map(util => {

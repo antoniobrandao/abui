@@ -15,7 +15,7 @@ export function AppSidebar() {
   const { open } = useSidebar()
   const pathname = usePathname()
   const navItems = getNavItemsFromRegistry()
-  console.log("pathname", pathname)
+  
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
