@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
+import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
@@ -40,11 +41,65 @@ function RadioTabs({ className, stackAtBreakpoint, containerClassName, ...props 
   )
 }
 
-interface RadioTabsItemProps extends React.ComponentProps<typeof RadioGroupPrimitive.Item> {
+const radioTabsItemVariants = cva(
+  [
+    "group flex-1 overflow-hidden cursor-pointer",
+    "px-[7px] py-[4px]",
+    "select-none outline-none rounded-[4px]",
+    "transition-colors",
+    "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    "disabled:cursor-not-allowed disabled:opacity-50",
+  ],
+  {
+    variants: {
+      variant: {
+        default: [
+          "data-[state=checked]:bg-foreground dark:data-[state=checked]:bg-foreground",
+          "data-[state=checked]:border data-[state=checked]:border-foreground",
+          "hover:bg-muted/50",
+        ],
+        outline: [
+          "border border-muted-foreground/20",
+          "data-[state=checked]:border-foreground data-[state=checked]:bg-foreground/5",
+          "hover:border-muted-foreground/30",
+        ],
+        outline_highlight: [
+          "data-[state=checked]:bg-blue-500/5 dark:data-[state=checked]:bg-blue-500/10",
+          "data-[state=checked]:border data-[state=checked]:border-blue-500",
+          "hover:bg-muted/50",
+        ],
+        primary: [
+          "data-[state=checked]:bg-foreground",
+          "data-[state=checked]:border data-[state=checked]:border-primary",
+          "hover:bg-muted/50",
+        ],
+        highlight: [
+          "data-[state=checked]:bg-blue-500 dark:data-[state=checked]:bg-blue-500",
+          "data-[state=checked]:!text-white/100",
+          // "data-[state=checked]:border data-[state=checked]:border-blue-500",
+          "border-none",
+          "hover:bg-muted/50",
+        ],
+        secondary: [
+          "data-[state=checked]:bg-muted",
+          "data-[state=checked]:border data-[state=checked]:border-muted-foreground/20",
+          "hover:bg-muted/50",
+        ],
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  },
+)
+
+interface RadioTabsItemProps
+  extends React.ComponentProps<typeof RadioGroupPrimitive.Item>,
+    VariantProps<typeof radioTabsItemVariants> {
   children: React.ReactNode
 }
 
-function RadioTabsItem({ className, children, ...props }: RadioTabsItemProps) {
+function RadioTabsItem({ className, variant = "default", children, ...props }: RadioTabsItemProps) {
   // Check if children contain only text/simple content or structured components
   const hasStructuredChildren = React.Children.toArray(children).some(child => {
     return React.isValidElement(child) && (child.type === RadioTabsItemLabel || child.type === RadioTabsItemDescription)
@@ -54,18 +109,10 @@ function RadioTabsItem({ className, children, ...props }: RadioTabsItemProps) {
     <RadioGroupPrimitive.Item
       data-slot="radio-tabs-item"
       className={cn(
-        "group flex-1 overflow-hidden cursor-pointer",
-        "px-[7px] py-[4px]",
+        radioTabsItemVariants({ variant }),
         hasStructuredChildren
           ? "flex flex-col justify-center items-center text-center"
           : "flex justify-center items-center",
-        "select-none outline-none rounded-[4px]",
-        "transition-colors",
-        "data-[state=checked]:bg-blue-500/5 dark:data-[state=checked]:bg-blue-500/10",
-        "data-[state=checked]:border data-[state=checked]:border-blue-500",
-        "hover:bg-muted/50",
-        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        "disabled:cursor-not-allowed disabled:opacity-50",
         hasStructuredChildren && "px-10",
         className,
       )}
@@ -76,10 +123,13 @@ function RadioTabsItem({ className, children, ...props }: RadioTabsItemProps) {
       ) : (
         <span
           className={cn(
-            "font-semibold text-[13px]",
+            "font-medium text-sm",
             "overflow-hidden whitespace-nowrap text-ellipsis",
-            "group-data-[state=checked]:text-blue-500",
-            "text-muted-foreground",
+            // "text-muted-foreground",
+            variant === "default" && "group-data-[state=checked]:text-background",
+            variant === "outline" && "group-data-[state=checked]:text-foreground",
+            variant === "primary" && "group-data-[state=checked]:text-primary",
+            variant === "secondary" && "group-data-[state=checked]:text-foreground",
           )}
         >
           {children}
@@ -101,8 +151,8 @@ function RadioTabsItemLabel({ className, children, ...props }: RadioTabsItemLabe
         "font-semibold text-base",
         "overflow-hidden whitespace-nowrap text-ellipsis",
         "w-full",
-        "group-data-[state=checked]:text-foreground",
         "text-muted-foreground",
+        "transition-colors duration-300",
         className,
       )}
       {...props}
@@ -122,8 +172,9 @@ function RadioTabsItemDescription({ className, children, ...props }: RadioTabsIt
       data-slot="radio-tabs-item-description"
       className={cn(
         "text-sm",
-        "group-data-[state=checked]:text-blue-500",
         "text-muted-foreground opacity-50",
+        "group-data-[state=checked]:opacity-100",
+        "transition-colors duration-300",
         className,
       )}
       {...props}
@@ -133,7 +184,7 @@ function RadioTabsItemDescription({ className, children, ...props }: RadioTabsIt
   )
 }
 
-export { RadioTabs, RadioTabsItem, RadioTabsItemLabel, RadioTabsItemDescription }
+export { RadioTabs, RadioTabsItem, RadioTabsItemLabel, RadioTabsItemDescription, radioTabsItemVariants }
 
 const getClassNamesForBreakpoint = (breakpoint: StackAtBreakpoint): string => {
   const breakpointClasses: Record<StackAtBreakpoint, string> = {

@@ -11,6 +11,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
     "@hookform/resolvers": "^5.0.1",
     "@icons-pack/react-simple-icons": "^13.8.0",
     "@radix-ui/react-avatar": "^1.1.10",
@@ -50,6 +51,7 @@
     "sonner": "^2.0.7",
     "source-map-support": "^0.5.21",
     "tailwind-merge": "^3.2.0",
+    "tunnel-rat": "^0.1.2",
     "vaul": "^1.1.2",
     "zod": "^3.24.3"
   },
