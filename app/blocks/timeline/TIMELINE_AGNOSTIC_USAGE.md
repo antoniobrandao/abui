@@ -22,18 +22,28 @@ According to components.build taxonomy:
 ## Component Hierarchy
 
 ```tsx
-<TimelineProvider>          // Context provider, configuration
-  <Timeline>                // DnD container, main grid
-    <TimelineHeader />      // Hour markers
-    <TimelineGrid>          // Optional layout wrapper
-      <TimelineRow>         // Individual row (droppable)
-        <TimelineSlot>      // Individual slot (draggable)
-          <TimelineSlotLabel />    // Primitive: label
-          <TimelineSlotContent />  // Primitive: content
+<TimelineProvider>
+  {" "}
+  // Context provider, configuration
+  <Timeline>
+    {" "}
+    // DnD container, main grid
+    <TimelineHeader /> // Hour markers
+    <TimelineGrid>
+      {" "}
+      // Optional layout wrapper
+      <TimelineRow>
+        {" "}
+        // Individual row (droppable)
+        <TimelineSlot>
+          {" "}
+          // Individual slot (draggable)
+          <TimelineSlotLabel /> // Primitive: label
+          <TimelineSlotContent /> // Primitive: content
         </TimelineSlot>
       </TimelineRow>
     </TimelineGrid>
-    <TimelineDropRegion />  // Visual drop preview
+    <TimelineDropRegion /> // Visual drop preview
     <TimelineCurrentTime /> // Current time indicator
   </Timeline>
 </TimelineProvider>
@@ -65,43 +75,43 @@ function MyScheduler() {
     snapIntervalMinutes: 15,
     columnWidth: 120,
   }
-  
+
   const rows: TimelineRowData[] = [
     { id: "1", label: "Room A" },
     { id: "2", label: "Room B" },
   ]
-  
+
   const slots: TimelineSlotData[] = [
     { id: "s1", rowId: "1", startTime: "10:00", duration: 60 },
     { id: "s2", rowId: "2", startTime: "14:30", duration: 90 },
   ]
-  
+
   const handlePositionChange = async (slotId, newTime, newRowId) => {
     console.log(`Slot ${slotId} moved to ${newTime} in row ${newRowId}`)
     // Update your backend
     return true // Return true if successful
   }
-  
+
   const validateDrop = (slotId, newTime, newRowId) => {
     // Your custom validation logic
     return true // Return false to prevent drop
   }
-  
+
   return (
     <TimelineProvider
       config={config}
       percentageInView={100}
       onSlotPositionChange={handlePositionChange}
       onValidateDrop={validateDrop}
-      onSlotClick={(slotId) => console.log("Clicked:", slotId)}
+      onSlotClick={slotId => console.log("Clicked:", slotId)}
     >
       <Timeline slots={slots} rows={rows}>
         <TimelineGrid>
           <TimelineHeader columnLabel="Rooms" />
-          
+
           {rows.map(row => (
             <TimelineRow key={row.id} row={row} slots={slots}>
-              {(slot) => (
+              {slot => (
                 <TimelineSlot slot={slot}>
                   <TimelineSlotLabel>Event {slot.id}</TimelineSlotLabel>
                   <TimelineSlotContent>
@@ -112,7 +122,7 @@ function MyScheduler() {
               )}
             </TimelineRow>
           ))}
-          
+
           <TimelineCurrentTime />
         </TimelineGrid>
       </Timeline>
@@ -127,17 +137,18 @@ function MyScheduler() {
 
 ### TimelineProvider
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `config` | `TimelineConfig` | **required** | Timeline configuration (hours, snap interval) |
-| `percentageInView` | `number` | `100` | Zoom level (100 = full view, 50 = 2x zoom) |
-| `onSlotPositionChange` | `function` | - | Called when slot is dropped. Return Promise<boolean> |
-| `onValidateDrop` | `function` | - | Real-time validation during drag. Return boolean |
-| `onSlotClick` | `function` | - | Called when slot is clicked |
-| `style` | `CSSProperties` | - | CSS custom properties |
-| `className` | `string` | - | Additional classes |
+| Prop                   | Type             | Default      | Description                                          |
+| ---------------------- | ---------------- | ------------ | ---------------------------------------------------- |
+| `config`               | `TimelineConfig` | **required** | Timeline configuration (hours, snap interval)        |
+| `percentageInView`     | `number`         | `100`        | Zoom level (100 = full view, 50 = 2x zoom)           |
+| `onSlotPositionChange` | `function`       | -            | Called when slot is dropped. Return Promise<boolean> |
+| `onValidateDrop`       | `function`       | -            | Real-time validation during drag. Return boolean     |
+| `onSlotClick`          | `function`       | -            | Called when slot is clicked                          |
+| `style`                | `CSSProperties`  | -            | CSS custom properties                                |
+| `className`            | `string`         | -            | Additional classes                                   |
 
 **TimelineConfig:**
+
 ```tsx
 {
   startHour: number        // e.g., 9 for 9:00 AM
@@ -149,31 +160,31 @@ function MyScheduler() {
 
 ### Timeline
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `slots` | `TimelineSlotData[]` | All slots to display |
-| `rows` | `TimelineRowData[]` | All rows to display |
-| `children` | `ReactNode` | Timeline content |
-| `className` | `string` | Grid container classes |
+| Prop        | Type                 | Description            |
+| ----------- | -------------------- | ---------------------- |
+| `slots`     | `TimelineSlotData[]` | All slots to display   |
+| `rows`      | `TimelineRowData[]`  | All rows to display    |
+| `children`  | `ReactNode`          | Timeline content       |
+| `className` | `string`             | Grid container classes |
 
 ### TimelineRow
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `row` | `TimelineRowData` | Row data |
-| `slots` | `TimelineSlotData[]` | Slots array (auto-filtered) |
-| `children` | `(slot) => ReactNode` | Render function for slots |
-| `className` | `string` | Row classes |
-| `asChild` | `boolean` | Polymorphic component |
+| Prop        | Type                  | Description                 |
+| ----------- | --------------------- | --------------------------- |
+| `row`       | `TimelineRowData`     | Row data                    |
+| `slots`     | `TimelineSlotData[]`  | Slots array (auto-filtered) |
+| `children`  | `(slot) => ReactNode` | Render function for slots   |
+| `className` | `string`              | Row classes                 |
+| `asChild`   | `boolean`             | Polymorphic component       |
 
 ### TimelineSlot
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `slot` | `TimelineSlotData` | Slot data |
-| `children` | `ReactNode` | Slot content |
-| `className` | `string` | Slot classes |
-| `asChild` | `boolean` | Polymorphic component |
+| Prop        | Type               | Description           |
+| ----------- | ------------------ | --------------------- |
+| `slot`      | `TimelineSlotData` | Slot data             |
+| `children`  | `ReactNode`        | Slot content          |
+| `className` | `string`           | Slot classes          |
+| `asChild`   | `boolean`          | Polymorphic component |
 
 ---
 
@@ -190,7 +201,7 @@ function MyScheduler() {
     "data-[state=dragging]:opacity-50",
     "data-[active=true]:ring-2",
     // Conditional
-    slot.priority === "high" && "border-2 border-red-500"
+    slot.priority === "high" && "border-2 border-red-500",
   )}
 >
   {/* content */}
@@ -221,19 +232,17 @@ function MyScheduler() {
 const validateDrop = (slotId, newTime, newRowId) => {
   const slot = slots.find(s => s.id === slotId)
   const targetRow = rows.find(r => r.id === newRowId)
-  
+
   // Example: Check room capacity
   if (slot.attendees > targetRow.capacity) {
     return false
   }
-  
+
   // Example: Check time conflicts
-  const conflicts = slots.filter(s => 
-    s.rowId === newRowId &&
-    s.id !== slotId &&
-    timeRangesOverlap(s.startTime, s.duration, newTime, slot.duration)
+  const conflicts = slots.filter(
+    s => s.rowId === newRowId && s.id !== slotId && timeRangesOverlap(s.startTime, s.duration, newTime, slot.duration),
   )
-  
+
   return conflicts.length === 0
 }
 ```
@@ -371,15 +380,18 @@ All components expose `data-slot` and `data-state` attributes for styling:
 ### data-state Values
 
 **TimelineRow:**
+
 - `idle` - Normal state
 - `hover-valid` - Valid drop target
 - `hover-invalid` - Invalid drop target
 
 **TimelineSlot:**
+
 - `idle` - Normal state
 - `dragging` - Being dragged
 
 **DragPreview:**
+
 - `valid` - Valid drop position
 - `invalid` - Invalid drop position
 
@@ -405,11 +417,7 @@ The component exposes these CSS variables:
     "--timeline-column-width": "200px",
   }}
 >
-  <Timeline
-    className="[&_[data-slot=timeline-slot]]:rounded-lg"
-  >
-    {/* Target all slots globally */}
-  </Timeline>
+  <Timeline className="[&_[data-slot=timeline-slot]]:rounded-lg">{/* Target all slots globally */}</Timeline>
 </TimelineProvider>
 ```
 
@@ -422,18 +430,18 @@ The component exposes these CSS variables:
 function BookingTimeline() {
   const [bookings, setBookings] = useState(...)
   const [tables, setTables] = useState(...)
-  
+
   // Transform to agnostic format
   const rows = tables.map(adaptTableToRow)
   const slots = bookings.map(adaptBookingToSlot)
-  
+
   // Domain-specific logic
   const validateBookingDrop = (slotId, newTime, newRowId) => {
     // Your business rules
     return checkTimeConflicts(slotId, newTime, newRowId) &&
            checkTableCapacity(slotId, newRowId)
   }
-  
+
   const handleBookingMove = async (slotId, newTime, newRowId) => {
     // Your API call
     const response = await updateBooking(slotId, { time: newTime, tableId: newRowId })
@@ -443,7 +451,7 @@ function BookingTimeline() {
     }
     return false
   }
-  
+
   return (
     <TimelineProvider
       config={{ startHour: 12, endHour: 23 }}
@@ -520,6 +528,7 @@ function BookingTimeline() {
 ```
 
 **Problems:**
+
 - Hardcoded to bookings domain
 - Can't reuse for other scheduling needs
 - Styling mixed with logic
@@ -537,6 +546,7 @@ function BookingTimeline() {
 ```
 
 **Benefits:**
+
 - Works for ANY domain (meetings, shifts, rentals, etc.)
 - Host controls all content/styling
 - Primitives for composition
@@ -580,10 +590,9 @@ const validateDrop = (slotId, newTime, newRowId) => {
   const slot = slots.find(s => s.id === slotId)
   const booking = slot._originalBooking
   const table = rows.find(r => r.id === newRowId)._originalTable
-  
+
   // Your existing logic
-  return checkTimeCollisions(booking, newTime, newRowId) &&
-         table.seats >= booking.party_size
+  return checkTimeCollisions(booking, newTime, newRowId) && table.seats >= booking.party_size
 }
 ```
 
@@ -631,12 +640,14 @@ const validateDrop = (slotId, newTime, newRowId) => {
 ## Accessibility
 
 Current implementation is **low-level a11y**:
+
 - ✅ Keyboard dragging works (via @dnd-kit)
 - ✅ Semantic HTML where possible
 - ❌ Not optimized for screen readers (by design)
 - ❌ No TAB navigation (visual-only interface)
 
 To enhance:
+
 - Add `aria-label` to slots
 - Add `role="grid"` to timeline
 - Add keyboard shortcuts for common actions
@@ -646,20 +657,23 @@ To enhance:
 ## Performance Considerations
 
 1. **Memoize row rendering:**
+
 ```tsx
-const rowComponents = useMemo(() => 
+const rowComponents = useMemo(() =>
   rows.map(row => <TimelineRow key={row.id} row={row} slots={slots}>...)
 , [rows, slots])
 ```
 
 2. **Virtualize rows** for 100+ rows:
+
 ```tsx
-import { useVirtualizer } from '@tanstack/react-virtual'
+import { useVirtualizer } from "@tanstack/react-virtual"
 ```
 
 3. **Debounce validation** for expensive checks:
+
 ```tsx
-const validateDrop = useMemo(() => 
+const validateDrop = useMemo(() =>
   debounce((slotId, newTime, newRowId) => { ... }, 100)
 , [slots])
 ```
@@ -669,24 +683,24 @@ const validateDrop = useMemo(() =>
 ## Testing
 
 ```tsx
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 
-test('calls onSlotClick when slot is clicked', async () => {
+test("calls onSlotClick when slot is clicked", async () => {
   const handleClick = jest.fn()
-  
+
   render(
     <TimelineProvider config={config} onSlotClick={handleClick}>
       <Timeline slots={slots} rows={rows}>
         {/* ... */}
       </Timeline>
-    </TimelineProvider>
+    </TimelineProvider>,
   )
-  
-  const slot = screen.getByText('Event s1')
+
+  const slot = screen.getByText("Event s1")
   await userEvent.click(slot)
-  
-  expect(handleClick).toHaveBeenCalledWith('s1')
+
+  expect(handleClick).toHaveBeenCalledWith("s1")
 })
 ```
 
@@ -720,6 +734,7 @@ This component follows the **copy-and-paste** (source distribution) model:
 - ✅ Zero runtime overhead
 
 **Perfect for:**
+
 - Companies building custom scheduling tools
 - SaaS products with timeline features
 - Internal tools
@@ -730,12 +745,13 @@ This component follows the **copy-and-paste** (source distribution) model:
 ## Support
 
 **Component follows these specifications:**
+
 - [components.build - Definitions](https://raw.githubusercontent.com/vercel/components.build/refs/heads/main/content/docs/definitions.mdx)
 - [components.build - Data Attributes](https://raw.githubusercontent.com/vercel/components.build/refs/heads/main/content/docs/data-attributes.mdx)
 
 **Built with:**
+
 - [@dnd-kit/core](https://docs.dndkit.com/) - Drag and drop
 - [@radix-ui/react-slot](https://www.radix-ui.com/primitives/docs/utilities/slot) - Polymorphic components
 - [Tailwind CSS](https://tailwindcss.com/) - Styling
 - [class-variance-authority](https://cva.style/docs) - Variant management (if needed)
-

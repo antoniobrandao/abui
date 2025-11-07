@@ -27,12 +27,12 @@ const blockName = "timeline"
 
 export default function Page() {
   const registryItem = getRegistryItemFromJson(blockName)
+  
+  const [slots, setSlots] = useState<TimelineSlotData[]>(initialSlots)
+  const [percentageInView, setPercentageInView] = useState(100)
   if (!registryItem) {
     return <p>No registry item found</p>
   }
-
-  const [slots, setSlots] = useState<TimelineSlotData[]>(initialSlots)
-  const [percentageInView, setPercentageInView] = useState(100)
 
   const config = {
     startHour: 9,
@@ -90,7 +90,7 @@ export default function Page() {
         <div className="flex flex-col gap-2 w-full">
           <h2 className="text-2xl font-bold">Timeline Demo</h2>
           <p className="text-muted-foreground">
-            "Gantt-chart" style timeline component with drag-and-drop. Try dragging slots between different rows and
+            &quot;Gantt-chart&quot; style timeline component with drag-and-drop. Try dragging slots between different rows and
             watch for conflict validation. Press ESC to cancel a drag operation.
           </p>
         </div>

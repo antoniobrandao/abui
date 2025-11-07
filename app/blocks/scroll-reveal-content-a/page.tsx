@@ -4,7 +4,6 @@ import Content from "@/components/custom/Content"
 import { ItemContent } from "@/registry/abui/marketing/scroll-reveal-content-a"
 import ScrollRevealContentA from "@/registry/abui/marketing/scroll-reveal-content-a"
 import { RegistryItemHeader } from "@/components/custom/RegistryItemHeader"
-import PageWithBreadcrumbs from "@/components/PageWithBreadcrumbs"
 
 const blockName = "scroll-reveal-content-a"
 
