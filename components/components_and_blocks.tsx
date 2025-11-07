@@ -8,6 +8,7 @@ import { RadioTabs } from "@/registry/abui/ui/radio-tabs"
 import { RadioRows } from "@/registry/abui/ui/radio-rows"
 import { BreakpointDisplay } from "@/registry/abui/utils/breakpoint-display"
 import { Timeline } from "@/registry/abui/ui/timeline"
+import { CalendarYear } from "@/registry/abui/ui/calendar-year"
 
 export const components = [
   // {
@@ -23,6 +24,19 @@ export const components = [
   //   name: "logo",
   //   component: Logo,
   // },
+  {
+    title: "Calendar Year",
+    description: "A calendar year component.",
+    registryDependencies: ["@abui/calendar-year"],
+    files: [
+      {
+        path: "registry/abui/ui/calendar-year.tsx",
+        type: "registry:component",
+      },
+    ],
+    name: "calendar-year",
+    component: CalendarYear,
+  },
   {
     title: "Breakpoint Display",
     description: "A breakpoint display component.",

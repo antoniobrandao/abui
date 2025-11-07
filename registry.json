@@ -135,6 +135,20 @@
       ]
     },
     {
+      "name": "calendar-year",
+      "type": "registry:block",
+      "title": "Calendar Year",
+      "description": "A calendar year component.",
+      "dependencies": ["dayjs"],
+      "registryDependencies": ["button", "tooltip"],
+      "files": [
+        {
+          "path": "registry/abui/ui/calendar-year.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "scroll-reveal-content-a",
       "type": "registry:block",
       "title": "Scroll Reveal Content A",
