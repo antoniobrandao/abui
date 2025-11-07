@@ -16,10 +16,10 @@ export default function Page() {
 
   return (
     <PageWithBreadcrumbs>
+      <RegistryItemHeader registryItem={registryItem} />
       <Content>
         {/* Live default instance - fixed at top of viewport */}
         <BreakpointDisplay />
-        <RegistryItemHeader registryItem={registryItem} />
 
         <div className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-4">

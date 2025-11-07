@@ -31,7 +31,7 @@ export function getNavItemsFromRegistry(): NavItems {
     }))
 
   const utils = items
-    .filter(item => item.type === "registry:component" && !item.files)
+    .filter(item => item.type === "registry:style" && !item.files)
     .map(item => ({
       name: item.title || item.name,
       url: `/utils/${item.name}`,

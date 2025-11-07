@@ -6,6 +6,7 @@ import { registryItemSchema } from "shadcn/schema"
 import PageWithBreadcrumbs from "@/components/PageWithBreadcrumbs"
 import Link from "next/link"
 import { CardTitle } from "@/components/ui/card"
+import Content from "@/components/custom/Content"
 
 const getRegistryItemFromJson = React.cache((name: string) => {
   const registryItem = registry.items.find(item => item.name === name)
@@ -21,11 +22,11 @@ const getRegistryItemFromJson = React.cache((name: string) => {
 export default function Home() {
   return (
     <PageWithBreadcrumbs>
-      <div className="flex flex-col gap-10">
-        <div>
+      <Content className="flex flex-col gap-10">
+        <div className="w-full">
           <CardTitle>Components</CardTitle>
           <Separator className="my-4" />
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-8 w-full">
             {components.map(component => {
               const registryItem = getRegistryItemFromJson(component.name)
               if (!registryItem) {
@@ -42,10 +43,10 @@ export default function Home() {
             })}
           </div>
         </div>
-        <div>
+        <div className="w-full">
           <CardTitle>Blocks</CardTitle>
           <Separator className="my-4" />
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-8 w-full">
             {blocks.map(block => {
               const registryItem = getRegistryItemFromJson(block.name)
               if (!registryItem) {
@@ -62,10 +63,10 @@ export default function Home() {
             })}
           </div>
         </div>
-        <div>
+        <div className="w-full">
           <CardTitle>Utils</CardTitle>
           <Separator className="my-4" />
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-8 w-full">
             {utils.map(util => {
               const registryItem = getRegistryItemFromJson(util.name)
               if (!registryItem) {
@@ -83,7 +84,7 @@ export default function Home() {
             })}
           </div>
         </div>
-      </div>
+      </Content>
     </PageWithBreadcrumbs>
   )
 }

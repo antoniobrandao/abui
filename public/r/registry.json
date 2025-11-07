@@ -33,8 +33,20 @@
       ]
     },
     {
+      "name": "orientation-media-queries",
+      "type": "registry:style",
+      "title": "Orientation Media Queries",
+      "description": "A set of device orientation media queries.",
+      "css": {
+        "@custom-variant portrait (@media (orientation: portrait))": {},
+        "@custom-variant landscape (@media (orientation: landscape))": {}
+      }
+    },
+    {
       "name": "extra-breakpoints",
       "type": "registry:style",
+      "title": "Extra Breakpoints",
+      "description": "Adds XS, XXS and 3XL breakpoints.",
       "cssVars": {
         "theme": {
           "--breakpoint-xxs": "20rem",
@@ -44,18 +56,8 @@
       }
     },
     {
-      "name": "orientation-media-queries",
-      "type": "registry:component",
-      "title": "Orientation Media Queries",
-      "description": "A set of device orientation media queries.",
-      "css": {
-        "@custom-variant portrait (@media (orientation: portrait))": {},
-        "@custom-variant landscape (@media (orientation: landscape))": {}
-      }
-    },
-    {
       "name": "debug-utils",
-      "type": "registry:component",
+      "type": "registry:style",
       "title": "Debug Utils",
       "description": "A set of debug utility classes.",
       "css": {

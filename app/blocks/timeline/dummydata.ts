@@ -1,0 +1,123 @@
+import { TimelineRowData, TimelineSlotData } from "@/registry/abui/ui/timeline"
+
+// Demo Data
+export const dummyRows: TimelineRowData[] = [
+  {
+    id: "room-1",
+    label: "Conference Room A",
+    capacity: 12,
+  },
+  {
+    id: "room-2",
+    label: "Conference Room B",
+    capacity: 8,
+  },
+  {
+    id: "room-3",
+    label: "Meeting Room 1",
+    capacity: 6,
+  },
+  {
+    id: "room-4",
+    label: "Meeting Room 2",
+    capacity: 4,
+  },
+  {
+    id: "room-5",
+    label: "Training Room",
+    capacity: 20,
+  },
+]
+
+export const initialSlots: TimelineSlotData[] = [
+  {
+    id: "slot-1",
+    rowId: "room-1",
+    startTime: "09:30",
+    duration: 60,
+    title: "Team Standup",
+    type: "meeting",
+    attendees: 8,
+  },
+  {
+    id: "slot-2",
+    rowId: "room-1",
+    startTime: "11:00",
+    duration: 90,
+    title: "Product Review",
+    type: "review",
+    attendees: 6,
+  },
+  {
+    id: "slot-3",
+    rowId: "room-2",
+    startTime: "10:00",
+    duration: 120,
+    title: "Design Workshop",
+    type: "workshop",
+    attendees: 5,
+  },
+  {
+    id: "slot-4",
+    rowId: "room-2",
+    startTime: "14:00",
+    duration: 45,
+    title: "Client Meeting",
+    type: "meeting",
+    attendees: 4,
+  },
+  {
+    id: "slot-5",
+    rowId: "room-3",
+    startTime: "09:00",
+    duration: 30,
+    title: "Quick Sync",
+    type: "meeting",
+    attendees: 3,
+  },
+  {
+    id: "slot-6",
+    rowId: "room-3",
+    startTime: "13:00",
+    duration: 60,
+    title: "Coffee Break",
+    type: "break",
+    attendees: 10,
+  },
+  {
+    id: "slot-7",
+    rowId: "room-4",
+    startTime: "10:30",
+    duration: 90,
+    title: "Code Review",
+    type: "review",
+    attendees: 4,
+  },
+  {
+    id: "slot-8",
+    rowId: "room-4",
+    startTime: "15:00",
+    duration: 60,
+    title: "1-on-1",
+    type: "meeting",
+    attendees: 2,
+  },
+  {
+    id: "slot-9",
+    rowId: "room-5",
+    startTime: "09:00",
+    duration: 180,
+    title: "React Workshop",
+    type: "workshop",
+    attendees: 15,
+  },
+  {
+    id: "slot-10",
+    rowId: "room-5",
+    startTime: "14:30",
+    duration: 120,
+    title: "Security Training",
+    type: "workshop",
+    attendees: 18,
+  },
+]

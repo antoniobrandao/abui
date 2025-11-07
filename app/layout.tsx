@@ -3,7 +3,7 @@ import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 import { Providers } from "@/components/providers"
 import { Toaster } from "@/components/ui/sonner"
-import { SidebarProvider } from "@/components/ui/sidebar"
+import { ModeToggle } from "@/components/mode-toggle"
 import { AppSidebar } from "@/components/app-sidebar"
 import { Geist, Geist_Mono } from "next/font/google"
 
@@ -55,11 +55,16 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
         <Providers>
-          <SidebarProvider>
-            <AppSidebar />
-            <div className="h-screen overflow-x-hidden flex-1 gap-4">{children}</div>
-          </SidebarProvider>
-          <Toaster position="top-center" />
+          <div className="flex bg-background">
+            <div className="w-[240px] relative">
+              <AppSidebar />
+            </div>
+            <div className="w-[calc(100%-240px)]">{children}</div>
+          </div>
+          <div className="fixed top-4 right-4 z-50">
+            <ModeToggle />
+          </div>
+          <Toaster position="bottom-right" />
         </Providers>
         <Analytics />
       </body>

@@ -21,9 +21,8 @@ export default function Page() {
 
   return (
     <PageWithBreadcrumbs>
+      <RegistryItemHeader registryItem={registryItem} />
       <Content>
-        <RegistryItemHeader registryItem={registryItem} />
-
         <div className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-4">
             <div className="text-sm font-medium">Basic Example</div>

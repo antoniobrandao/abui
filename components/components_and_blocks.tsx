@@ -120,4 +120,17 @@ export const utils = [
     name: "orientation-media-queries",
     // component: OrientationMediaQueries,
   },
+  {
+    title: "Extra Breakpoints",
+    description: "A set of extra breakpoints.",
+    registryDependencies: ["@abui/extra-breakpoints"],
+    files: [
+      {
+        path: "registry/abui/utils/extra-breakpoints.tsx",
+        type: "registry:style",
+      },
+    ],
+    name: "extra-breakpoints",
+    // component: ExtraBreakpoints,
+  },
 ]

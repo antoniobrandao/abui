@@ -1,4 +1,4 @@
-"use client"
+export const sourceCodeString = `"use client"
 
 import * as React from "react"
 import { useState, useRef, useEffect, createContext, useContext, useMemo } from "react"
@@ -86,7 +86,7 @@ export const timeToMinutes = (time: string): number => {
 export const minutesToTime = (minutes: number): string => {
   const hours = Math.floor(minutes / 60)
   const mins = minutes % 60
-  return `${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}`
+  return \`\${hours.toString().padStart(2, "0")}:\${mins.toString().padStart(2, "0")}\`
 }
 
 /* ============================================================================
@@ -166,8 +166,8 @@ export function TimelineProvider({
         data-slot="timeline-wrapper"
         style={
           {
-            "--timeline-column-width": `${columnWidth}px`,
-            "--timeline-width": `${timelineWidth}px`,
+            "--timeline-column-width": \`\${columnWidth}px\`,
+            "--timeline-width": \`\${timelineWidth}px\`,
             "--timeline-pixels-per-minute": pixelsPerMinute,
             ...style,
           } as React.CSSProperties
@@ -375,7 +375,7 @@ export function Timeline({ slots, rows, children, className }: TimelineProps) {
                 <div
                   data-slot="timeline-drag-overlay"
                   style={{
-                    width: `${Math.max(activeSlot.duration * pixelsPerMinute, 60)}px`,
+                    width: \`\${Math.max(activeSlot.duration * pixelsPerMinute, 60)}px\`,
                     height: "54px",
                     position: "relative",
                   }}
@@ -408,7 +408,7 @@ export function TimelineHeader({ className, columnLabel = "Row" }: TimelineHeade
   for (let hour = config.startHour; hour < config.endHour; hour++) {
     hourMarkers.push({
       hour,
-      label: `${hour}:00`,
+      label: \`\${hour}:00\`,
       position: (hour - config.startHour) * 60 * pixelsPerMinute,
     })
   }
@@ -429,7 +429,7 @@ export function TimelineHeader({ className, columnLabel = "Row" }: TimelineHeade
               key={marker.hour}
               data-slot="timeline-hour-marker"
               className="absolute top-0 bottom-0 flex items-center pl-2 text-xs text-muted-foreground"
-              style={{ left: `${marker.position}px` }}
+              style={{ left: \`\${marker.position}px\` }}
             >
               {marker.label}
             </div>
@@ -516,14 +516,14 @@ export function TimelineRow({
       </div>
 
       {/* Timeline grid */}
-      <div data-slot="timeline-row-grid" className="relative flex-1" style={{ width: `${timelineWidth}px` }}>
+      <div data-slot="timeline-row-grid" className="relative flex-1" style={{ width: \`\${timelineWidth}px\` }}>
         {/* Grid lines */}
         {quarterHourMarkers.map((marker, idx) => (
           <div
-            key={`quarter-${idx}`}
+            key={\`quarter-\${idx}\`}
             data-slot="timeline-grid-line-quarter"
             className="absolute top-0 bottom-0 w-px bg-border/30"
-            style={{ left: `${marker.position}px` }}
+            style={{ left: \`\${marker.position}px\` }}
           />
         ))}
         {hourMarkers.map(marker => (
@@ -531,7 +531,7 @@ export function TimelineRow({
             key={marker.hour}
             data-slot="timeline-grid-line-hour"
             className="absolute top-0 bottom-0 w-px bg-border"
-            style={{ left: `${marker.position}px` }}
+            style={{ left: \`\${marker.position}px\` }}
           />
         ))}
 
@@ -597,15 +597,15 @@ export function TimelineSlot({ slot, children, className, asChild, ...props }: T
   const style =
     transform && props.getSnappedDelta
       ? {
-          left: `${left}px`,
-          width: `${Math.max(width, 60)}px`,
+          left: \`\${left}px\`,
+          width: \`\${Math.max(width, 60)}px\`,
           top: 0,
           bottom: 0,
-          transform: `translate3d(${props.getSnappedDelta(transform.x)}px, ${transform.y}px, 0)`,
+          transform: \`translate3d(\${props.getSnappedDelta(transform.x)}px, \${transform.y}px, 0)\`,
         }
       : {
-          left: `${left}px`,
-          width: `${Math.max(width, 60)}px`,
+          left: \`\${left}px\`,
+          width: \`\${Math.max(width, 60)}px\`,
           top: 0,
           bottom: 0,
         }
@@ -630,7 +630,7 @@ export function TimelineSlot({ slot, children, className, asChild, ...props }: T
       style={
         {
           "--slot-start-time": slot.startTime,
-          "--slot-duration": `${slot.duration}min`,
+          "--slot-duration": \`\${slot.duration}min\`,
         } as React.CSSProperties
       }
     >
@@ -658,7 +658,7 @@ export function TimelineSlot({ slot, children, className, asChild, ...props }: T
               style={
                 {
                   "--slot-start-time": slot.startTime,
-                  "--slot-duration": `${slot.duration}min`,
+                  "--slot-duration": \`\${slot.duration}min\`,
                 } as React.CSSProperties
               }
             >
@@ -702,10 +702,10 @@ function TimelineMouseIndicator({ mouseX, time }: { mouseX: number; time: string
     <div
       data-slot="timeline-mouse-indicator"
       className="absolute top-0 bottom-0 pointer-events-none z-20"
-      style={{ left: `${mouseX}px` }}
+      style={{ left: \`\${mouseX}px\` }}
     >
       <div className="absolute top-0 bottom-0 w-px bg-accent left-0" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-accent text-accent-foreground px-2 py-1 rounded text-xs font-semibold whitespace-nowrap shadow-md">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-accent text-accent-foreground px-3 py-1.5 rounded text-sm font-semibold whitespace-nowrap shadow-md">
         {time}
       </div>
     </div>
@@ -733,7 +733,7 @@ export function TimelineDropRegion({ startTime, duration }: TimelineDropRegionPr
     <div
       data-slot="timeline-drop-region"
       className="absolute top-0 bottom-0 pointer-events-none z-[12]"
-      style={{ left: `${startPosition}px`, width: `${width}px` }}
+      style={{ left: \`\${startPosition}px\`, width: \`\${width}px\` }}
     >
       <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-accent text-accent-foreground px-3 py-1.5 rounded text-sm font-semibold whitespace-nowrap shadow-md">
         {startTime} - {endTime}
@@ -747,10 +747,9 @@ export function TimelineDropRegion({ startTime, duration }: TimelineDropRegionPr
 
 interface TimelineCurrentTimeProps {
   className?: string
-  nowLabel?: string
 }
 
-export function TimelineCurrentTime({ className, nowLabel = "Now" }: TimelineCurrentTimeProps) {
+export function TimelineCurrentTime({ className }: TimelineCurrentTimeProps) {
   const { config, pixelsPerMinute } = useTimeline()
   const columnWidth = config.columnWidth || 112
 
@@ -772,11 +771,11 @@ export function TimelineCurrentTime({ className, nowLabel = "Now" }: TimelineCur
   return (
     <div
       data-slot="timeline-current-time"
-      className={cn("absolute top-0 bottom-0 w-0.5 bg-secondary pointer-events-none z-[15]", className)}
-      style={{ left: `${position}px` }}
+      className={cn("absolute top-0 bottom-0 w-0.5 bg-red-500 pointer-events-none z-[15]", className)}
+      style={{ left: \`\${position}px\` }}
     >
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-secondary text-foreground px-2 py-1 rounded text-xs font-medium whitespace-nowrap shadow-md z-50">
-        {nowLabel}: {minutesToTime(currentMinutes)}
+      <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-red-500 text-foreground px-2 py-1 rounded text-xs font-medium whitespace-nowrap shadow-md">
+        Agora: {minutesToTime(currentMinutes)}
       </div>
     </div>
   )
@@ -802,7 +801,7 @@ export function TimelineGrid({ children, className, ...props }: TimelineGridProp
     <div
       data-slot="timeline-grid-container"
       className={cn("relative", className)}
-      style={{ minWidth: `${timelineWidth + 200}px` }}
+      style={{ minWidth: \`\${timelineWidth + 200}px\` }}
     >
       {React.Children.map(children, child => {
         if (React.isValidElement(child)) {
@@ -852,8 +851,8 @@ function TimelineDropGhost({
       data-slot="timeline-drop-ghost"
       className={cn("absolute rounded-md pointer-events-none", "bg-foreground/20")}
       style={{
-        left: `${left}px`,
-        width: `${Math.max(width, 60)}px`,
+        left: \`\${left}px\`,
+        width: \`\${Math.max(width, 60)}px\`,
         top: "2px",
         bottom: "2px",
         zIndex: 100,
@@ -867,3 +866,4 @@ function TimelineDropGhost({
  * ========================================================================== */
 
 export { useTimeline, TimelineMouseIndicator }
+`
