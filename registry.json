@@ -120,6 +120,19 @@
       ]
     },
     {
+      "name": "timeline",
+      "type": "registry:block",
+      "title": "Timeline",
+      "description": "A Gantt-chart style timeline with draggable time slots.",
+      "dependencies": ["@radix-ui/react-slot", "@dnd-kit/core", "tunnel-rat"],
+      "files": [
+        {
+          "path": "registry/abui/ui/timeline.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "scroll-reveal-content-a",
       "type": "registry:block",
       "title": "Scroll Reveal Content A",
@@ -128,19 +141,6 @@
       "files": [
         {
           "path": "registry/abui/marketing/scroll-reveal-content-a.tsx",
-          "type": "registry:component"
-        }
-      ]
-    },
-    {
-      "name": "timeline",
-      "type": "registry:block",
-      "title": "Timeline",
-      "description": "A block that shows a timeline.",
-      "dependencies": ["dnd-kit"],
-      "files": [
-        {
-          "path": "registry/abui/ui/timeline.tsx",
           "type": "registry:component"
         }
       ]

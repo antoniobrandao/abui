@@ -7,6 +7,7 @@ import ScrollRevealContentA from "@/registry/abui/marketing/scroll-reveal-conten
 import { RadioTabs } from "@/registry/abui/ui/radio-tabs"
 import { RadioRows } from "@/registry/abui/ui/radio-rows"
 import { BreakpointDisplay } from "@/registry/abui/utils/breakpoint-display"
+import { Timeline } from "@/registry/abui/ui/timeline"
 
 export const components = [
   // {
@@ -61,35 +62,22 @@ export const components = [
     name: "radio-rows",
     component: RadioRows,
   },
-  // {
-  //   title: "Main Nav",
-  //   description: "A main navigation block with a logo and main navigation.",
-  //   registryDependencies: ["@abui/logo", "@abui/main-nav"],
-  //   files: [
-  //     {
-  //       path: "registry/abui/navigation/main-nav.tsx",
-  //       type: "registry:component",
-  //     },
-  //   ],
-  //   name: "main-nav",
-  //   component: MainNav,
-  // },
-  // {
-  //   title: "Site Header",
-  //   description: "A site header block with a logo and main navigation.",
-  //   registryDependencies: ["@abui/logo", "@abui/main-nav"],
-  //   files: [
-  //     {
-  //       path: "registry/abui/navigation/site-header.tsx",
-  //       type: "registry:component",
-  //     },
-  //   ],
-  //   name: "site-header",
-  //   component: SiteHeader,
-  // },
 ]
 
 export const blocks = [
+  {
+    title: "Timeline",
+    description: "A Gantt-chart style timeline with draggable time slots.",
+    registryDependencies: ["@abui/timeline"],
+    files: [
+      {
+        path: "registry/abui/ui/timeline.tsx",
+        type: "registry:block",
+      },
+    ],
+    name: "timeline",
+    component: Timeline,
+  },
   {
     title: "Scroll Reveal Content A",
     description: "A scroll reveal content block with a heading, subheading, and two call to action buttons.",

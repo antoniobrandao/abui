@@ -1,11 +1,13 @@
+import { cn } from "@/lib/utils"
 interface PageWithBreadcrumbsProps {
   children: React.ReactNode
+  className?: string
 }
 
-const PageWithBreadcrumbs = ({ children }: PageWithBreadcrumbsProps) => {
+const PageWithBreadcrumbs = ({ children, className }: PageWithBreadcrumbsProps) => {
   return (
-    <main className="overflow-hidden border h-screen overflow-y-auto bg-background w-full">
-      <div className="p-6 w-full">{children}</div>
+    <main className={cn("overflow-hidden border h-screen overflow-y-auto bg-background w-full", className)}>
+      <div className="w-full">{children}</div>
     </main>
   )
 }

@@ -341,7 +341,6 @@ export function Timeline({ slots, rows, children, className }: TimelineProps) {
           ref={timelineRef}
           data-slot="timeline-grid"
           className={cn("relative overflow-auto border bg-background", className)}
-          style={{ height: "calc(100vh - 300px)" }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
@@ -511,7 +510,7 @@ export function TimelineRow({
       {/* Row label column */}
       <div
         data-slot="timeline-row-label"
-        className="sticky left-0 w-[var(--timeline-column-width)] bg-inherit border-r flex items-center px-4 z-[5]"
+        className="sticky left-0 w-[var(--timeline-column-width)] bg-inherit border-r flex items-center px-0 z-[5]"
       >
         {renderRowHeader ? renderRowHeader(row) : row.label}
       </div>
@@ -792,7 +791,7 @@ interface TimelineGridProps {
 }
 
 export function TimelineGrid({ children, className, ...props }: TimelineGridProps & any) {
-  const { timelineWidth, config, pixelsPerMinute } = useTimeline()
+  const { timelineWidth } = useTimeline()
 
   // Get active slot data for drop region and ghost preview
   const activeSlot =

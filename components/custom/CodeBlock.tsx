@@ -23,8 +23,9 @@ interface CodeBlockComponentProps {
     filename: string
     code: string
   }[]
+  className?: string
 }
-const CodeBlockComponent = ({ code }: CodeBlockComponentProps) => (
+const CodeBlockComponent = ({ code, className }: CodeBlockComponentProps) => (
   <CodeBlock data={code} defaultValue={code[0].language}>
     <CodeBlockHeader>
       <CodeBlockFiles>
@@ -51,7 +52,7 @@ const CodeBlockComponent = ({ code }: CodeBlockComponentProps) => (
         onError={() => console.error("Failed to copy code to clipboard")}
       />
     </CodeBlockHeader>
-    <CodeBlockBody>
+    <CodeBlockBody className={className}>
       {item => (
         <CodeBlockItem key={item.language} value={item.language}>
           <CodeBlockContent language={item.language as BundledLanguage}>{item.code}</CodeBlockContent>

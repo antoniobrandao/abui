@@ -8,7 +8,7 @@ interface RegistryItemHeaderProps {
 
 export function RegistryItemHeader({ registryItem }: RegistryItemHeaderProps) {
   return (
-    <div className="flex flex-col gap-4 items-start w-full mb-10">
+    <div className="flex flex-col gap-4 items-start w-full bg-muted/50 p-6">
       <div className="flex flex-col items-start gap-2">
         <div className="text-sm line-clamp-1 font-medium">{registryItem.title}</div>
         <div className="text-sm text-muted-foreground line-clamp-1 hidden lg:flex">{registryItem.description}</div>

@@ -31,7 +31,6 @@ export default function Home() {
               if (!registryItem) {
                 return null
               }
-
               return (
                 <div key={component.name} className="flex flex-col gap-1">
                   <Link href={`/components/${component.name}`} className="text-sm text-foreground hover:underline">
@@ -52,7 +51,6 @@ export default function Home() {
               if (!registryItem) {
                 return null
               }
-
               return (
                 <div key={block.name} className="flex flex-col gap-1">
                   <Link href={`/blocks/${block.name}`} className="text-sm text-foreground hover:underline">

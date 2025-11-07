@@ -57,7 +57,7 @@ export default function RootLayout({
         <Providers>
           <SidebarProvider>
             <AppSidebar />
-            <div className="h-screen overflow-x-hidden flex-1 bg-muted/50 md:min-h-min gap-4">{children}</div>
+            <div className="h-screen overflow-x-hidden flex-1 gap-4">{children}</div>
           </SidebarProvider>
           <Toaster position="top-center" />
         </Providers>
