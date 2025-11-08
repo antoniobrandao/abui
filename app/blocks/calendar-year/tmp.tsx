@@ -16,7 +16,7 @@ import dayjs from "dayjs"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-export default function CalendarYearExample() {
+export default function Page() {
   const currentYear = dayjs().year()
   const [year, setYear] = useState<number>(currentYear)
   const [bookedHolidays, setBookedHolidays] = useState<string[]>([])
@@ -38,11 +38,17 @@ export default function CalendarYearExample() {
     return dayjs(date).day() === 0 || dayjs(date).day() === 6
   }
 
-  // Helper to get day state based on business logic
+  // Helper to get day variant based on business logic
+  const getDayVariant = (date: string) => {
+    if (isWeekendDay(date)) return "outline-destructive"
+    if (bookedHolidays.includes(date)) return "default"
+    return "outline"
+  }
+
+  // Helper to get day state (blocked or disabled)
   const getDayState = (date: string) => {
-    const isHoliday = bookedHolidays.includes(date)
     const openingDay = !isWeekendDay(date)
-    return isHoliday ? "active" : !openingDay ? "blocked" : "default"
+    return !openingDay ? "blocked" : undefined
   }
 
   // Helper to check if day is disabled
@@ -65,11 +71,11 @@ export default function CalendarYearExample() {
   return (
     <div>
       <Content>
-        <div className="flex gap-2 text-sm items-center w-full">
-          <Button variant="outline" size="icon" className="rounded-full" onClick={() => setYear(year - 1)}>
+        <div className="flex gap-2 text-sm items-center bg-muted dark:bg-muted/50 px-4 py-3 rounded-full">
+          <Button variant="outline" size="icon" className="rounded-full w-8 h-8" onClick={() => setYear(year - 1)}>
             <ChevronLeft />
           </Button>
-          <Button variant="outline" size="icon" className="rounded-full" onClick={() => setYear(year + 1)}>
+          <Button variant="outline" size="icon" className="rounded-full w-8 h-8" onClick={() => setYear(year + 1)}>
             <ChevronRight />
           </Button>
           <p className="text-muted-foreground text-lg">
@@ -88,6 +94,7 @@ export default function CalendarYearExample() {
                         <CalendarYearDay
                           key={day.date}
                           date={day.date}
+                          variant={getDayVariant(day.date)}
                           state={getDayState(day.date)}
                           disabled={isDayDisabled(day.date)}
                           tooltip={getDayTooltip(day.date)}

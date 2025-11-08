@@ -47,11 +47,17 @@ export default function Page() {
     return dayjs(date).day() === 0 || dayjs(date).day() === 6
   }
 
-  // Helper to get day state based on business logic
+  // Helper to get day variant based on business logic
+  const getDayVariant = (date: string) => {
+    if (isWeekendDay(date)) return "outline-destructive"
+    if (bookedHolidays.includes(date)) return "default"
+    return "outline"
+  }
+
+  // Helper to get day state (blocked or disabled)
   const getDayState = (date: string) => {
-    const isHoliday = bookedHolidays.includes(date)
     const openingDay = !isWeekendDay(date)
-    return isHoliday ? "active" : !openingDay ? "blocked" : "default"
+    return !openingDay ? "blocked" : undefined
   }
 
   // Helper to check if day is disabled
@@ -110,6 +116,7 @@ export default function Page() {
                         <CalendarYearDay
                           key={day.date}
                           date={day.date}
+                          variant={getDayVariant(day.date)}
                           state={getDayState(day.date)}
                           disabled={isDayDisabled(day.date)}
                           tooltip={getDayTooltip(day.date)}
