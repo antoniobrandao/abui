@@ -49,6 +49,7 @@ export default function Home() {
           <div className="grid grid-cols-3 gap-8 w-full">
             {blocks.map(block => {
               const registryItem = getRegistryItemFromJson(block.name)
+              console.log('block.name', block.name)
               if (!registryItem) {
                 return null
               }

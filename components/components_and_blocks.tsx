@@ -25,19 +25,6 @@ export const components = [
   //   component: Logo,
   // },
   {
-    title: "Calendar Year",
-    description: "A calendar year component.",
-    registryDependencies: ["@abui/calendar-year"],
-    files: [
-      {
-        path: "registry/abui/ui/calendar-year.tsx",
-        type: "registry:component",
-      },
-    ],
-    name: "calendar-year",
-    component: CalendarYear,
-  },
-  {
     title: "Breakpoint Display",
     description: "A breakpoint display component.",
     registryDependencies: ["@abui/breakpoint-display"],
@@ -91,6 +78,19 @@ export const blocks = [
     ],
     name: "timeline",
     component: Timeline,
+  },
+  {
+    title: "Calendar Year",
+    description: "A calendar year component.",
+    registryDependencies: ["@abui/calendar-year"],
+    files: [
+      {
+        path: "registry/abui/ui/calendar-year.tsx",
+        type: "registry:block",
+      },
+    ],
+    name: "calendar-year",
+    component: CalendarYear,
   },
   {
     title: "Scroll Reveal Content A",
