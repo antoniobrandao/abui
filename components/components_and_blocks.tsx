@@ -6,6 +6,7 @@
 import ScrollRevealContentA from "@/registry/abui/marketing/scroll-reveal-content-a"
 import { RadioTabs } from "@/registry/abui/ui/radio-tabs"
 import { RadioRows } from "@/registry/abui/ui/radio-rows"
+import { ColorSwatchSelector } from "@/registry/abui/ui/color-swatch-selector"
 import { BreakpointDisplay } from "@/registry/abui/utils/breakpoint-display"
 import { Timeline } from "@/registry/abui/ui/timeline"
 import { CalendarYear } from "@/registry/abui/ui/calendar-year"
@@ -53,7 +54,7 @@ export const components = [
   {
     title: "Radio Rows",
     description: "A radio row component with optional descriptions for rich variants.",
-    registryDependencies: ["@abui/radio-rows"],
+    dependencies: ["@radix-ui/react-radio-group"],
     files: [
       {
         path: "registry/abui/ui/radio-rows.tsx",
@@ -62,6 +63,20 @@ export const components = [
     ],
     name: "radio-rows",
     component: RadioRows,
+  },
+  {
+    title: "Color Swatch Selector",
+    description: "A color swatch selector component.",
+    registryDependencies: ["@abui/color-swatch-selector"],
+    dependencies: ["@radix-ui/react-radio-group"],
+    files: [
+      {
+        path: "registry/abui/ui/color-swatch-selector.tsx",
+        type: "registry:component",
+      },
+    ],
+    name: "color-swatch-selector",
+    component: ColorSwatchSelector,
   },
 ]
 

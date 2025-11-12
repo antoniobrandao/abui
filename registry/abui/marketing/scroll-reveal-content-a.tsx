@@ -11,7 +11,7 @@ export const pageYPadding = "py-10 md:py-12 lg:py-20 xl:py-30 2xl:py-40"
 const defaultTitleClass = "text-2xl md:text-3xl font-semibold mb-2 text-foreground"
 const defaultDescriptionClass = "text-base md:text-lg font-medium mb-2 text-foreground max-w-[400px] leading-[130%]"
 const imageClass =
-  "absolute top-[50%] -translate-y-1/2 right-0 ml-auto w-auto h-[70vh] object-cover rounded-2xl transition-opacity duration-300"
+  "absolute top-0 right-0 ml-auto w-auto h-full object-cover rounded-2xl transition-opacity duration-300"
 
 export interface ItemContent {
   title: string
@@ -54,13 +54,13 @@ const ScrollRevealContentA = ({
 
   return (
     <div className={cn("bg-background", className)} ref={ref0} {...props}>
-      <div className="max-w-[90%] mx-auto">
+      <div className="max-w-[90vw] mx-auto">
         <div className="flex w-full mx-auto relative z-20">
           <div
             className={cn(centralColumnStyle, "sticky top-0 flex flex-col w-full items-start justify-center h-[100vh]")}
           >
             <div className="flex flex-row gap-16 md:gap-24 lg:gap-32 xl:gap-40 2xl:gap-48 w-full h-full">
-              <div className="lg:!w-[50%] !w-full h-auto flex flex-col justify-center gap-10 md:gap-auto">
+              <div className="lg:!w-[50vw] !w-full h-auto flex flex-col justify-center gap-10 md:gap-auto">
                 <PointItem
                   active={true}
                   number="01"
@@ -89,7 +89,7 @@ const ScrollRevealContentA = ({
                   scrollProgress={scrollProgress}
                 />
               </div>
-              <div className="hidden lg:flex flex-col justify-center items-center !w-[50%] relative h-full">
+              <div className="hidden lg:flex flex-col justify-center items-center !w-[50vw] relative h-full">
                 <Image
                   width={contentA.image.width}
                   height={contentA.image.height}

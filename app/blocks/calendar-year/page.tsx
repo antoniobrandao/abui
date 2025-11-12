@@ -165,6 +165,162 @@ export default function Page() {
           </TabsContent>
         </Tabs>
       </Content>
+
+      <Content>
+        <div className="flex flex-col gap-6 w-full">
+          <div>
+            <h2 className="text-lg font-semibold mb-2">Features</h2>
+            <ul className="space-y-2 text-muted-foreground text-sm list-inside list-disc">
+              <li>Full year calendar view with month-by-month layout</li>
+              <li>Composable architecture with separate components for months, weeks, and days</li>
+              <li>Multiple day variants (default, outline, destructive, accent, success, and more)</li>
+              <li>Automatic calendar generation with timezone support</li>
+              <li>Optional auto-scroll to current month on mount</li>
+              <li>Support for blocked, disabled, and custom day states</li>
+              <li>Integrated tooltips for day information</li>
+              <li>Today indicator with ring highlight</li>
+              <li>Customizable click handlers for each day</li>
+              <li>Built with dayjs for robust date handling</li>
+              <li>Fully typed with TypeScript</li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="text-lg font-semibold mb-4">Component Props</h2>
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <h3 className="font-mono text-sm font-medium">CalendarYear</h3>
+                <ul className="text-muted-foreground space-y-1 text-sm ml-4">
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode
+                  </li>
+                </ul>
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-mono text-sm font-medium">CalendarYearContent</h3>
+                <ul className="text-muted-foreground space-y-1 text-sm ml-4">
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">scrollToCurrentMonth</code> - boolean -
+                    Automatically scroll to current month (default: false)
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">timezone</code> - string - Timezone for date
+                    calculations (default: &quot;Europe/Lisbon&quot;)
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode
+                  </li>
+                </ul>
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-mono text-sm font-medium">CalendarYearMonth</h3>
+                <ul className="text-muted-foreground space-y-1 text-sm ml-4">
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">name</code> - string (required) - Month name
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">monthIndex</code> - number (required) - Month index
+                    (0-11)
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode
+                  </li>
+                </ul>
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-mono text-sm font-medium">CalendarYearWeekdayHeader</h3>
+                <ul className="text-muted-foreground space-y-1 text-sm ml-4">
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">labels</code> - string[] (required) - Array of
+                    weekday labels
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                  </li>
+                </ul>
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-mono text-sm font-medium">CalendarYearWeek</h3>
+                <ul className="text-muted-foreground space-y-1 text-sm ml-4">
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode
+                  </li>
+                </ul>
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-mono text-sm font-medium">CalendarYearDay</h3>
+                <ul className="text-muted-foreground space-y-1 text-sm ml-4">
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">date</code> - string (required) - Date in
+                    YYYY-MM-DD format
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">state</code> - &quot;blocked&quot; |
+                    &quot;disabled&quot; - Day state
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">variant</code> - &quot;default&quot; |
+                    &quot;default-success&quot; | &quot;accent&quot; | &quot;destructive&quot; | &quot;outline&quot; |
+                    &quot;outline-destructive&quot; | &quot;outline-accent&quot; | &quot;outline-success&quot; |
+                    &quot;secondary&quot; | &quot;ghost&quot; (default: &quot;outline&quot;)
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">disabled</code> - boolean - Whether the day is
+                    disabled
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">tooltip</code> - string - Tooltip text for the day
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">timezone</code> - string - Timezone for date
+                    calculations (default: &quot;Europe/Lisbon&quot;)
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">onClick</code> - () =&gt; void - Click handler
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-lg font-semibold mb-4">Helper Function</h2>
+            <div className="space-y-2">
+              <h3 className="font-mono text-sm font-medium">generateYearCalendar(year, timezone?)</h3>
+              <p className="text-muted-foreground text-sm">
+                Utility function to generate calendar structure for a full year. Returns an array of months with rows of
+                days.
+              </p>
+              <ul className="text-muted-foreground space-y-1 text-sm ml-4">
+                <li>
+                  <code className="bg-muted rounded px-1.5 py-0.5">year</code> - number (required) - Year to generate
+                  calendar for
+                </li>
+                <li>
+                  <code className="bg-muted rounded px-1.5 py-0.5">timezone</code> - string - Timezone for calculations
+                  (default: &quot;Europe/Lisbon&quot;)
+                </li>
+                <li>Returns: CalendarMonth[] - Array of month structures with date information</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </Content>
     </div>
   )
 }

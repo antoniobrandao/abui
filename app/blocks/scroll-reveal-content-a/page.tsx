@@ -18,6 +18,105 @@ export default function Page() {
       <RegistryItemHeader registryItem={registryItem} />
       <ScrollRevealContentA contentA={dummyContentA} contentB={dummyContentB} contentC={dummyContentC} />
       <Content className="h-40"></Content>
+
+      <Content>
+        <div className="flex flex-col gap-6 w-full">
+          <div>
+            <h2 className="text-lg font-semibold mb-2">Features</h2>
+            <ul className="space-y-2 text-muted-foreground text-sm list-inside list-disc">
+              <li>Scroll-based content reveal animation</li>
+              <li>Three content sections with synchronized image transitions</li>
+              <li>Sticky positioning for smooth parallax-like effect</li>
+              <li>Built with Framer Motion for smooth scroll tracking</li>
+              <li>Progressive reveal with numbered sections</li>
+              <li>Responsive layout with mobile and desktop variations</li>
+              <li>Customizable title and description styling</li>
+              <li>Opacity-based transitions for visual hierarchy</li>
+              <li>Fully typed with TypeScript</li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="text-lg font-semibold mb-4">Component Props</h2>
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <h3 className="font-mono text-sm font-medium">ScrollRevealContentA</h3>
+                <ul className="text-muted-foreground space-y-1 text-sm ml-4">
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">contentA</code> - ItemContent (required) - First
+                    section content
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">contentB</code> - ItemContent (required) - Second
+                    section content
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">contentC</code> - ItemContent (required) - Third
+                    section content
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">titleClass</code> - string - Custom CSS classes for
+                    titles
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">descriptionClass</code> - string - Custom CSS
+                    classes for descriptions
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                  </li>
+                </ul>
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-mono text-sm font-medium">ItemContent (Type)</h3>
+                <ul className="text-muted-foreground space-y-1 text-sm ml-4">
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">title</code> - string - Section title
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">description</code> - string - Section description
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">image</code> - object - Image configuration:
+                    <ul className="ml-4 mt-1 space-y-1">
+                      <li>
+                        <code className="bg-muted rounded px-1.5 py-0.5">url</code> - string - Image URL
+                      </li>
+                      <li>
+                        <code className="bg-muted rounded px-1.5 py-0.5">width</code> - number - Image width
+                      </li>
+                      <li>
+                        <code className="bg-muted rounded px-1.5 py-0.5">height</code> - number - Image height
+                      </li>
+                      <li>
+                        <code className="bg-muted rounded px-1.5 py-0.5">alt</code> - string - Alt text
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-lg font-semibold mb-4">Usage Notes</h2>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <p>
+                This component creates a scroll-driven content reveal effect with three sections. As users scroll,
+                content items fade in progressively with a vertical progress bar indicator.
+              </p>
+              <p>
+                The component requires a substantial height (300vh) to create the scroll effect. Images transition at
+                scroll thresholds of 0.33 and 0.66, creating a synchronized reveal.
+              </p>
+              <p>
+                On desktop (lg breakpoint and above), images display on the right side. On mobile, only the text content
+                is shown for better readability.
+              </p>
+            </div>
+          </div>
+        </div>
+      </Content>
     </>
   )
 }

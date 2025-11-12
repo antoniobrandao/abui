@@ -122,6 +122,18 @@
       ]
     },
     {
+      "name": "color-swatch-selector",
+      "type": "registry:component",
+      "title": "Color Swatch Selector",
+      "description": "A color swatch selector component.",
+      "files": [
+        {
+          "path": "registry/abui/ui/color-swatch-selector.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "timeline",
       "type": "registry:block",
       "title": "Timeline",

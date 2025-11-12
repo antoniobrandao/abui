@@ -23,6 +23,14 @@ export default function Home() {
   return (
     <PageWithBreadcrumbs>
       <Content className="flex flex-col gap-10">
+        <p className="text-muted-foreground mt-6">
+          A shadcn-compatible registry of reusable components, blocks, and utilities following a structured architecture
+          based on Vercel&apos;s{" "}
+          <Link href="https://www.components.build" className="text-accent hover:underline">
+            components.build
+          </Link>{" "}
+          specification.
+        </p>
         <div className="w-full">
           <CardTitle>Components</CardTitle>
           <Separator className="my-4" />
@@ -49,7 +57,7 @@ export default function Home() {
           <div className="grid grid-cols-3 gap-8 w-full">
             {blocks.map(block => {
               const registryItem = getRegistryItemFromJson(block.name)
-              console.log('block.name', block.name)
+              console.log("block.name", block.name)
               if (!registryItem) {
                 return null
               }
