@@ -3,9 +3,8 @@ import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 import { Providers } from "@/components/providers"
 import { Toaster } from "@/components/ui/sonner"
-import { ModeToggle } from "@/components/mode-toggle"
-import { AppSidebar } from "@/components/app-sidebar"
 import { Geist, Geist_Mono } from "next/font/google"
+import ClientLayout from "./client-layout"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -53,17 +52,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased bg-background`}>
         <Providers>
-          <div className="flex bg-background">
-            <div className="w-[240px] relative">
-              <AppSidebar />
-            </div>
-            <div className="w-[calc(100%-240px)]">{children}</div>
-          </div>
-          <div className="fixed top-4 right-4 z-50">
-            <ModeToggle />
-          </div>
+          <ClientLayout>{children}</ClientLayout>
           <Toaster position="bottom-right" />
         </Providers>
         <Analytics />
