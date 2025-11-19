@@ -8,9 +8,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { NavItemsSet } from "./nav-types"
+import { ItemsSet } from "./nav-types"
 
-export function NavSimple({ items, label, pathname }: { items: NavItemsSet[]; label: string; pathname: string }) {
+export function NavSimple({ items, label, pathname }: { items: ItemsSet[]; label: string; pathname: string }) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{label}</SidebarGroupLabel>

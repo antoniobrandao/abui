@@ -134,6 +134,45 @@
       ]
     },
     {
+      "name": "label-selector",
+      "type": "registry:component",
+      "title": "Label Selector",
+      "description": "A text label selector component for sizes, variants, and other text-based options.",
+      "dependencies": ["@radix-ui/react-radio-group", "class-variance-authority"],
+      "files": [
+        {
+          "path": "registry/abui/ui/label-selector.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:component",
+      "title": "Spinner",
+      "description": "A customizable loading spinner component with size, speed, and color variants.",
+      "dependencies": ["class-variance-authority"],
+      "files": [
+        {
+          "path": "registry/abui/ui/spinner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "scroll-progress",
+      "type": "registry:component",
+      "title": "Scroll Progress",
+      "description": "A scroll progress indicator that shows reading progress as a horizontal bar at the top or bottom of the viewport.",
+      "dependencies": ["motion@12"],
+      "files": [
+        {
+          "path": "registry/abui/ui/scroll-progress.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "timeline",
       "type": "registry:block",
       "title": "Timeline",

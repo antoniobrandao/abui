@@ -3,9 +3,9 @@
 // import { type LucideIcon } from "lucide-react"
 
 import { SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
-import { NavItemsSet } from "./nav-types"
+import { ItemsSet } from "./nav-types"
 
-export function NavBase({ items, pathname }: { items: NavItemsSet[]; pathname: string }) {
+export function NavBase({ items, pathname }: { items: ItemsSet[]; pathname: string }) {
   return (
     <SidebarGroup>
       <SidebarMenu>

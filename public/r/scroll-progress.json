@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scroll-progress",
+  "type": "registry:component",
+  "title": "Scroll Progress",
+  "description": "A scroll progress indicator that shows reading progress as a horizontal bar at the top or bottom of the viewport.",
+  "dependencies": ["motion@12", "motion"],
+  "files": [
+    {
+      "path": "registry/abui/ui/scroll-progress.tsx",
+      "content": "\"use client\"\n\nimport { motion, useScroll } from \"motion/react\"\nimport { cn } from \"@/lib/utils\"\n\ninterface ScrollProgressProps extends React.ComponentProps<typeof motion.div> {\n  /**\n   * Height of the progress bar in pixels\n   * @default 2\n   */\n  height?: number\n  /**\n   * Color of the progress bar\n   * @default \"bg-primary\"\n   */\n  color?: string\n  /**\n   * Position of the progress bar\n   * @default \"top\"\n   */\n  position?: \"top\" | \"bottom\"\n  /**\n   * Container element to track scroll progress for\n   * If not provided, tracks the entire viewport\n   */\n  container?: React.RefObject<HTMLElement | null>\n}\n\nfunction ScrollProgress({\n  height = 4,\n  color = \"bg-primary\",\n  position = \"top\",\n  className,\n  container,\n  ...props\n}: ScrollProgressProps) {\n  const { scrollYProgress } = useScroll({\n    container: container as any,\n  })\n\n  return (\n    <motion.div\n      data-slot=\"scroll-progress\"\n      className={cn(\n        \"left-0 right-0 z-50 origin-left\",\n        // Use fixed positioning for viewport scroll, allow override for container scroll\n        !container && \"fixed\",\n        position === \"top\" ? \"top-0\" : \"bottom-0\",\n        color,\n        className,\n      )}\n      style={{\n        scaleX: scrollYProgress,\n        height: `${height}px`,\n      }}\n      {...props}\n    />\n  )\n}\n\nexport { ScrollProgress }\n",
+      "type": "registry:component"
+    }
+  ]
+}

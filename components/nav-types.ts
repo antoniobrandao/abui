@@ -1,14 +1,15 @@
 import { LucideIcon } from "lucide-react"
 
-export interface NavItemsSet {
+export interface ItemsSet {
   name: string
   url: string
   icon?: LucideIcon
+  description?: string
 }
 
 export interface NavItems {
-  main: NavItemsSet[]
-  components: NavItemsSet[]
-  utils: NavItemsSet[]
-  blocks: NavItemsSet[]
+  main: ItemsSet[]
+  components: ItemsSet[]
+  utils: ItemsSet[]
+  blocks: ItemsSet[]
 }

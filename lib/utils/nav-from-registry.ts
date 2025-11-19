@@ -1,4 +1,4 @@
-import { NavItems } from "@/components/nav-types"
+import { ItemsSet } from "@/components/nav-types"
 import registryData from "../../registry.json"
 
 interface RegistryItem {
@@ -13,7 +13,7 @@ interface RegistryItem {
  * Generates navigation items dynamically from registry.json
  * Filters components (registry:component with files), utils (registry:component without files), and blocks (registry:block)
  */
-export function getNavItemsFromRegistry(): NavItems {
+export function getItemsFromRegistry(): { components: ItemsSet[]; utils: ItemsSet[]; blocks: ItemsSet[] } {
   const items = registryData.items as RegistryItem[]
 
   const components = items
@@ -21,6 +21,7 @@ export function getNavItemsFromRegistry(): NavItems {
     .map(item => ({
       name: item.title || item.name,
       url: `/components/${item.name}`,
+      description: item.description,
     }))
 
   const blocks = items
@@ -28,6 +29,7 @@ export function getNavItemsFromRegistry(): NavItems {
     .map(item => ({
       name: item.title || item.name,
       url: `/blocks/${item.name}`,
+      description: item.description,
     }))
 
   const utils = items
@@ -35,7 +37,22 @@ export function getNavItemsFromRegistry(): NavItems {
     .map(item => ({
       name: item.title || item.name,
       url: `/utils/${item.name}`,
+      description: item.description,
     }))
+
+  return {
+    components,
+    utils,
+    blocks,
+  }
+}
+export function getNavItemsFromRegistry(): {
+  main: ItemsSet[]
+  components: ItemsSet[]
+  utils: ItemsSet[]
+  blocks: ItemsSet[]
+} {
+  const { components, utils, blocks } = getItemsFromRegistry()
 
   return {
     main: [

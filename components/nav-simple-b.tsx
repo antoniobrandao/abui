@@ -1,10 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import { NavItemsSet } from "./nav-types"
+import { ItemsSet } from "./nav-types"
 import { cn } from "@/lib/utils"
 
-export function NavSimple({ items, label, pathname }: { items: NavItemsSet[]; label: string; pathname: string }) {
+export function NavSimple({ items, label, pathname }: { items: ItemsSet[]; label: string; pathname: string }) {
   return (
     <div className="flex flex-col gap-1">
       {label && <p className="text-xs uppercase font-normal mb-2 text-muted-foreground">{label}</p>}
