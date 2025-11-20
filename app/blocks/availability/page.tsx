@@ -39,6 +39,30 @@ export default function Page() {
       active: true,
     },
   ])
+  
+  const [disabledRegions] = useState<TimeSpan[]>([
+    {
+      nanoid: "d1",
+      week_day: 1,
+      start_time: "12:30",
+      end_time: "13:30", // Lunch break
+      active: false,
+    },
+    {
+      nanoid: "d2",
+      week_day: 4,
+      start_time: "07:00",
+      end_time: "10:00", // Morning meeting
+      active: false,
+    },
+     {
+      nanoid: "d3",
+      week_day: 4,
+      start_time: "16:00",
+      end_time: "23:00", // Evening unavailable
+      active: false,
+    },
+  ])
 
   if (!registryItem) {
     return <p>No registry item found</p>
@@ -51,13 +75,25 @@ export default function Page() {
         <div className="flex flex-col gap-2 w-full">
           <h2 className="text-2xl font-bold">Availability Designer</h2>
           <p className="text-muted-foreground">
-            A weekly schedule component for managing availability time slots. Supports creation by click or drag, and
-            resizing time slots.
+            A weekly schedule component for managing availability time slots. Supports creation by click or drag, 
+            resizing, and drag-and-drop across days. Includes touch support and disabled/unavailable regions.
           </p>
         </div>
 
         <div className="mt-8 w-full">
-          <Availability value={data} onValueChange={setData} startTime={7} endTime={23} useAmPm={false} />
+          <Availability 
+              value={data} 
+              onValueChange={setData} 
+              disabled={disabledRegions}
+              startTime={7} 
+              endTime={23} 
+              useAmPm={false} 
+              days={[1, 2, 3, 4, 5]} 
+          />
+          <p className="text-xs text-muted-foreground mt-2">
+            * Striped regions indicate disabled times (e.g. lunch breaks or unavailable blocks). 
+            Events cannot be created, moved, or resized into these areas.
+          </p>
         </div>
       </Content>
 
@@ -99,10 +135,11 @@ export default function Page() {
           <div>
             <h2 className="text-lg font-semibold mb-2">Features</h2>
             <ul className="space-y-2 text-muted-foreground text-sm list-inside list-disc">
-              <li>Drag and drop time slots within day</li>
+              <li>Drag and drop time slots across days</li>
               <li>Resize time slots from top or bottom</li>
               <li>Optionally auto-merge adjacent time slots</li>
               <li>Click and drag on empty space to create new slots</li>
+              <li><strong>Disabled regions</strong> support (prevent interaction)</li>
               <li>Configurable start/end times and time increments</li>
               <li>Supports AM/PM or 24h format</li>
               <li>Built with @dnd-kit for accessible interactions</li>
@@ -123,6 +160,9 @@ export default function Page() {
                     <code className="bg-muted rounded px-1.5 py-0.5">onValueChange</code> - (value: TimeSpan[]) ={">"}{" "}
                     void - Callback when slots change
                   </li>
+                   <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">disabled</code> - TimeSpan[] - Array of disabled/blocked regions
+                  </li>
                   <li>
                     <code className="bg-muted rounded px-1.5 py-0.5">days</code> - number[] - Array of day indices (0-6)
                     to display
@@ -140,6 +180,9 @@ export default function Page() {
                   <li>
                     <code className="bg-muted rounded px-1.5 py-0.5">useAmPm</code> - boolean - Use AM/PM format instead
                     of 24h
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">mergeAdjacent</code> - boolean - Automatically merge adjacent blocks (default: true)
                   </li>
                 </ul>
               </div>
