@@ -23,6 +23,7 @@ interface AvailabilityProps {
   startTime?: number // hour 0-23, default 7
   endTime?: number // hour 0-23, default 23
   useAmPm?: boolean
+  mergeAdjacent?: boolean // default true - merge spans that touch end-to-end
   className?: string
 }
 
@@ -51,6 +52,56 @@ const formatDisplayTime = (time: string, useAmPm: boolean) => {
 const generateId = () => Math.random().toString(36).substring(2, 11)
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
+/**
+ * Merges adjacent (contiguous) time spans on the same day.
+ * Adjacent means one span's end_time equals another's start_time.
+ * The merged span keeps the nanoid of the earliest span.
+ */
+const mergeAdjacentSpans = (spans: TimeSpan[]): TimeSpan[] => {
+  if (spans.length === 0) return spans
+
+  // Group by day
+  const byDay = new Map<number, TimeSpan[]>()
+  spans.forEach(span => {
+    const daySpans = byDay.get(span.week_day) || []
+    daySpans.push(span)
+    byDay.set(span.week_day, daySpans)
+  })
+
+  const merged: TimeSpan[] = []
+
+  // Process each day
+  byDay.forEach(daySpans => {
+    // Sort by start time
+    const sorted = [...daySpans].sort((a, b) => timeToMinutes(a.start_time) - timeToMinutes(b.start_time))
+
+    let current = sorted[0]
+
+    for (let i = 1; i < sorted.length; i++) {
+      const next = sorted[i]
+
+      // Check if current and next are adjacent (touching)
+      if (current.end_time === next.start_time) {
+        // Merge: extend current to include next
+        current = {
+          ...current,
+          end_time: next.end_time,
+          // Keep the earliest span's nanoid (current is already earlier due to sorting)
+        }
+      } else {
+        // Not adjacent, push current and move to next
+        merged.push(current)
+        current = next
+      }
+    }
+
+    // Push the last span
+    merged.push(current)
+  })
+
+  return merged
+}
 
 // --- Hooks ---
 
@@ -193,6 +244,7 @@ export function Availability({
   startTime = 7,
   endTime = 23,
   useAmPm = false,
+  mergeAdjacent = true,
   className,
 }: AvailabilityProps) {
   const [internalValue, setInternalValue] = React.useState<TimeSpan[]>(value)
@@ -201,19 +253,21 @@ export function Availability({
     setInternalValue(value)
   }, [value])
 
-  const updateValue = (newValue: TimeSpan[]) => {
-    setInternalValue(newValue)
-    onValueChange?.(newValue)
+  const updateValue = (newValue: TimeSpan[], shouldMerge = false) => {
+    // Apply merge logic only when explicitly requested (after pointer release)
+    const finalValue = shouldMerge && mergeAdjacent ? mergeAdjacentSpans(newValue) : newValue
+    setInternalValue(finalValue)
+    onValueChange?.(finalValue)
   }
 
-  const handleResize = (id: string, newStart: string, newEnd: string) => {
+  const handleResize = (id: string, newStart: string, newEnd: string, isComplete = false) => {
     const newValue = internalValue.map(span => {
       if (span.nanoid === id) {
         return { ...span, start_time: newStart, end_time: newEnd }
       }
       return span
     })
-    updateValue(newValue)
+    updateValue(newValue, isComplete)
   }
 
   const handleCreate = (dayIndex: number, startMinutes: number, endMinutes: number) => {
@@ -224,11 +278,13 @@ export function Availability({
       end_time: minutesToTime(endMinutes),
       active: true,
     }
-    updateValue([...internalValue, newSpan])
+    // Creation is always complete, so merge
+    updateValue([...internalValue, newSpan], true)
   }
 
   const handleDelete = (id: string) => {
-    updateValue(internalValue.filter(s => s.nanoid !== id))
+    // Deletion is always complete, so merge (in case it creates new adjacencies)
+    updateValue(internalValue.filter(s => s.nanoid !== id), true)
   }
 
   return (
@@ -304,7 +360,7 @@ interface DayColumnProps {
   timeIncrements: number
   events: TimeSpan[]
   onCreate: (dayIndex: number, start: number, end: number) => void
-  onResize: (id: string, start: string, end: string) => void
+  onResize: (id: string, start: string, end: string, isComplete?: boolean) => void
   onDelete: (id: string) => void
   useAmPm: boolean
 }
@@ -383,7 +439,7 @@ interface DraggableTimeSpanProps {
   endTime: number
   minStart: number
   maxEnd: number
-  onResize: (id: string, start: string, end: string) => void
+  onResize: (id: string, start: string, end: string, isComplete?: boolean) => void
   onDelete: (id: string) => void
   useAmPm: boolean
   timeIncrements: number
@@ -448,10 +504,35 @@ function DraggableTimeSpan({
         if (newEnd <= newStart + timeIncrements) newEnd = newStart + timeIncrements
       }
 
-      onResize(span.nanoid, minutesToTime(newStart), minutesToTime(newEnd))
+      // During drag: don't merge (isComplete = false)
+      onResize(span.nanoid, minutesToTime(newStart), minutesToTime(newEnd), false)
     }
 
     const handlePointerUp = (ev: PointerEvent) => {
+      // Calculate final position
+      if (containerRef.current) {
+        const containerHeight = containerRef.current.clientHeight
+        const pixelsPerMinute = containerHeight / totalMinutes
+        const deltaY = ev.clientY - initialY
+        const deltaMinutes = Math.round(deltaY / pixelsPerMinute / timeIncrements) * timeIncrements
+
+        let newStart = initialStart
+        let newEnd = initialEnd
+
+        if (edge === "top") {
+          newStart += deltaMinutes
+          if (newStart < minStart) newStart = minStart
+          if (newStart >= newEnd - timeIncrements) newStart = newEnd - timeIncrements
+        } else {
+          newEnd += deltaMinutes
+          if (newEnd > maxEnd) newEnd = maxEnd
+          if (newEnd <= newStart + timeIncrements) newEnd = newStart + timeIncrements
+        }
+
+        // On release: merge (isComplete = true)
+        onResize(span.nanoid, minutesToTime(newStart), minutesToTime(newEnd), true)
+      }
+
       target.releasePointerCapture(ev.pointerId)
       window.removeEventListener("pointermove", handlePointerMove)
       window.removeEventListener("pointerup", handlePointerUp)
