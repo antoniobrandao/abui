@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Settings, X, GripHorizontal } from "lucide-react"
+import { Settings, X, Grip, GripHorizontal } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
@@ -596,7 +596,7 @@ function TimeSpanCard({
   const calculatedDuration = duration || (timeToMinutes(span.end_time) - timeToMinutes(span.start_time)) / 60
 
   return (
-    <div className="h-full flex flex-col relative items-between text-foreground timespan-inner-area">
+    <div className="h-full flex flex-col relative items-between text-foreground">
       <div className="flex flex-col gap-1 text-inherit">
         <p className="font-semibold leading-none">{formatDisplayTime(span.start_time, useAmPm)}</p>
         <p className="text-[10px] opacity-80">{calculatedDuration.toFixed(1).replace(".0", "")}h</p>
@@ -617,6 +617,9 @@ function TimeSpanCard({
           <X className="h-3 w-3" />
         </Button>
       )}
+      <div className="timespan-inner-area absolute top-0 h-full left-0 right-0 opacity-20 hover:opacity-100 cursor-grab z-10 flex justify-center">
+        <Grip className="h-4 w-4 absolute top-[50%] -translate-y-1/2 left-[50%] -translate-x-1/2 z-20 opacity-20 group-hover:opacity-100" />
+      </div>
       <div className="flex flex-col gap-1 mt-auto text-inherit">
         {!onDelete && <Settings className="h-3 w-3 opacity-50" />}
         <p className="font-semibold leading-none !text-inherit">{formatDisplayTime(span.end_time, useAmPm)}</p>
