@@ -546,7 +546,7 @@ function DraggableTimeSpan({
     <div
       style={style}
       className={cn(
-        "absolute left-1 right-1 rounded-md border border-foreground/50 bg-foreground/10 p-2 text-primary-foreground shadow-sm text-xs group overflow-hidden touch-none",
+        "absolute left-1 right-1 rounded-md border border-foreground/50 bg-foreground/10 p-3 shadow-sm text-xs group overflow-hidden touch-none",
       )}
     >
       {/* Resize Handle Top - Increased hit area */}
@@ -578,25 +578,18 @@ function DraggableTimeSpan({
 function TimeSpanCard({
   span,
   useAmPm,
-  isOverlay,
   duration,
   onDelete,
 }: {
   span: TimeSpan
   useAmPm: boolean
-  isOverlay?: boolean
   duration?: number
   onDelete?: () => void
 }) {
   const calculatedDuration = duration || (timeToMinutes(span.end_time) - timeToMinutes(span.start_time)) / 60
 
   return (
-    <div
-      className={cn(
-        "h-full flex flex-col relative items-between text-foreground",
-        isOverlay && "rounded-md border p-2 shadow-lg w-[120px]",
-      )}
-    >
+    <div className="h-full flex flex-col relative items-between text-foreground timespan-inner-area">
       <div className="flex flex-col gap-1 text-inherit">
         <p className="font-semibold leading-none">{formatDisplayTime(span.start_time, useAmPm)}</p>
         <p className="text-[10px] opacity-80">{calculatedDuration.toFixed(1).replace(".0", "")}h</p>
