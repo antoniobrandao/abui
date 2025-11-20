@@ -10,7 +10,7 @@ export function NavBase({ items, label = "", pathname }: { items: ItemsSet[]; la
       {label && <p className="text-xs uppercase font-normal mb-2 text-muted-foreground">{label}</p>}
       {items.map(item => (
         <Link href={item.url} key={item.name}>
-          <p className={cn("text-sm", pathname === item.url ? "text-accent" : "text-foreground")}>{item.name}</p>
+          <p className={cn("text-sm", pathname === item.url ? "text-primary" : "text-foreground")}>{item.name}</p>
         </Link>
       ))}
     </div>
