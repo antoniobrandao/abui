@@ -186,6 +186,20 @@
       ]
     },
     {
+      "name": "availability",
+      "type": "registry:block",
+      "title": "Availability",
+      "description": "A weekly availability designer with draggable and resizable time slots.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/abui/ui/availability.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "calendar-year",
       "type": "registry:block",
       "title": "Calendar Year",

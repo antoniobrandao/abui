@@ -23,10 +23,10 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
             <SheetDescription className="sr-only">Documentation</SheetDescription>
           </SheetHeader>
           <div className="p-4 flex flex-col gap-6 border-r sticky top-0 h-screen items-start justify-start">
-          <div className="flex items-center text-left text-sm leading-tight mb-4">
-          <Logo />
-          <p className="truncate text-lg ml-2 font-bold">ABUI</p>
-        </div>
+            <div className="flex items-center text-left text-sm leading-tight mb-4">
+              <Logo />
+              <p className="truncate text-lg ml-2 font-bold">ABUI</p>
+            </div>
             <NavBase items={navItems.main} pathname={pathname} />
             <NavBase items={navItems.components} label="Components" pathname={pathname} />
             <NavBase items={navItems.blocks} label="Blocks" pathname={pathname} />

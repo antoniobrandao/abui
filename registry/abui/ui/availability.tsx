@@ -47,9 +47,141 @@ const formatDisplayTime = (time: string, useAmPm: boolean) => {
   return `${h12}:${m.toString().padStart(2, "0")} ${ampm}`
 }
 
+// Helper to generate a simple unique ID (not crypto secure but sufficient for UI)
 const generateId = () => Math.random().toString(36).substring(2, 11)
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
+// --- Hooks ---
+
+/**
+ * Hook to handle creation dragging logic on a day column.
+ */
+function useCalendarCreation({
+  containerRef,
+  timeIncrements,
+  startTime,
+  endTime,
+  events,
+  onCreate,
+  colIndex,
+}: {
+  containerRef: React.RefObject<HTMLDivElement | null>
+  timeIncrements: number
+  startTime: number
+  endTime: number
+  events: TimeSpan[]
+  onCreate: (dayIndex: number, start: number, end: number) => void
+  colIndex: number
+}) {
+  const [isCreating, setIsCreating] = React.useState(false)
+  const [creationStart, setCreationStart] = React.useState<number | null>(null)
+  const [currentMouseY, setCurrentMouseY] = React.useState<number | null>(null)
+
+  const totalMinutes = (endTime - startTime) * 60
+  const startOffset = startTime * 60
+
+  // Sort events to determine constraints
+  const sortedEvents = React.useMemo(() => {
+    return [...events].sort((a, b) => timeToMinutes(a.start_time) - timeToMinutes(b.start_time))
+  }, [events])
+
+  const getMinutesFromY = (y: number) => {
+    if (!containerRef.current) return 0
+    const rect = containerRef.current.getBoundingClientRect()
+    const relativeY = y - rect.top
+    const percentage = Math.max(0, Math.min(1, relativeY / rect.height))
+    const minutes = percentage * totalMinutes + startOffset
+    return Math.round(minutes / timeIncrements) * timeIncrements
+  }
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (e.target !== e.currentTarget) return // Only trigger on empty space
+    // Prevent default drag behavior and text selection, but allow touch scrolling if not handled
+    e.preventDefault()
+
+    // Capture pointer to track movement even if it leaves the element
+    containerRef.current?.setPointerCapture(e.pointerId)
+
+    const startMins = getMinutesFromY(e.clientY)
+
+    // Check strict overlap at start point
+    const isOverlapping = sortedEvents.some(ev => {
+      const s = timeToMinutes(ev.start_time)
+      const e = timeToMinutes(ev.end_time)
+      return startMins >= s && startMins < e
+    })
+    if (isOverlapping) return
+
+    // Find constraints
+    const prevEvent = sortedEvents.filter(ev => timeToMinutes(ev.end_time) <= startMins).pop()
+    const nextEvent = sortedEvents.find(ev => timeToMinutes(ev.start_time) >= startMins)
+
+    const minStartMins = prevEvent ? timeToMinutes(prevEvent.end_time) : startOffset
+    const maxEndMins = nextEvent ? timeToMinutes(nextEvent.start_time) : endTime * 60
+
+    setCreationStart(startMins)
+    setCurrentMouseY(startMins)
+    setIsCreating(true)
+
+    const handlePointerMove = (ev: PointerEvent) => {
+      const currentMins = getMinutesFromY(ev.clientY)
+      // Clamp to constraints
+      const clampedMins = Math.max(minStartMins, Math.min(currentMins, maxEndMins))
+      setCurrentMouseY(clampedMins)
+    }
+
+    const handlePointerUp = (ev: PointerEvent) => {
+      const currentMins = getMinutesFromY(ev.clientY)
+
+      let finalStart = Math.min(startMins, currentMins)
+      let finalEnd = Math.max(startMins, currentMins)
+
+      // Clamp to constraints
+      finalStart = Math.max(minStartMins, finalStart)
+      finalEnd = Math.min(maxEndMins, finalEnd)
+
+      // Ensure minimum size
+      if (finalEnd - finalStart < timeIncrements) {
+        finalEnd = Math.min(finalStart + timeIncrements, maxEndMins)
+      }
+
+      // Click-to-create logic (if essentially no drag occurred, try to make a 1-hour slot)
+      if (finalEnd - finalStart <= timeIncrements) {
+        const oneHourEnd = finalStart + 60
+        finalEnd = Math.min(oneHourEnd, maxEndMins)
+      }
+
+      if (finalEnd > finalStart) {
+        onCreate(colIndex, finalStart, finalEnd)
+      }
+
+      setIsCreating(false)
+      setCreationStart(null)
+      setCurrentMouseY(null)
+
+      // Release pointer capture
+      containerRef.current?.releasePointerCapture(ev.pointerId)
+
+      // Cleanup listeners (though using setPointerCapture implicitly handles some of this, explicit cleanup is safe)
+      window.removeEventListener("pointermove", handlePointerMove)
+      window.removeEventListener("pointerup", handlePointerUp)
+    }
+
+    window.addEventListener("pointermove", handlePointerMove)
+    window.addEventListener("pointerup", handlePointerUp)
+  }
+
+  return {
+    isCreating,
+    creationStart,
+    currentMouseY,
+    totalMinutes,
+    startOffset,
+    sortedEvents,
+    handlePointerDown,
+  }
+}
 
 // --- Components ---
 
@@ -65,7 +197,6 @@ export function Availability({
 }: AvailabilityProps) {
   const [internalValue, setInternalValue] = React.useState<TimeSpan[]>(value)
 
-  // Sync controlled/uncontrolled state
   React.useEffect(() => {
     setInternalValue(value)
   }, [value])
@@ -74,8 +205,6 @@ export function Availability({
     setInternalValue(newValue)
     onValueChange?.(newValue)
   }
-
-  // --- Handlers ---
 
   const handleResize = (id: string, newStart: string, newEnd: string) => {
     const newValue = internalValue.map(span => {
@@ -105,15 +234,13 @@ export function Availability({
   return (
     <div
       className={cn(
-        "flex h-[600px] w-full flex-col overflow-hidden rounded-md border bg-background select-none",
+        "flex h-[600px] w-full flex-col overflow-hidden rounded-md border bg-background select-none touch-none",
         className,
       )}
     >
       {/* Header */}
       <div className="flex w-full border-b bg-muted/40">
-        <div className="w-16 flex-shrink-0 border-r p-2 text-xs font-medium text-muted-foreground">
-          {/* Time label column header */}
-        </div>
+        <div className="w-16 flex-shrink-0 border-r p-2 text-xs font-medium text-muted-foreground" />
         <div className="flex flex-1">
           {days.map(dayIndex => (
             <div key={dayIndex} className="flex-1 border-r px-2 py-3 text-center text-sm font-medium last:border-r-0">
@@ -142,12 +269,9 @@ export function Availability({
 
         {/* Days Grid */}
         <div className="flex flex-1 relative">
-          {/* Background Grid Lines - Matches exact structure of Time Labels */}
           <div className="absolute inset-0 pointer-events-none flex flex-col">
             {Array.from({ length: endTime - startTime }).map((_, i) => (
-              <div key={i} className="flex-1 border-b border-dashed border-muted/20 w-full relative">
-                {/* We can also add intermediate lines if needed for 30min increments, but let's stick to hours for now to match left column */}
-              </div>
+              <div key={i} className="flex-1 border-b border-dashed border-muted/20 w-full relative" />
             ))}
           </div>
 
@@ -171,8 +295,6 @@ export function Availability({
     </div>
   )
 }
-
-// --- Sub Components ---
 
 interface DayColumnProps {
   dayIndex: number
@@ -200,104 +322,23 @@ function DayColumn({
   useAmPm,
 }: DayColumnProps) {
   const containerRef = React.useRef<HTMLDivElement>(null)
-  const [isCreating, setIsCreating] = React.useState(false)
-  const [creationStart, setCreationStart] = React.useState<number | null>(null)
-  const [currentMouseY, setCurrentMouseY] = React.useState<number | null>(null)
 
-  const totalMinutes = (endTime - startTime) * 60
-  const startOffset = startTime * 60
-
-  // Sort events by start time to determine constraints
-  const sortedEvents = React.useMemo(() => {
-    return [...events].sort((a, b) => timeToMinutes(a.start_time) - timeToMinutes(b.start_time))
-  }, [events])
-
-  const getMinutesFromY = (y: number) => {
-    if (!containerRef.current) return 0
-    const rect = containerRef.current.getBoundingClientRect()
-    const relativeY = y - rect.top
-    const percentage = Math.max(0, Math.min(1, relativeY / rect.height))
-    const minutes = percentage * totalMinutes + startOffset
-    return Math.round(minutes / timeIncrements) * timeIncrements
-  }
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.target !== e.currentTarget) return // Only trigger on empty space
-    e.preventDefault() // Prevent text selection
-
-    const startMins = getMinutesFromY(e.clientY)
-
-    // Check strict overlap at start point
-    const isOverlapping = sortedEvents.some(ev => {
-      const s = timeToMinutes(ev.start_time)
-      const e = timeToMinutes(ev.end_time)
-      return startMins >= s && startMins < e
+  const { isCreating, creationStart, currentMouseY, totalMinutes, startOffset, sortedEvents, handlePointerDown } =
+    useCalendarCreation({
+      containerRef,
+      timeIncrements,
+      startTime,
+      endTime,
+      events,
+      onCreate,
+      colIndex,
     })
-    if (isOverlapping) return
-
-    // Find constraints for both directions
-    const prevEvent = sortedEvents.filter(ev => timeToMinutes(ev.end_time) <= startMins).pop()
-    const nextEvent = sortedEvents.find(ev => timeToMinutes(ev.start_time) >= startMins)
-
-    const minStartMins = prevEvent ? timeToMinutes(prevEvent.end_time) : startOffset
-    const maxEndMins = nextEvent ? timeToMinutes(nextEvent.start_time) : endTime * 60
-
-    setCreationStart(startMins)
-    setCurrentMouseY(startMins)
-    setIsCreating(true)
-
-    const handleGlobalMouseMove = (e: MouseEvent) => {
-      const currentMins = getMinutesFromY(e.clientY)
-
-      // Allow dragging both up and down, clamped to constraints
-      const clampedMins = Math.max(minStartMins, Math.min(currentMins, maxEndMins))
-
-      setCurrentMouseY(clampedMins)
-    }
-
-    const handleGlobalMouseUp = (e: MouseEvent) => {
-      const currentMins = getMinutesFromY(e.clientY)
-
-      // Determine start and end based on drag direction
-      let finalStart = Math.min(startMins, currentMins)
-      let finalEnd = Math.max(startMins, currentMins)
-
-      // Clamp to constraints
-      finalStart = Math.max(minStartMins, finalStart)
-      finalEnd = Math.min(maxEndMins, finalEnd)
-
-      // Ensure minimum size
-      if (finalEnd - finalStart < timeIncrements) {
-        finalEnd = Math.min(finalStart + timeIncrements, maxEndMins)
-      }
-
-      // Click-to-create 1 hour logic
-      if (finalEnd - finalStart <= timeIncrements) {
-        // Try 1 hour
-        const oneHourEnd = finalStart + 60
-        finalEnd = Math.min(oneHourEnd, maxEndMins)
-      }
-
-      if (finalEnd > finalStart) {
-        onCreate(colIndex, finalStart, finalEnd)
-      }
-
-      setIsCreating(false)
-      setCreationStart(null)
-      setCurrentMouseY(null)
-      window.removeEventListener("mousemove", handleGlobalMouseMove)
-      window.removeEventListener("mouseup", handleGlobalMouseUp)
-    }
-
-    window.addEventListener("mousemove", handleGlobalMouseMove)
-    window.addEventListener("mouseup", handleGlobalMouseUp)
-  }
 
   return (
     <div
       ref={containerRef}
-      className="flex-1 relative border-r last:border-r-0 min-w-[100px]"
-      onMouseDown={handleMouseDown}
+      className="flex-1 relative border-r last:border-r-0 min-w-[100px] touch-none"
+      onPointerDown={handlePointerDown}
     >
       {sortedEvents.map((event, i) => {
         const prevEvent = sortedEvents[i - 1]
@@ -372,16 +413,19 @@ function DraggableTimeSpan({
     height: `${(durationMinutes / totalMinutes) * 100}%`,
   }
 
-  // Resize Handlers
-  const handleResizeStart = (e: React.MouseEvent, edge: "top" | "bottom") => {
-    e.stopPropagation() // Prevent drag start
+  const handleResizeStart = (e: React.PointerEvent, edge: "top" | "bottom") => {
+    e.stopPropagation()
     e.preventDefault()
+
+    // Capture pointer for resize drag
+    const target = e.target as HTMLElement
+    target.setPointerCapture(e.pointerId)
 
     const initialY = e.clientY
     const initialStart = startMinutes
     const initialEnd = endMinutes
 
-    const handleMouseMove = (ev: MouseEvent) => {
+    const handlePointerMove = (ev: PointerEvent) => {
       if (!containerRef.current) return
 
       const containerHeight = containerRef.current.clientHeight
@@ -396,14 +440,10 @@ function DraggableTimeSpan({
 
       if (edge === "top") {
         newStart += deltaMinutes
-
-        // Clamp to limits
         if (newStart < minStart) newStart = minStart
         if (newStart >= newEnd - timeIncrements) newStart = newEnd - timeIncrements
       } else {
         newEnd += deltaMinutes
-
-        // Clamp to limits
         if (newEnd > maxEnd) newEnd = maxEnd
         if (newEnd <= newStart + timeIncrements) newEnd = newStart + timeIncrements
       }
@@ -411,27 +451,30 @@ function DraggableTimeSpan({
       onResize(span.nanoid, minutesToTime(newStart), minutesToTime(newEnd))
     }
 
-    const handleMouseUp = () => {
-      window.removeEventListener("mousemove", handleMouseMove)
-      window.removeEventListener("mouseup", handleMouseUp)
+    const handlePointerUp = (ev: PointerEvent) => {
+      target.releasePointerCapture(ev.pointerId)
+      window.removeEventListener("pointermove", handlePointerMove)
+      window.removeEventListener("pointerup", handlePointerUp)
     }
 
-    window.addEventListener("mousemove", handleMouseMove)
-    window.addEventListener("mouseup", handleMouseUp)
+    window.addEventListener("pointermove", handlePointerMove)
+    window.addEventListener("pointerup", handlePointerUp)
   }
 
   return (
     <div
       style={style}
       className={cn(
-        "absolute left-1 right-1 rounded-md border border-foreground/50 bg-foreground/10 p-2 text-primary-foreground shadow-sm text-xs group overflow-hidden",
+        "absolute left-1 right-1 rounded-md border border-foreground/50 bg-foreground/10 p-2 text-primary-foreground shadow-sm text-xs group overflow-hidden touch-none",
       )}
     >
-      {/* Resize Handle Top */}
+      {/* Resize Handle Top - Increased hit area */}
       <div
-        className="absolute top-0 left-0 right-0 h-2 cursor-n-resize hover:bg-foreground/20"
-        onMouseDown={e => handleResizeStart(e, "top")}
+        className="absolute top-0 left-0 right-0 h-4 -mt-2 cursor-n-resize z-10"
+        onPointerDown={e => handleResizeStart(e, "top")}
       />
+      {/* Visual Top Handle (optional, keeps UI clean but clickable) */}
+      <div className="absolute top-0 left-1 right-1 h-1 bg-transparent group-hover:bg-foreground/20 rounded-t-sm" />
 
       <TimeSpanCard
         span={span}
@@ -440,11 +483,13 @@ function DraggableTimeSpan({
         onDelete={() => onDelete(span.nanoid)}
       />
 
-      {/* Resize Handle Bottom */}
+      {/* Resize Handle Bottom - Increased hit area */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-2 cursor-s-resize hover:bg-foreground/20"
-        onMouseDown={e => handleResizeStart(e, "bottom")}
+        className="absolute bottom-0 left-0 right-0 h-4 -mb-2 cursor-s-resize z-10"
+        onPointerDown={e => handleResizeStart(e, "bottom")}
       />
+      {/* Visual Bottom Handle */}
+      <div className="absolute bottom-0 left-1 right-1 h-1 bg-transparent group-hover:bg-foreground/20 rounded-b-sm" />
     </div>
   )
 }
@@ -479,9 +524,9 @@ function TimeSpanCard({
         <Button
           variant="ghost"
           size="icon"
-          className="h-5 w-5 hover:bg-foreground/20 -mt-1 -mr-1 absolute top-0 right-0"
-          onMouseDown={e => {
-            e.stopPropagation() // prevent drag
+          className="h-5 w-5 hover:bg-foreground/20 -mt-1 -mr-1 absolute top-0 right-0 z-20"
+          onPointerDown={e => {
+            e.stopPropagation() // Prevent drag/resize from card
           }}
           onClick={e => {
             e.stopPropagation()

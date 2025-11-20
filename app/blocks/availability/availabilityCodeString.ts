@@ -578,4 +578,3 @@ function TimeSpanCard({ span, useAmPm, isOverlay, duration, onDelete }: { span: 
     )
 }
 `
-
