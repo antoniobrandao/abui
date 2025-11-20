@@ -216,6 +216,11 @@ function DayColumn({
   const totalMinutes = (endTime - startTime) * 60
   const startOffset = startTime * 60
 
+  // Sort events by start time to determine constraints
+  const sortedEvents = React.useMemo(() => {
+    return [...events].sort((a, b) => timeToMinutes(a.start_time) - timeToMinutes(b.start_time))
+  }, [events])
+
   const getMinutesFromY = (y: number) => {
     if (!containerRef.current) return 0
     const rect = containerRef.current.getBoundingClientRect()
@@ -230,22 +235,55 @@ function DayColumn({
     e.preventDefault() // Prevent text selection
 
     const startMins = getMinutesFromY(e.clientY)
+    
+    // Check strict overlap at start point
+    const isOverlapping = sortedEvents.some(ev => {
+        const s = timeToMinutes(ev.start_time)
+        const e = timeToMinutes(ev.end_time)
+        return startMins >= s && startMins < e
+    })
+    if (isOverlapping) return
+
+    // Find constraint
+    const nextEvent = sortedEvents.find(ev => timeToMinutes(ev.start_time) >= startMins)
+    const maxEndMins = nextEvent ? timeToMinutes(nextEvent.start_time) : (endTime * 60)
+
     setCreationStart(startMins)
-    setCurrentMouseY(startMins + timeIncrements)
+    // Init with increment, but clamp to maxEndMins
+    setCurrentMouseY(Math.min(startMins + timeIncrements, maxEndMins))
     setIsCreating(true)
 
     const handleGlobalMouseMove = (e: MouseEvent) => {
       const currentMins = getMinutesFromY(e.clientY)
-      // Ensure we drag downwards or upwards correctly
-      setCurrentMouseY(Math.max(currentMins, startMins + timeIncrements))
+      // Clamp currentMins to maxEndMins
+      const clampedMins = Math.min(currentMins, maxEndMins)
+      
+      const newEnd = Math.max(clampedMins, startMins + timeIncrements)
+      // But newEnd cannot exceed maxEndMins
+      const finalNewEnd = Math.min(newEnd, maxEndMins)
+      
+      setCurrentMouseY(finalNewEnd)
     }
 
     const handleGlobalMouseUp = (e: MouseEvent) => {
-      const endMins = getMinutesFromY(e.clientY)
+      const currentMins = getMinutesFromY(e.clientY)
       const finalStart = startMins
-      const finalEnd = Math.max(endMins, startMins + timeIncrements)
+      
+      // Same clamping logic for end
+      let finalEnd = Math.min(currentMins, maxEndMins)
+      finalEnd = Math.max(finalEnd, finalStart + timeIncrements)
+      finalEnd = Math.min(finalEnd, maxEndMins) // Re-clamp in case increment pushed it over
 
-      onCreate(colIndex, finalStart, finalEnd)
+      // Click-to-create 1 hour logic
+      if (finalEnd - finalStart <= timeIncrements) {
+          // Try 1 hour
+          const oneHourEnd = finalStart + 60
+          finalEnd = Math.min(oneHourEnd, maxEndMins)
+      }
+      
+      if (finalEnd > finalStart) {
+          onCreate(colIndex, finalStart, finalEnd)
+      }
 
       setIsCreating(false)
       setCreationStart(null)
@@ -264,19 +302,29 @@ function DayColumn({
       className="flex-1 relative border-r last:border-r-0 min-w-[100px]"
       onMouseDown={handleMouseDown}
     >
-      {events.map(event => (
-        <DraggableTimeSpan
-          key={event.nanoid}
-          span={event}
-          startTime={startTime}
-          endTime={endTime}
-          onResize={onResize}
-          onDelete={onDelete}
-          useAmPm={useAmPm}
-          timeIncrements={timeIncrements}
-          containerRef={containerRef}
-        />
-      ))}
+      {sortedEvents.map((event, i) => {
+        const prevEvent = sortedEvents[i - 1]
+        const nextEvent = sortedEvents[i + 1]
+        
+        const minStart = prevEvent ? timeToMinutes(prevEvent.end_time) : startOffset
+        const maxEnd = nextEvent ? timeToMinutes(nextEvent.start_time) : endTime * 60
+
+        return (
+          <DraggableTimeSpan
+            key={event.nanoid}
+            span={event}
+            startTime={startTime}
+            endTime={endTime}
+            minStart={minStart}
+            maxEnd={maxEnd}
+            onResize={onResize}
+            onDelete={onDelete}
+            useAmPm={useAmPm}
+            timeIncrements={timeIncrements}
+            containerRef={containerRef}
+          />
+        )
+      })}
 
       {isCreating && creationStart !== null && currentMouseY !== null && (
         <div
@@ -295,6 +343,8 @@ interface DraggableTimeSpanProps {
   span: TimeSpan
   startTime: number
   endTime: number
+  minStart: number
+  maxEnd: number
   onResize: (id: string, start: string, end: string) => void
   onDelete: (id: string) => void
   useAmPm: boolean
@@ -306,6 +356,8 @@ function DraggableTimeSpan({
   span,
   startTime,
   endTime,
+  minStart,
+  maxEnd,
   onResize,
   onDelete,
   useAmPm,
@@ -347,12 +399,16 @@ function DraggableTimeSpan({
 
       if (edge === "top") {
         newStart += deltaMinutes
-        if (newStart >= newEnd) newStart = newEnd - timeIncrements
-        if (newStart < startOffset) newStart = startOffset
+        
+        // Clamp to limits
+        if (newStart < minStart) newStart = minStart
+        if (newStart >= newEnd - timeIncrements) newStart = newEnd - timeIncrements
       } else {
         newEnd += deltaMinutes
-        if (newEnd <= newStart) newEnd = newStart + timeIncrements
-        if (newEnd > endTime * 60) newEnd = endTime * 60
+        
+        // Clamp to limits
+        if (newEnd > maxEnd) newEnd = maxEnd
+        if (newEnd <= newStart + timeIncrements) newEnd = newStart + timeIncrements
       }
 
       onResize(span.nanoid, minutesToTime(newStart), minutesToTime(newEnd))

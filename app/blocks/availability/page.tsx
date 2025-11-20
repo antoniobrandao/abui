@@ -51,7 +51,7 @@ export default function Page() {
         <div className="flex flex-col gap-2 w-full">
           <h2 className="text-2xl font-bold">Availability Designer</h2>
           <p className="text-muted-foreground">
-            A weekly schedule component for managing availability time slots. Supports drag-and-drop, resizing, and creation of new slots.
+            A weekly schedule component for managing availability time slots. Supports creation by click or drag, and resizing time slots.
           </p>
         </div>
         
