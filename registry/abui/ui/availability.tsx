@@ -244,35 +244,41 @@ function DayColumn({
     })
     if (isOverlapping) return
 
-    // Find constraint
+    // Find constraints for both directions
+    const prevEvent = sortedEvents.filter(ev => timeToMinutes(ev.end_time) <= startMins).pop()
     const nextEvent = sortedEvents.find(ev => timeToMinutes(ev.start_time) >= startMins)
+    
+    const minStartMins = prevEvent ? timeToMinutes(prevEvent.end_time) : startOffset
     const maxEndMins = nextEvent ? timeToMinutes(nextEvent.start_time) : (endTime * 60)
 
     setCreationStart(startMins)
-    // Init with increment, but clamp to maxEndMins
-    setCurrentMouseY(Math.min(startMins + timeIncrements, maxEndMins))
+    setCurrentMouseY(startMins)
     setIsCreating(true)
 
     const handleGlobalMouseMove = (e: MouseEvent) => {
       const currentMins = getMinutesFromY(e.clientY)
-      // Clamp currentMins to maxEndMins
-      const clampedMins = Math.min(currentMins, maxEndMins)
       
-      const newEnd = Math.max(clampedMins, startMins + timeIncrements)
-      // But newEnd cannot exceed maxEndMins
-      const finalNewEnd = Math.min(newEnd, maxEndMins)
+      // Allow dragging both up and down, clamped to constraints
+      const clampedMins = Math.max(minStartMins, Math.min(currentMins, maxEndMins))
       
-      setCurrentMouseY(finalNewEnd)
+      setCurrentMouseY(clampedMins)
     }
 
     const handleGlobalMouseUp = (e: MouseEvent) => {
       const currentMins = getMinutesFromY(e.clientY)
-      const finalStart = startMins
       
-      // Same clamping logic for end
-      let finalEnd = Math.min(currentMins, maxEndMins)
-      finalEnd = Math.max(finalEnd, finalStart + timeIncrements)
-      finalEnd = Math.min(finalEnd, maxEndMins) // Re-clamp in case increment pushed it over
+      // Determine start and end based on drag direction
+      let finalStart = Math.min(startMins, currentMins)
+      let finalEnd = Math.max(startMins, currentMins)
+      
+      // Clamp to constraints
+      finalStart = Math.max(minStartMins, finalStart)
+      finalEnd = Math.min(maxEndMins, finalEnd)
+      
+      // Ensure minimum size
+      if (finalEnd - finalStart < timeIncrements) {
+        finalEnd = Math.min(finalStart + timeIncrements, maxEndMins)
+      }
 
       // Click-to-create 1 hour logic
       if (finalEnd - finalStart <= timeIncrements) {
@@ -330,8 +336,8 @@ function DayColumn({
         <div
           className="absolute left-0 right-0 mx-1 rounded bg-primary/30 border border-primary z-20 pointer-events-none"
           style={{
-            top: `${((creationStart - startOffset) / totalMinutes) * 100}%`,
-            height: `${((currentMouseY - creationStart) / totalMinutes) * 100}%`,
+            top: `${((Math.min(creationStart, currentMouseY) - startOffset) / totalMinutes) * 100}%`,
+            height: `${(Math.abs(currentMouseY - creationStart) / totalMinutes) * 100}%`,
           }}
         />
       )}
