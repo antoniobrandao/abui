@@ -32,7 +32,9 @@ export interface TimeSpan {
 interface AvailabilityProps {
   value?: TimeSpan[]
   onValueChange?: (value: TimeSpan[]) => void
+  disabled?: TimeSpan[] // Disabled regions where no events can exist
   days?: number[] // 0-6
+  showAllDays?: boolean // If true, renders all 7 days, but disables interactions on days not in 'days' array
   timeIncrements?: number // minutes, default 30
   startTime?: number // hour 0-23, default 7
   endTime?: number // hour 0-23, default 23
@@ -128,16 +130,20 @@ function useCalendarCreation({
   startTime,
   endTime,
   events,
+  disabledEvents = [],
   onCreate,
   colIndex,
+  isDayDisabled = false,
 }: {
   containerRef: React.RefObject<HTMLDivElement | null>
   timeIncrements: number
   startTime: number
   endTime: number
   events: TimeSpan[]
+  disabledEvents?: TimeSpan[]
   onCreate: (dayIndex: number, start: number, end: number) => void
   colIndex: number
+  isDayDisabled?: boolean
 }) {
   const [isCreating, setIsCreating] = React.useState(false)
   const [creationStart, setCreationStart] = React.useState<number | null>(null)
@@ -146,10 +152,11 @@ function useCalendarCreation({
   const totalMinutes = (endTime - startTime) * 60
   const startOffset = startTime * 60
 
-  // Sort events to determine constraints
-  const sortedEvents = React.useMemo(() => {
-    return [...events].sort((a, b) => timeToMinutes(a.start_time) - timeToMinutes(b.start_time))
-  }, [events])
+  // Combine events and disabled regions for constraints
+  // Sort all items by start time to determine safe zones
+  const sortedConstraints = React.useMemo(() => {
+    return [...events, ...disabledEvents].sort((a, b) => timeToMinutes(a.start_time) - timeToMinutes(b.start_time))
+  }, [events, disabledEvents])
 
   const getMinutesFromY = (y: number) => {
     if (!containerRef.current) return 0
@@ -161,6 +168,7 @@ function useCalendarCreation({
   }
 
   const handlePointerDown = (e: React.PointerEvent) => {
+    if (isDayDisabled) return // No interaction if day is fully disabled
     if (e.target !== e.currentTarget) return // Only trigger on empty space
     // Prevent default drag behavior and text selection, but allow touch scrolling if not handled
     e.preventDefault()
@@ -170,8 +178,8 @@ function useCalendarCreation({
 
     const startMins = getMinutesFromY(e.clientY)
 
-    // Check strict overlap at start point
-    const isOverlapping = sortedEvents.some(ev => {
+    // Check strict overlap at start point (cannot start creation inside an event or disabled region)
+    const isOverlapping = sortedConstraints.some(ev => {
       const s = timeToMinutes(ev.start_time)
       const e = timeToMinutes(ev.end_time)
       return startMins >= s && startMins < e
@@ -179,8 +187,8 @@ function useCalendarCreation({
     if (isOverlapping) return
 
     // Find constraints
-    const prevEvent = sortedEvents.filter(ev => timeToMinutes(ev.end_time) <= startMins).pop()
-    const nextEvent = sortedEvents.find(ev => timeToMinutes(ev.start_time) >= startMins)
+    const prevEvent = sortedConstraints.filter(ev => timeToMinutes(ev.end_time) <= startMins).pop()
+    const nextEvent = sortedConstraints.find(ev => timeToMinutes(ev.start_time) >= startMins)
 
     const minStartMins = prevEvent ? timeToMinutes(prevEvent.end_time) : startOffset
     const maxEndMins = nextEvent ? timeToMinutes(nextEvent.start_time) : endTime * 60
@@ -243,7 +251,7 @@ function useCalendarCreation({
     currentMouseY,
     totalMinutes,
     startOffset,
-    sortedEvents,
+    sortedConstraints,
     handlePointerDown,
   }
 }
@@ -264,7 +272,9 @@ const AvailabilityDragContext = React.createContext<{
 export function Availability({
   value = [],
   onValueChange,
+  disabled = [],
   days = [0, 1, 2, 3, 4, 5, 6],
+  showAllDays = true,
   timeIncrements = 30,
   startTime = 7,
   endTime = 23,
@@ -282,6 +292,14 @@ export function Availability({
   const [isDropValid, setIsDropValid] = React.useState(true)
 
   const mainContainerRef = React.useRef<HTMLDivElement>(null)
+
+  // Determine which days to render
+  const renderedDays = React.useMemo(() => {
+    if (showAllDays) {
+      return [0, 1, 2, 3, 4, 5, 6]
+    }
+    return days
+  }, [days, showAllDays])
 
   React.useEffect(() => {
     setInternalValue(value)
@@ -306,7 +324,7 @@ export function Availability({
   const handleCreate = (dayIndex: number, startMinutes: number, endMinutes: number) => {
     const newSpan: TimeSpan = {
       nanoid: generateId(),
-      week_day: days[dayIndex],
+      week_day: dayIndex, // Directly use the dayIndex (0-6)
       start_time: minutesToTime(startMinutes),
       end_time: minutesToTime(endMinutes),
       active: true,
@@ -357,15 +375,32 @@ export function Availability({
       return { isValid: false, newStart, duration }
     }
 
-    // Check collisions
+    // Check if day is active (in allowed days list)
+    if (!days.includes(targetDayIndex)) {
+      return { isValid: false, newStart, duration }
+    }
+
+    // Check collisions with active events
     const dayEvents = internalValue.filter(e => e.week_day === targetDayIndex && e.nanoid !== span.nanoid)
-    const hasOverlap = dayEvents.some(e => {
+    const hasEventOverlap = dayEvents.some(e => {
       const eStart = timeToMinutes(e.start_time)
       const eEnd = timeToMinutes(e.end_time)
       return newStart < eEnd && newEnd > eStart
     })
 
-    if (hasOverlap) {
+    if (hasEventOverlap) {
+      return { isValid: false, newStart, duration }
+    }
+
+    // Check collisions with disabled regions
+    const dayDisabled = disabled.filter(e => e.week_day === targetDayIndex)
+    const hasDisabledOverlap = dayDisabled.some(e => {
+      const eStart = timeToMinutes(e.start_time)
+      const eEnd = timeToMinutes(e.end_time)
+      return newStart < eEnd && newEnd > eStart
+    })
+
+    if (hasDisabledOverlap) {
       return { isValid: false, newStart, duration }
     }
 
@@ -496,14 +531,20 @@ export function Availability({
           <div className="flex w-full border-b bg-muted/40">
             <div className="w-16 flex-shrink-0 border-r p-2 text-xs font-medium text-muted-foreground" />
             <div className="flex flex-1">
-              {days.map(dayIndex => (
-                <div
-                  key={dayIndex}
-                  className="flex-1 border-r px-2 py-3 text-center text-sm font-medium last:border-r-0"
-                >
-                  {DAYS[dayIndex]}
-                </div>
-              ))}
+              {renderedDays.map(dayIndex => {
+                const isActive = days.includes(dayIndex)
+                return (
+                  <div
+                    key={dayIndex}
+                    className={cn(
+                      "flex-1 border-r px-2 py-3 text-center text-sm font-medium last:border-r-0",
+                      !isActive && "bg-muted/30 text-muted-foreground",
+                    )}
+                  >
+                    {DAYS[dayIndex]}
+                  </div>
+                )
+              })}
             </div>
           </div>
 
@@ -528,25 +569,32 @@ export function Availability({
             <div className="flex flex-1 relative">
               <div className="absolute inset-0 pointer-events-none flex flex-col">
                 {Array.from({ length: endTime - startTime }).map((_, i) => (
-                  <div key={i} className="flex-1 border-b border-dashed border-muted/60 w-full relative" />
+                  <div key={i} className="flex-1 border-b border-dashed border-foreground/10 dark:border-muted/60 w-full relative" />
                 ))}
               </div>
 
-              {days.map((dayIndex, i) => (
-                <DayColumn
-                  key={dayIndex}
-                  dayIndex={dayIndex}
-                  colIndex={i}
-                  startTime={startTime}
-                  endTime={endTime}
-                  timeIncrements={timeIncrements}
-                  events={internalValue.filter(e => e.week_day === dayIndex)}
-                  onCreate={handleCreate}
-                  onResize={handleResize}
-                  onDelete={handleDelete}
-                  useAmPm={useAmPm}
-                />
-              ))}
+              {renderedDays.map((dayIndex, i) => {
+                // Check if this day is in the active list
+                const isActive = days.includes(dayIndex)
+
+                return (
+                  <DayColumn
+                    key={dayIndex}
+                    dayIndex={dayIndex}
+                    colIndex={i}
+                    startTime={startTime}
+                    endTime={endTime}
+                    timeIncrements={timeIncrements}
+                    events={internalValue.filter(e => e.week_day === dayIndex)}
+                    disabledEvents={disabled.filter(e => e.week_day === dayIndex)}
+                    onCreate={handleCreate}
+                    onResize={handleResize}
+                    onDelete={handleDelete}
+                    useAmPm={useAmPm}
+                    isDayDisabled={!isActive}
+                  />
+                )
+              })}
             </div>
           </div>
 
@@ -571,10 +619,12 @@ interface DayColumnProps {
   endTime: number
   timeIncrements: number
   events: TimeSpan[]
+  disabledEvents?: TimeSpan[]
   onCreate: (dayIndex: number, start: number, end: number) => void
   onResize: (id: string, start: string, end: string, isComplete?: boolean) => void
   onDelete: (id: string) => void
   useAmPm: boolean
+  isDayDisabled?: boolean
 }
 
 function DayColumn({
@@ -584,18 +634,22 @@ function DayColumn({
   endTime,
   timeIncrements,
   events,
+  disabledEvents = [],
   onCreate,
   onResize,
   onDelete,
   useAmPm,
+  isDayDisabled = false,
 }: DayColumnProps) {
   const containerRef = React.useRef<HTMLDivElement>(null)
 
   const context = React.useContext(AvailabilityDragContext)
 
   // Make the column a droppable zone for day detection
+  // Only droppable if not disabled
   const { setNodeRef } = useDroppable({
     id: `day-${dayIndex}`,
+    disabled: isDayDisabled,
   })
 
   const mergedRef = (node: HTMLDivElement | null) => {
@@ -603,19 +657,21 @@ function DayColumn({
     setNodeRef(node)
   }
 
-  const { isCreating, creationStart, currentMouseY, totalMinutes, startOffset, sortedEvents, handlePointerDown } =
+  const { isCreating, creationStart, currentMouseY, totalMinutes, startOffset, sortedConstraints, handlePointerDown } =
     useCalendarCreation({
       containerRef,
       timeIncrements,
       startTime,
       endTime,
       events,
+      disabledEvents,
       onCreate,
       colIndex,
+      isDayDisabled,
     })
 
   // Calculate ghost position
-  const showGhost = context?.activeId && context.overDayIndex === dayIndex && containerRef.current
+  const showGhost = context?.activeId && context.overDayIndex === dayIndex && containerRef.current && !isDayDisabled
 
   const ghostStyle = React.useMemo(() => {
     if (!showGhost || !context?.activeSpan || !containerRef.current) return null
@@ -657,10 +713,41 @@ function DayColumn({
       ref={mergedRef}
       className={cn(
         "flex-1 relative border-r last:border-r-0 min-w-[100px] touch-none",
+        isDayDisabled && "bg-muted/30",
         context?.activeId && "z-10", // Ensure z-index when dragging
       )}
       onPointerDown={handlePointerDown}
     >
+      {/* Full Day Disabled Overlay */}
+      {isDayDisabled && (
+        <div
+          className="absolute inset-0 bg-muted/10 pointer-events-none z-20"
+          style={{
+            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(128,128,128,0.15) 5px, rgba(128,128,128,0.15) 10px)`,
+          }}
+        />
+      )}
+
+      {/* Disabled Regions */}
+      {disabledEvents.map((disabled, i) => {
+        const startMins = timeToMinutes(disabled.start_time)
+        const endMins = timeToMinutes(disabled.end_time)
+        const duration = endMins - startMins
+
+        return (
+          <div
+            key={`disabled-${i}`}
+            className="absolute left-0 right-0 bg-muted/40 bg-stripes-muted pointer-events-none z-0"
+            style={{
+              top: `${((startMins - startOffset) / totalMinutes) * 100}%`,
+              height: `${(duration / totalMinutes) * 100}%`,
+              // Striped pattern using CSS gradient
+              backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(128,128,128,0.15) 5px, rgba(128,128,128,0.15) 10px)`,
+            }}
+          />
+        )
+      })}
+
       {/* Ghost Element */}
       {ghostStyle && (
         <div
@@ -672,12 +759,21 @@ function DayColumn({
         />
       )}
 
-      {sortedEvents.map((event, i) => {
-        const prevEvent = sortedEvents[i - 1]
-        const nextEvent = sortedEvents[i + 1]
+      {events.map((event, i) => {
+        // Calculate neighbors considering BOTH events and disabled regions for resizing constraints
+        // sortedConstraints contains both. We just need to find neighbors relative to THIS event in that list.
 
-        const minStart = prevEvent ? timeToMinutes(prevEvent.end_time) : startOffset
-        const maxEnd = nextEvent ? timeToMinutes(nextEvent.start_time) : endTime * 60
+        // We need a clean list of constraints excluding the event itself
+        const otherConstraints = sortedConstraints.filter(e => e.nanoid !== event.nanoid)
+
+        const eventStart = timeToMinutes(event.start_time)
+        const eventEnd = timeToMinutes(event.end_time)
+
+        const prevItem = otherConstraints.filter(e => timeToMinutes(e.end_time) <= eventStart).pop()
+        const nextItem = otherConstraints.find(e => timeToMinutes(e.start_time) >= eventEnd)
+
+        const minStart = prevItem ? timeToMinutes(prevItem.end_time) : startOffset
+        const maxEnd = nextItem ? timeToMinutes(nextItem.start_time) : endTime * 60
 
         const isDragging = context?.activeId === event.nanoid
 
@@ -695,6 +791,7 @@ function DayColumn({
             timeIncrements={timeIncrements}
             containerRef={containerRef}
             isDragging={isDragging}
+            isLocked={isDayDisabled} // Pass lock state if day is disabled
           />
         )
       })}
@@ -724,6 +821,7 @@ interface DraggableTimeSpanProps {
   timeIncrements: number
   containerRef: React.RefObject<HTMLDivElement | null>
   isDragging?: boolean
+  isLocked?: boolean
 }
 
 function DraggableTimeSpan({
@@ -738,11 +836,13 @@ function DraggableTimeSpan({
   timeIncrements,
   containerRef,
   isDragging,
+  isLocked = false,
 }: DraggableTimeSpanProps) {
   const context = React.useContext(AvailabilityDragContext)
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: span.nanoid,
     data: span,
+    disabled: isLocked, // Disable drag if locked
   })
 
   const startMinutes = timeToMinutes(span.start_time)
@@ -756,10 +856,11 @@ function DraggableTimeSpan({
     top: `${((startMinutes - startOffset) / totalMinutes) * 100}%`,
     height: `${(durationMinutes / totalMinutes) * 100}%`,
     // We hide the original element when dragging, but we render the tunnel content
-    opacity: isDragging ? 0 : 1,
+    opacity: isDragging ? 0 : isLocked ? 0.6 : 1, // Fade if locked
   }
 
   const handleResizeStart = (e: React.PointerEvent, edge: "top" | "bottom") => {
+    if (isLocked) return
     e.stopPropagation()
     e.preventDefault()
 
@@ -836,19 +937,26 @@ function DraggableTimeSpan({
     window.addEventListener("pointerup", handlePointerUp)
   }
 
+  const canResize = !isLocked
+
   const content = (
     <>
       {/* Resize Handle Top - Increased hit area */}
-      <div
-        className="absolute top-0 left-0 right-0 h-4 -mt-2 cursor-row-resize z-10"
-        onPointerDown={e => handleResizeStart(e, "top")}
-      />
+      {canResize && (
+        <div
+          className="absolute top-0 left-0 right-0 h-4 -mt-2 cursor-row-resize z-10"
+          onPointerDown={e => handleResizeStart(e, "top")}
+        />
+      )}
       {/* Visual Top Handle */}
       <div className="absolute top-0 left-1 right-1 h-1 bg-transparent group-hover:bg-foreground/20 rounded-t-sm" />
 
       {/* Drag Handle Area (middle) - Use dnd-kit listeners here */}
       <div
-        className="absolute inset-0 top-2 bottom-2 cursor-grab active:cursor-grabbing z-0"
+        className={cn(
+          "absolute inset-0 top-2 bottom-2 z-0",
+          canResize ? "cursor-grab active:cursor-grabbing" : "cursor-default",
+        )}
         {...listeners}
         {...attributes}
       />
@@ -857,14 +965,16 @@ function DraggableTimeSpan({
         span={span}
         useAmPm={useAmPm}
         duration={durationMinutes / 60}
-        onDelete={() => onDelete(span.nanoid)}
+        onDelete={canResize ? () => onDelete(span.nanoid) : undefined}
       />
 
       {/* Resize Handle Bottom - Increased hit area */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-4 -mb-2 cursor-row-resize z-10"
-        onPointerDown={e => handleResizeStart(e, "bottom")}
-      />
+      {canResize && (
+        <div
+          className="absolute bottom-0 left-0 right-0 h-4 -mb-2 cursor-row-resize z-10"
+          onPointerDown={e => handleResizeStart(e, "bottom")}
+        />
+      )}
       {/* Visual Bottom Handle */}
       <div className="absolute bottom-0 left-1 right-1 h-1 bg-transparent group-hover:bg-foreground/20 rounded-b-sm" />
     </>
@@ -876,8 +986,9 @@ function DraggableTimeSpan({
         ref={setNodeRef}
         style={style}
         className={cn(
-          "absolute left-1 right-1 rounded-md border border-foreground/50 bg-foreground/10 p-3 shadow-sm text-xs group overflow-hidden touch-none",
+          "absolute left-1 right-1 rounded border bg-muted p-3 shadow-sm text-xs group overflow-hidden touch-none",
           isDragging && "opacity-0", // Hide original while dragging
+          isLocked && "border-dashed opacity-60 cursor-default bg-muted/50",
         )}
       >
         {content}
