@@ -64,7 +64,6 @@ export function Availability({
   className,
 }: AvailabilityProps) {
   const [internalValue, setInternalValue] = React.useState<TimeSpan[]>(value)
-  const containerRef = React.useRef<HTMLDivElement>(null)
 
   // Sync controlled/uncontrolled state
   React.useEffect(() => {
@@ -75,9 +74,6 @@ export function Availability({
     setInternalValue(newValue)
     onValueChange?.(newValue)
   }
-
-  const totalMinutes = (endTime - startTime) * 60
-  const startOffset = startTime * 60
 
   // --- Handlers ---
 
@@ -112,7 +108,6 @@ export function Availability({
         "flex h-[600px] w-full flex-col overflow-hidden rounded-md border bg-background select-none",
         className,
       )}
-      ref={containerRef}
     >
       {/* Header */}
       <div className="flex w-full border-b bg-muted/40">
@@ -159,7 +154,6 @@ export function Availability({
           {days.map((dayIndex, i) => (
             <DayColumn
               key={dayIndex}
-              id={`day-${i}`}
               dayIndex={dayIndex}
               colIndex={i}
               startTime={startTime}
@@ -181,7 +175,6 @@ export function Availability({
 // --- Sub Components ---
 
 interface DayColumnProps {
-  id: string
   dayIndex: number
   colIndex: number
   startTime: number
@@ -192,11 +185,9 @@ interface DayColumnProps {
   onResize: (id: string, start: string, end: string) => void
   onDelete: (id: string) => void
   useAmPm: boolean
-  isOverlay?: boolean
 }
 
 function DayColumn({
-  id,
   dayIndex,
   colIndex,
   startTime,
@@ -235,21 +226,21 @@ function DayColumn({
     e.preventDefault() // Prevent text selection
 
     const startMins = getMinutesFromY(e.clientY)
-    
+
     // Check strict overlap at start point
     const isOverlapping = sortedEvents.some(ev => {
-        const s = timeToMinutes(ev.start_time)
-        const e = timeToMinutes(ev.end_time)
-        return startMins >= s && startMins < e
+      const s = timeToMinutes(ev.start_time)
+      const e = timeToMinutes(ev.end_time)
+      return startMins >= s && startMins < e
     })
     if (isOverlapping) return
 
     // Find constraints for both directions
     const prevEvent = sortedEvents.filter(ev => timeToMinutes(ev.end_time) <= startMins).pop()
     const nextEvent = sortedEvents.find(ev => timeToMinutes(ev.start_time) >= startMins)
-    
+
     const minStartMins = prevEvent ? timeToMinutes(prevEvent.end_time) : startOffset
-    const maxEndMins = nextEvent ? timeToMinutes(nextEvent.start_time) : (endTime * 60)
+    const maxEndMins = nextEvent ? timeToMinutes(nextEvent.start_time) : endTime * 60
 
     setCreationStart(startMins)
     setCurrentMouseY(startMins)
@@ -257,24 +248,24 @@ function DayColumn({
 
     const handleGlobalMouseMove = (e: MouseEvent) => {
       const currentMins = getMinutesFromY(e.clientY)
-      
+
       // Allow dragging both up and down, clamped to constraints
       const clampedMins = Math.max(minStartMins, Math.min(currentMins, maxEndMins))
-      
+
       setCurrentMouseY(clampedMins)
     }
 
     const handleGlobalMouseUp = (e: MouseEvent) => {
       const currentMins = getMinutesFromY(e.clientY)
-      
+
       // Determine start and end based on drag direction
       let finalStart = Math.min(startMins, currentMins)
       let finalEnd = Math.max(startMins, currentMins)
-      
+
       // Clamp to constraints
       finalStart = Math.max(minStartMins, finalStart)
       finalEnd = Math.min(maxEndMins, finalEnd)
-      
+
       // Ensure minimum size
       if (finalEnd - finalStart < timeIncrements) {
         finalEnd = Math.min(finalStart + timeIncrements, maxEndMins)
@@ -282,13 +273,13 @@ function DayColumn({
 
       // Click-to-create 1 hour logic
       if (finalEnd - finalStart <= timeIncrements) {
-          // Try 1 hour
-          const oneHourEnd = finalStart + 60
-          finalEnd = Math.min(oneHourEnd, maxEndMins)
+        // Try 1 hour
+        const oneHourEnd = finalStart + 60
+        finalEnd = Math.min(oneHourEnd, maxEndMins)
       }
-      
+
       if (finalEnd > finalStart) {
-          onCreate(colIndex, finalStart, finalEnd)
+        onCreate(colIndex, finalStart, finalEnd)
       }
 
       setIsCreating(false)
@@ -311,7 +302,7 @@ function DayColumn({
       {sortedEvents.map((event, i) => {
         const prevEvent = sortedEvents[i - 1]
         const nextEvent = sortedEvents[i + 1]
-        
+
         const minStart = prevEvent ? timeToMinutes(prevEvent.end_time) : startOffset
         const maxEnd = nextEvent ? timeToMinutes(nextEvent.start_time) : endTime * 60
 
@@ -405,13 +396,13 @@ function DraggableTimeSpan({
 
       if (edge === "top") {
         newStart += deltaMinutes
-        
+
         // Clamp to limits
         if (newStart < minStart) newStart = minStart
         if (newStart >= newEnd - timeIncrements) newStart = newEnd - timeIncrements
       } else {
         newEnd += deltaMinutes
-        
+
         // Clamp to limits
         if (newEnd > maxEnd) newEnd = maxEnd
         if (newEnd <= newStart + timeIncrements) newEnd = newStart + timeIncrements
