@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Settings, X } from "lucide-react"
+import { Settings, X, GripHorizontal } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
@@ -284,7 +284,10 @@ export function Availability({
 
   const handleDelete = (id: string) => {
     // Deletion is always complete, so merge (in case it creates new adjacencies)
-    updateValue(internalValue.filter(s => s.nanoid !== id), true)
+    updateValue(
+      internalValue.filter(s => s.nanoid !== id),
+      true,
+    )
   }
 
   return (
@@ -551,11 +554,13 @@ function DraggableTimeSpan({
     >
       {/* Resize Handle Top - Increased hit area */}
       <div
-        className="absolute top-0 left-0 right-0 h-4 -mt-2 cursor-row-resize z-10"
+        className="absolute top-0 left-0 right-0 h-4 hover:bg-foreground/5 opacity-20 hover:opacity-100 cursor-row-resize z-10 flex justify-center"
         onPointerDown={e => handleResizeStart(e, "top")}
-      />
+      >
+        <GripHorizontal className="h-3 w-3 relative top-[1px]" />
+      </div>
       {/* Visual Top Handle (optional, keeps UI clean but clickable) */}
-      <div className="absolute top-0 left-1 right-1 h-1 bg-transparent group-hover:bg-foreground/20 rounded-t-sm" />
+      {/* <div className="absolute top-0 left-1 right-1 h-1 bg-transparent group-hover:bg-foreground/20 rounded-t-sm" /> */}
 
       <TimeSpanCard
         span={span}
@@ -566,11 +571,13 @@ function DraggableTimeSpan({
 
       {/* Resize Handle Bottom - Increased hit area */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-4 -mb-2 cursor-row-resize z-10"
+        className="absolute bottom-[-2px] left-0 right-0 h-4 hover:bg-foreground/5 opacity-20 hover:opacity-100 cursor-row-resize z-10 flex justify-center"
         onPointerDown={e => handleResizeStart(e, "bottom")}
-      />
+      >
+        <GripHorizontal className="h-3 w-3 relative top-[1px]" />
+      </div>
       {/* Visual Bottom Handle */}
-      <div className="absolute bottom-0 left-1 right-1 h-1 bg-transparent group-hover:bg-foreground/20 rounded-b-sm" />
+      {/* <div className="absolute bottom-0 left-1 right-1 h-1 bg-transparent group-hover:bg-foreground/20 rounded-b-sm" /> */}
     </div>
   )
 }
