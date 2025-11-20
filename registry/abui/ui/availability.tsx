@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Settings, X } from "lucide-react"
+import { Clock, Settings, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -18,12 +18,13 @@ import {
   DragOverEvent,
 } from "@dnd-kit/core"
 import tunnel from "tunnel-rat"
+import { nanoid } from "nanoid"
 
 // --- Types ---
 
 export interface TimeSpan {
   active?: boolean
-  nanoid: string
+  id: string
   week_day: number // 0-6 - Sunday-Saturday
   start_time: string // "HH:mm"
   end_time: string // "HH:mm"
@@ -40,6 +41,7 @@ interface AvailabilityProps {
   endTime?: number // hour 0-23, default 23
   useAmPm?: boolean
   mergeAdjacent?: boolean // default true - merge spans that touch end-to-end
+  slotClassName?: string // className for time slot items (default: "bg-muted")
   className?: string
 }
 
@@ -65,14 +67,14 @@ const formatDisplayTime = (time: string, useAmPm: boolean) => {
 }
 
 // Helper to generate a simple unique ID (not crypto secure but sufficient for UI)
-const generateId = () => Math.random().toString(36).substring(2, 11)
+const generateId = () => nanoid()
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
 /**
  * Merges adjacent (contiguous) time spans on the same day.
  * Adjacent means one span's end_time equals another's start_time.
- * The merged span keeps the nanoid of the earliest span.
+ * The merged span keeps the id of the earliest span.
  */
 const mergeAdjacentSpans = (spans: TimeSpan[]): TimeSpan[] => {
   if (spans.length === 0) return spans
@@ -103,7 +105,7 @@ const mergeAdjacentSpans = (spans: TimeSpan[]): TimeSpan[] => {
         current = {
           ...current,
           end_time: next.end_time,
-          // Keep the earliest span's nanoid (current is already earlier due to sorting)
+          // Keep the earliest span's id (current is already earlier due to sorting)
         }
       } else {
         // Not adjacent, push current and move to next
@@ -280,6 +282,7 @@ export function Availability({
   endTime = 23,
   useAmPm = false,
   mergeAdjacent = true,
+  slotClassName = "bg-muted",
   className,
 }: AvailabilityProps) {
   const [internalValue, setInternalValue] = React.useState<TimeSpan[]>(value)
@@ -313,7 +316,7 @@ export function Availability({
 
   const handleResize = (id: string, newStart: string, newEnd: string, isComplete = false) => {
     const newValue = internalValue.map(span => {
-      if (span.nanoid === id) {
+      if (span.id === id) {
         return { ...span, start_time: newStart, end_time: newEnd }
       }
       return span
@@ -323,7 +326,7 @@ export function Availability({
 
   const handleCreate = (dayIndex: number, startMinutes: number, endMinutes: number) => {
     const newSpan: TimeSpan = {
-      nanoid: generateId(),
+      id: generateId(),
       week_day: dayIndex, // Directly use the dayIndex (0-6)
       start_time: minutesToTime(startMinutes),
       end_time: minutesToTime(endMinutes),
@@ -334,14 +337,14 @@ export function Availability({
 
   const handleDelete = (id: string) => {
     updateValue(
-      internalValue.filter(s => s.nanoid !== id),
+      internalValue.filter(s => s.id !== id),
       true,
     )
   }
 
   const handleMove = (id: string, newStart: string, newEnd: string, newDayIndex: number) => {
     const newValue = internalValue.map(span => {
-      if (span.nanoid === id) {
+      if (span.id === id) {
         return { ...span, start_time: newStart, end_time: newEnd, week_day: newDayIndex }
       }
       return span
@@ -381,7 +384,7 @@ export function Availability({
     }
 
     // Check collisions with active events
-    const dayEvents = internalValue.filter(e => e.week_day === targetDayIndex && e.nanoid !== span.nanoid)
+    const dayEvents = internalValue.filter(e => e.week_day === targetDayIndex && e.id !== span.id)
     const hasEventOverlap = dayEvents.some(e => {
       const eStart = timeToMinutes(e.start_time)
       const eEnd = timeToMinutes(e.end_time)
@@ -446,7 +449,7 @@ export function Availability({
       return
     }
 
-    const span = internalValue.find(s => s.nanoid === activeId)
+    const span = internalValue.find(s => s.id === activeId)
     if (!span) return
 
     const targetDayIndex = parseInt(overId.toString().replace("day-", ""), 10)
@@ -473,7 +476,7 @@ export function Availability({
     setDeltaY(0)
     setIsDropValid(true)
 
-    const span = internalValue.find(s => s.nanoid === active.id)
+    const span = internalValue.find(s => s.id === active.id)
     if (!span || !mainContainerRef.current || !over) return
 
     const targetDayIndex = parseInt(over.id.toString().replace("day-", ""), 10)
@@ -493,13 +496,10 @@ export function Availability({
     }
 
     const newEndVal = newStart + duration
-    handleMove(span.nanoid, minutesToTime(newStart), minutesToTime(newEndVal), targetDayIndex)
+    handleMove(span.id, minutesToTime(newStart), minutesToTime(newEndVal), targetDayIndex)
   }
 
-  const activeSpan = React.useMemo(
-    () => internalValue.find(s => s.nanoid === activeId) || null,
-    [activeId, internalValue],
-  )
+  const activeSpan = React.useMemo(() => internalValue.find(s => s.id === activeId) || null, [activeId, internalValue])
 
   return (
     <DndContext
@@ -522,6 +522,7 @@ export function Availability({
         }}
       >
         <div
+          suppressHydrationWarning
           className={cn(
             "flex h-[600px] w-full flex-col overflow-hidden rounded-md border bg-background select-none touch-none",
             className,
@@ -569,7 +570,10 @@ export function Availability({
             <div className="flex flex-1 relative">
               <div className="absolute inset-0 pointer-events-none flex flex-col">
                 {Array.from({ length: endTime - startTime }).map((_, i) => (
-                  <div key={i} className="flex-1 border-b border-dashed border-foreground/10 dark:border-muted/60 w-full relative" />
+                  <div
+                    key={i}
+                    className="flex-1 border-b border-dashed border-foreground/10 dark:border-muted/60 w-full relative"
+                  />
                 ))}
               </div>
 
@@ -592,6 +596,7 @@ export function Availability({
                     onDelete={handleDelete}
                     useAmPm={useAmPm}
                     isDayDisabled={!isActive}
+                    slotClassName={slotClassName}
                   />
                 )
               })}
@@ -625,6 +630,7 @@ interface DayColumnProps {
   onDelete: (id: string) => void
   useAmPm: boolean
   isDayDisabled?: boolean
+  slotClassName?: string
 }
 
 function DayColumn({
@@ -640,6 +646,7 @@ function DayColumn({
   onDelete,
   useAmPm,
   isDayDisabled = false,
+  slotClassName = "bg-muted",
 }: DayColumnProps) {
   const containerRef = React.useRef<HTMLDivElement>(null)
 
@@ -764,7 +771,7 @@ function DayColumn({
         // sortedConstraints contains both. We just need to find neighbors relative to THIS event in that list.
 
         // We need a clean list of constraints excluding the event itself
-        const otherConstraints = sortedConstraints.filter(e => e.nanoid !== event.nanoid)
+        const otherConstraints = sortedConstraints.filter(e => e.id !== event.id)
 
         const eventStart = timeToMinutes(event.start_time)
         const eventEnd = timeToMinutes(event.end_time)
@@ -775,11 +782,11 @@ function DayColumn({
         const minStart = prevItem ? timeToMinutes(prevItem.end_time) : startOffset
         const maxEnd = nextItem ? timeToMinutes(nextItem.start_time) : endTime * 60
 
-        const isDragging = context?.activeId === event.nanoid
+        const isDragging = context?.activeId === event.id
 
         return (
           <DraggableTimeSpan
-            key={event.nanoid}
+            key={event.id}
             span={event}
             startTime={startTime}
             endTime={endTime}
@@ -792,6 +799,7 @@ function DayColumn({
             containerRef={containerRef}
             isDragging={isDragging}
             isLocked={isDayDisabled} // Pass lock state if day is disabled
+            slotClassName={slotClassName}
           />
         )
       })}
@@ -822,6 +830,7 @@ interface DraggableTimeSpanProps {
   containerRef: React.RefObject<HTMLDivElement | null>
   isDragging?: boolean
   isLocked?: boolean
+  slotClassName?: string
 }
 
 function DraggableTimeSpan({
@@ -837,10 +846,11 @@ function DraggableTimeSpan({
   containerRef,
   isDragging,
   isLocked = false,
+  slotClassName = "bg-muted",
 }: DraggableTimeSpanProps) {
   const context = React.useContext(AvailabilityDragContext)
   const { attributes, listeners, setNodeRef } = useDraggable({
-    id: span.nanoid,
+    id: span.id,
     data: span,
     disabled: isLocked, // Disable drag if locked
   })
@@ -900,7 +910,7 @@ function DraggableTimeSpan({
       }
 
       // During drag: don't merge (isComplete = false)
-      onResize(span.nanoid, minutesToTime(newStart), minutesToTime(newEnd), false)
+      onResize(span.id, minutesToTime(newStart), minutesToTime(newEnd), false)
     }
 
     const handlePointerUp = (ev: PointerEvent) => {
@@ -926,7 +936,7 @@ function DraggableTimeSpan({
           if (newEnd <= newStart + timeIncrements) newEnd = newStart + timeIncrements
         }
 
-        onResize(span.nanoid, minutesToTime(newStart), minutesToTime(newEnd), true)
+        onResize(span.id, minutesToTime(newStart), minutesToTime(newEnd), true)
       }
 
       window.removeEventListener("pointermove", handlePointerMove)
@@ -965,7 +975,7 @@ function DraggableTimeSpan({
         span={span}
         useAmPm={useAmPm}
         duration={durationMinutes / 60}
-        onDelete={canResize ? () => onDelete(span.nanoid) : undefined}
+        onDelete={canResize ? () => onDelete(span.id) : undefined}
       />
 
       {/* Resize Handle Bottom - Increased hit area */}
@@ -986,7 +996,8 @@ function DraggableTimeSpan({
         ref={setNodeRef}
         style={style}
         className={cn(
-          "absolute left-1 right-1 rounded border bg-muted p-3 shadow-sm text-xs group overflow-hidden touch-none",
+          "absolute left-1 right-1 rounded border p-3 shadow-sm text-xs group overflow-hidden touch-none",
+          slotClassName,
           isDragging && "opacity-0", // Hide original while dragging
           isLocked && "border-dashed opacity-60 cursor-default bg-muted/50",
         )}
@@ -1034,15 +1045,18 @@ function TimeSpanCard({
 
   return (
     <div className="h-full flex flex-col relative items-between text-foreground timespan-inner-area pointer-events-none">
-      <div className="flex flex-col gap-1 text-inherit">
+      <div className="flex flex-col gap-0.5 text-inherit">
         <p className="font-semibold leading-none">{formatDisplayTime(span.start_time, useAmPm)}</p>
-        <p className="text-[10px] opacity-80">{calculatedDuration.toFixed(1).replace(".0", "")}h</p>
+        <div className="flex items-center gap-0.5">
+          <Clock className="h-2 w-2" />{" "}
+          <p className="text-[10px] opacity-80">{calculatedDuration.toFixed(1).replace(".0", "")}h</p>
+        </div>
       </div>
       {onDelete && (
         <Button
           variant="ghost"
           size="icon"
-          className="h-5 w-5 hover:bg-foreground/20 -mt-1 -mr-1 absolute top-0 right-0 z-20 pointer-events-auto"
+          className="h-5 w-5 hover:bg-foreground/5 dark:hover:bg-foreground/10 -mt-1 -mr-1 absolute top-0 right-0 z-20 pointer-events-auto"
           onPointerDown={e => {
             e.stopPropagation() // Prevent drag/resize from card
           }}
