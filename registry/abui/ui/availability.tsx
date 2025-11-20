@@ -327,7 +327,7 @@ export function Availability({
         <div className="flex flex-1 relative">
           <div className="absolute inset-0 pointer-events-none flex flex-col">
             {Array.from({ length: endTime - startTime }).map((_, i) => (
-              <div key={i} className="flex-1 border-b border-dashed border-muted/20 w-full relative" />
+              <div key={i} className="flex-1 border-b border-dashed border-muted/60 w-full relative" />
             ))}
           </div>
 
@@ -546,12 +546,12 @@ function DraggableTimeSpan({
     <div
       style={style}
       className={cn(
-        "absolute left-1 right-1 rounded-md border border-foreground/50 bg-foreground/10 p-3 shadow-sm text-xs group overflow-hidden touch-none",
+        "absolute left-1 right-1 rounded border border-foreground/50 bg-foreground/10 p-3 shadow-sm text-xs group overflow-hidden touch-none",
       )}
     >
       {/* Resize Handle Top - Increased hit area */}
       <div
-        className="absolute top-0 left-0 right-0 h-4 -mt-2 cursor-n-resize z-10"
+        className="absolute top-0 left-0 right-0 h-4 -mt-2 cursor-row-resize z-10"
         onPointerDown={e => handleResizeStart(e, "top")}
       />
       {/* Visual Top Handle (optional, keeps UI clean but clickable) */}
@@ -566,7 +566,7 @@ function DraggableTimeSpan({
 
       {/* Resize Handle Bottom - Increased hit area */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-4 -mb-2 cursor-s-resize z-10"
+        className="absolute bottom-0 left-0 right-0 h-4 -mb-2 cursor-row-resize z-10"
         onPointerDown={e => handleResizeStart(e, "bottom")}
       />
       {/* Visual Bottom Handle */}

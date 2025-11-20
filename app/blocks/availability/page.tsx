@@ -99,8 +99,9 @@ export default function Page() {
           <div>
             <h2 className="text-lg font-semibold mb-2">Features</h2>
             <ul className="space-y-2 text-muted-foreground text-sm list-inside list-disc">
-              <li>Drag and drop time slots between days</li>
+              <li>Drag and drop time slots within day</li>
               <li>Resize time slots from top or bottom</li>
+              <li>Optionally auto-merge adjacent time slots</li>
               <li>Click and drag on empty space to create new slots</li>
               <li>Configurable start/end times and time increments</li>
               <li>Supports AM/PM or 24h format</li>
