@@ -31,7 +31,10 @@ export default function Page() {
 
   return (
     <PageWithBreadcrumbs>
-      <RegistryItemHeader registryItem={registryItem} />
+      <RegistryItemHeader
+        registryItem={registryItem}
+        source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/label-selector.tsx"
+      />
       <Content>
         <div className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-4">

@@ -15,7 +15,10 @@ export default function Page() {
 
   return (
     <>
-      <RegistryItemHeader registryItem={registryItem} />
+      <RegistryItemHeader
+        registryItem={registryItem}
+        source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/marketing/scroll-reveal-content-a.tsx"
+      />
       <ScrollRevealContentA contentA={dummyContentA} contentB={dummyContentB} contentC={dummyContentC} />
       <Content className="h-40"></Content>
 

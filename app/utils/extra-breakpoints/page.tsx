@@ -15,7 +15,10 @@ export default function Page() {
 
   return (
     <PageWithBreadcrumbs>
-      <RegistryItemHeader registryItem={registryItem} />
+      <RegistryItemHeader
+        registryItem={registryItem}
+        source="https://github.com/antoniobrandao/abui/blob/9f00cbc7850fddd183095fff481943bfc460b311/registry.json#L46"
+      />
       <Content>
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-2">

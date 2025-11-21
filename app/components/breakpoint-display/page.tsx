@@ -15,7 +15,10 @@ export default function Page() {
 
   return (
     <div>
-      <RegistryItemHeader registryItem={registryItem} />
+      <RegistryItemHeader
+        registryItem={registryItem}
+        source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/utils/breakpoint-display.tsx"
+      />
       <Content>
         {/* Live default instance - fixed at top of viewport */}
         <BreakpointDisplay />

@@ -9,7 +9,7 @@ To install components from the ABUI registry, you can use the following remote r
 ```json
 {
   "registries": {
-    "@abui": "https://abui-registry.vercel.app/r/{name}.json"
+    "@abui": "https://abui.io/r/{name}.json"
   }
 }
 ```
@@ -17,13 +17,7 @@ To install components from the ABUI registry, you can use the following remote r
 You can then add items using the following command:
 
 ```bash
-npx shadcn@latest add @abui/login-form
-```
-
-To install the `abui` design system, you can use the following command:
-
-```bash
-npx shadcn@beta add @abui/design-system
+npx shadcn@latest add @abui/spinner
 ```
 
 ## Authentication

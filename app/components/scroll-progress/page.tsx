@@ -22,7 +22,10 @@ export default function Page() {
       {/* Live instance - shows progress as you scroll this page */}
       <ScrollProgress />
 
-      <RegistryItemHeader registryItem={registryItem} />
+      <RegistryItemHeader
+        registryItem={registryItem}
+        source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/scroll-progress.tsx"
+      />
       <Content>
         <div className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-4">
