@@ -14,7 +14,7 @@ export default function Home() {
         <p className="text-muted-foreground max-w-[500px] mt-6">
           A shadcn-compatible registry of reusable components, blocks, and utilities following a structured architecture
           based on Vercel&apos;s{" "}
-          <Link href="https://www.components.build" className="text-accent hover:underline">
+          <Link href="https://www.components.build" className="text-highlight hover:underline">
             components.build
           </Link>{" "}
           specification.

@@ -70,7 +70,10 @@ export default function Page() {
 
   return (
     <div>
-      <RegistryItemHeader registryItem={registryItem} source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/availability.tsx" />
+      <RegistryItemHeader
+        registryItem={registryItem}
+        source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/availability.tsx"
+      />
       <Content>
         <div className="flex flex-col gap-2 w-full">
           <h2 className="text-2xl font-bold">Availability Designer</h2>

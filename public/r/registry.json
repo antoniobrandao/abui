@@ -6,7 +6,6 @@
     {
       "name": "design-system",
       "type": "registry:style",
-      "dependencies": ["radix-ui"],
       "registryDependencies": [
         "@abui/debug-utils",
         "@abui/breakpoint-display",
@@ -17,7 +16,7 @@
         "light": {
           "primary": "oklch(0.546 0.245 262.881)",
           "primary-foreground": "oklch(0.985 0 0)",
-          "radius": "0.825rem"
+          "radius": "0.625rem"
         },
         "dark": {
           "primary": "oklch(0.600 0.214 259.815)",
@@ -168,6 +167,18 @@
       "files": [
         {
           "path": "registry/abui/ui/scroll-progress.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "text-gradient",
+      "type": "registry:component",
+      "title": "Text Gradient",
+      "description": "A text gradient effect component.",
+      "files": [
+        {
+          "path": "registry/abui/effects/text-gradient.tsx",
           "type": "registry:component"
         }
       ]
