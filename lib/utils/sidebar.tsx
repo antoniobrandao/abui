@@ -14,8 +14,8 @@ export function getSidebarContent(pathname: string) {
         <p className="truncate text-sm ml-1.5 font-bold">ABUI</p>
       </div>
       <NavBase items={navItems.main} pathname={pathname} />
-      <NavBase items={navItems.components} label="Components" pathname={pathname} />
       <NavBase items={navItems.blocks} label="Blocks" pathname={pathname} />
+      <NavBase items={navItems.components} label="Components" pathname={pathname} />
       <NavBase items={navItems.utils} label="Utils" pathname={pathname} />
       <div className="flex items-center gap-2">
         <Link href="https://github.com/antoniobrandao/abui" target="_blank" rel="noopener noreferrer">
