@@ -173,6 +173,18 @@
       ]
     },
     {
+      "name": "text-gradient",
+      "type": "registry:component",
+      "title": "Text Gradient",
+      "description": "A text gradient effect component.",
+      "files": [
+        {
+          "path": "registry/abui/effects/text-gradient.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "timeline",
       "type": "registry:block",
       "title": "Timeline",
