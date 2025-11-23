@@ -308,7 +308,8 @@ export default function ControlledDemo() {
                     checkbox (default: false)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - ReactNode - The content to display
+                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - ReactNode - The content to
+                    display
                   </li>
                 </ul>
               </div>
@@ -331,11 +332,7 @@ function ControlledDemo() {
             <AccordionMultiselectTrigger className="px-2">{category.name}</AccordionMultiselectTrigger>
             <AccordionMultiselectContent>
               {servicesByCategory[category.nanoid]?.map(service => (
-                <AccordionMultiselectOption
-                  key={service.nanoid}
-                  value={service.nanoid}
-                  className="px-3 py-3"
-                >
+                <AccordionMultiselectOption key={service.nanoid} value={service.nanoid} className="px-3 py-3">
                   <ServiceItemContent service={service} />
                 </AccordionMultiselectOption>
               ))}
