@@ -225,6 +225,19 @@
       ]
     },
     {
+      "name": "accordion-multiselect",
+      "type": "registry:component",
+      "title": "Accordion Multiselect",
+      "description": "An accordion multiselect component with categories and services.",
+      "dependencies": ["@radix-ui/react-accordion", "@radix-ui/react-checkbox", "lucide-react"],
+      "files": [
+        {
+          "path": "registry/abui/ui/accordion-multiselect.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "scroll-reveal-content-a",
       "type": "registry:block",
       "title": "Scroll Reveal Content A",
