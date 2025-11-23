@@ -13,30 +13,12 @@ import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 // - Supports controlled/uncontrolled usage
 // - Uses data-attributes for state and slots for targeting
 
-// --- Types ---
-export interface Service {
-  active: boolean
-  nanoid: string
-  service_category_nanoid: string
-  name: string
-  description?: string
-  duration: number
-  price: number
-}
-
-export interface ServiceCategory {
-  active: boolean
-  nanoid: string
-  name: string
-  description?: string
-}
-
 // --- Context ---
 // We use a context to share selection state between the root and items/checkboxes
 // This allows for the Compound Component pattern.
 interface AccordionMultiselectContextValue {
   selectedValues: string[]
-  onSelectionChange: (serviceId: string, checked: boolean) => void
+  onSelectionChange: (value: string, checked: boolean) => void
 }
 
 const AccordionMultiselectContext = React.createContext<AccordionMultiselectContextValue | null>(null)
@@ -76,12 +58,12 @@ function AccordionMultiselect({
   const selectedValues = isControlled ? controlledValue : internalValue
 
   const handleSelectionChange = React.useCallback(
-    (serviceId: string, checked: boolean) => {
+    (value: string, checked: boolean) => {
       let newValues: string[]
       if (checked) {
-        newValues = [...selectedValues, serviceId]
+        newValues = [...selectedValues, value]
       } else {
-        newValues = selectedValues.filter(id => id !== serviceId)
+        newValues = selectedValues.filter(id => id !== value)
       }
 
       if (!isControlled) {
@@ -157,67 +139,60 @@ function AccordionMultiselectContent({
   )
 }
 
-// --- Sub-components for Service Item ---
+// --- Sub-components for Item Options ---
 
-interface AccordionMultiselectServiceItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  service: Service
+interface AccordionMultiselectOptionProps extends React.HTMLAttributes<HTMLDivElement> {
+  value: string
+  showCheckbox?: boolean
+  children: React.ReactNode
 }
 
-function AccordionMultiselectServiceItem({
-  service,
+function AccordionMultiselectOption({
+  value,
+  showCheckbox = false,
   className,
   onClick,
+  children,
   ...props
-}: AccordionMultiselectServiceItemProps) {
+}: AccordionMultiselectOptionProps) {
   const { selectedValues, onSelectionChange } = useAccordionMultiselect()
-  const isSelected = selectedValues.includes(service.nanoid)
+  const isSelected = selectedValues.includes(value)
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    onSelectionChange(service.nanoid, !isSelected)
+    onSelectionChange(value, !isSelected)
     onClick?.(e)
   }
 
   return (
     <div
-      data-slot="accordion-multiselect-service-item"
+      data-slot="accordion-multiselect-option"
       data-state={isSelected ? "checked" : "unchecked"}
       className={cn(
-        "flex items-start space-x-3 rounded-md group cursor-pointer transition-colors",
-        "hover:bg-foreground/4 data-[state=checked]:bg-foreground/6",
+        "flex items-start space-x-3 rounded-md group cursor-pointer transition-all border border-transparent",
+        "hover:border-foreground/10 data-[state=checked]:bg-foreground/6",
         className,
       )}
       onClick={handleClick}
       {...props}
     >
-      <div className="flex items-center h-5 mt-1">
-        <CheckboxPrimitive.Root
-          id={service.nanoid}
-          checked={isSelected}
-          onCheckedChange={checked => onSelectionChange(service.nanoid, checked as boolean)}
-          onClick={e => e.stopPropagation()}
-          className={cn(
-            "peer h-4 w-4 shrink-0 rounded-[3px] border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
-          )}
-        >
-          <CheckboxPrimitive.Indicator className={cn("flex items-center justify-center text-current")}>
-            <Check className="h-4 w-4" />
-          </CheckboxPrimitive.Indicator>
-        </CheckboxPrimitive.Root>
-      </div>
-      <div className="grid gap-1.5 leading-none flex-1">
-        <label
-          htmlFor={service.nanoid}
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer select-none"
-          onClick={e => e.stopPropagation()} // Stop propagation from label to avoid double toggle (label click triggers input/button click + bubbles to div)
-        >
-          {service.name}
-        </label>
-        <div className="flex justify-between items-center text-muted-foreground text-sm">
-          <span>{service.duration} min</span>
-          <span>€{service.price.toFixed(2)}</span>
+      {showCheckbox && (
+        <div className="flex items-center h-5 mt-1">
+          <CheckboxPrimitive.Root
+            id={value}
+            checked={isSelected}
+            onCheckedChange={checked => onSelectionChange(value, checked as boolean)}
+            onClick={e => e.stopPropagation()}
+            className={cn(
+              "peer h-4 w-4 shrink-0 rounded-[3px] border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
+            )}
+          >
+            <CheckboxPrimitive.Indicator className={cn("flex items-center justify-center text-current")}>
+              <Check className="h-4 w-4" />
+            </CheckboxPrimitive.Indicator>
+          </CheckboxPrimitive.Root>
         </div>
-        {service.description && <p className="text-sm text-muted-foreground">{service.description}</p>}
-      </div>
+      )}
+      <div className="flex-1">{children}</div>
     </div>
   )
 }
@@ -227,5 +202,5 @@ export {
   AccordionMultiselectItem,
   AccordionMultiselectTrigger,
   AccordionMultiselectContent,
-  AccordionMultiselectServiceItem,
+  AccordionMultiselectOption,
 }

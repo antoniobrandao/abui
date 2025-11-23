@@ -9,11 +9,27 @@ import {
   AccordionMultiselect,
   AccordionMultiselectContent,
   AccordionMultiselectItem,
-  AccordionMultiselectServiceItem,
+  AccordionMultiselectOption,
   AccordionMultiselectTrigger,
-  Service,
-  ServiceCategory,
 } from "@/registry/abui/ui/accordion-multiselect"
+
+// --- Types for Demo ---
+interface Service {
+  active: boolean
+  nanoid: string
+  service_category_nanoid: string
+  name: string
+  description?: string
+  duration: number
+  price: number
+}
+
+interface ServiceCategory {
+  active: boolean
+  nanoid: string
+  name: string
+  description?: string
+}
 
 const componentName = "accordion-multiselect"
 
@@ -80,6 +96,25 @@ const servicesByCategory = services.reduce(
   {} as Record<string, Service[]>,
 )
 
+function ServiceItemContent({ service }: { service: Service }) {
+  return (
+    <div className="grid gap-1.5 leading-none">
+      <label
+        htmlFor={service.nanoid}
+        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer select-none"
+        onClick={e => e.stopPropagation()}
+      >
+        {service.name}
+      </label>
+      <div className="flex justify-between items-center text-muted-foreground text-sm">
+        <span>{service.duration} min</span>
+        <span>€{service.price.toFixed(2)}</span>
+      </div>
+      {service.description && <p className="text-sm text-muted-foreground">{service.description}</p>}
+    </div>
+  )
+}
+
 export default function Page() {
   const registryItem = getRegistryItemFromJson(componentName)
   if (!registryItem) {
@@ -95,7 +130,7 @@ export default function Page() {
       <Content>
         <div className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-4">
-            <div className="text-sm font-medium">Default</div>
+            <div className="text-sm font-medium">Default (With Checkbox)</div>
 
             <ExamplePlusCodeTabs
               demoJSX={
@@ -106,11 +141,14 @@ export default function Page() {
                         <AccordionMultiselectTrigger className="px-2">{category.name}</AccordionMultiselectTrigger>
                         <AccordionMultiselectContent>
                           {servicesByCategory[category.nanoid]?.map(service => (
-                            <AccordionMultiselectServiceItem
+                            <AccordionMultiselectOption
                               key={service.nanoid}
-                              service={service}
+                              value={service.nanoid}
+                              showCheckbox={true}
                               className="px-3 py-3"
-                            />
+                            >
+                              <ServiceItemContent service={service} />
+                            </AccordionMultiselectOption>
                           ))}
                         </AccordionMultiselectContent>
                       </AccordionMultiselectItem>
@@ -125,7 +163,7 @@ export default function Page() {
   AccordionMultiselect,
   AccordionMultiselectContent,
   AccordionMultiselectItem,
-  AccordionMultiselectServiceItem,
+  AccordionMultiselectOption,
   AccordionMultiselectTrigger,
 } from "@/registry/abui/ui/accordion-multiselect"
 
@@ -141,7 +179,22 @@ export default function Example() {
             {services
               .filter(s => s.service_category_nanoid === category.nanoid)
               .map((service) => (
-                <AccordionMultiselectServiceItem key={service.nanoid} service={service} />
+                <AccordionMultiselectOption 
+                  key={service.nanoid} 
+                  value={service.nanoid}
+                  showCheckbox={true}
+                >
+                  <div className="grid gap-1.5 leading-none">
+                    <div className="font-medium">{service.name}</div>
+                    <div className="flex justify-between text-muted-foreground text-sm">
+                      <span>{service.duration} min</span>
+                      <span>€{service.price.toFixed(2)}</span>
+                    </div>
+                    {service.description && (
+                      <p className="text-sm text-muted-foreground">{service.description}</p>
+                    )}
+                  </div>
+                </AccordionMultiselectOption>
             ))}
           </AccordionMultiselectContent>
         </AccordionMultiselectItem>
@@ -155,7 +208,7 @@ export default function Example() {
           </div>
 
           <div className="flex flex-col gap-4">
-            <div className="text-sm font-medium">Controlled</div>
+            <div className="text-sm font-medium">Controlled (No Checkbox)</div>
 
             <ExamplePlusCodeTabs
               demoJSX={<ControlledDemo />}
@@ -167,7 +220,7 @@ import {
   AccordionMultiselect,
   AccordionMultiselectContent,
   AccordionMultiselectItem,
-  AccordionMultiselectServiceItem,
+  AccordionMultiselectOption,
   AccordionMultiselectTrigger,
 } from "@/registry/abui/ui/accordion-multiselect"
 
@@ -177,13 +230,18 @@ export default function ControlledDemo() {
   return (
     <div className="space-y-4">
       <AccordionMultiselect value={selected} onValueChange={setSelected}>
-        {/* ... map categories and services ... */}
         {categories.map((category) => (
           <AccordionMultiselectItem key={category.nanoid} value={category.nanoid}>
             <AccordionMultiselectTrigger>{category.name}</AccordionMultiselectTrigger>
             <AccordionMultiselectContent>
               {servicesByCategory[category.nanoid]?.map((service) => (
-                <AccordionMultiselectServiceItem key={service.nanoid} service={service} />
+                <AccordionMultiselectOption 
+                  key={service.nanoid} 
+                  value={service.nanoid}
+                  // showCheckbox={false} // Default
+                >
+                  <div>{service.name}</div>
+                </AccordionMultiselectOption>
               ))}
             </AccordionMultiselectContent>
           </AccordionMultiselectItem>
@@ -210,9 +268,10 @@ export default function ControlledDemo() {
               <li>Fully composable architecture using sub-components</li>
               <li>Built on top of Radix UI primitives (Accordion, Checkbox)</li>
               <li>Supports both controlled and uncontrolled selection states</li>
+              <li>Agnostic content model - render any React Node as an option</li>
+              <li>Optional checkbox display</li>
               <li>Accessible keyboard navigation and focus management</li>
               <li>Styling with Tailwind CSS and data-attributes</li>
-              <li>Separation of layout and data logic</li>
             </ul>
           </div>
 
@@ -234,61 +293,25 @@ export default function ControlledDemo() {
                     <code className="bg-muted rounded px-1.5 py-0.5">onValueChange</code> - (value: string[]) =&gt; void
                     - Callback when selection changes
                   </li>
-                  <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">type</code> - &quot;multiple&quot; - Inherited from
-                    Radix Accordion
-                  </li>
                 </ul>
               </div>
 
               <div className="space-y-2">
-                <h3 className="font-mono text-sm font-medium">AccordionMultiselectServiceItem</h3>
+                <h3 className="font-mono text-sm font-medium">AccordionMultiselectOption</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">service</code> - Service - The service data object
-                    containing name, price, duration, etc.
+                    <code className="bg-muted rounded px-1.5 py-0.5">value</code> - string - The unique identifier for
+                    this option (used in selection)
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">showCheckbox</code> - boolean - Whether to show the
+                    checkbox (default: false)
+                  </li>
+                  <li>
+                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - ReactNode - The content to display
                   </li>
                 </ul>
               </div>
-
-              <div className="space-y-2">
-                <h3 className="font-mono text-sm font-medium">Other Components</h3>
-                <p className="text-sm text-muted-foreground ml-4">
-                  <code className="bg-muted rounded px-1.5 py-0.5">AccordionMultiselectItem</code>,{" "}
-                  <code className="bg-muted rounded px-1.5 py-0.5">AccordionMultiselectTrigger</code>, and{" "}
-                  <code className="bg-muted rounded px-1.5 py-0.5">AccordionMultiselectContent</code> correspond
-                  directly to their Radix UI counterparts and accept the same props (className, children, etc.).
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <h2 className="text-lg font-semibold mb-2">How It Works</h2>
-            <div className="space-y-3 text-sm text-muted-foreground">
-              <p>
-                The component uses a Compound Component pattern with React Context to share state between the parent and
-                deeply nested children:
-              </p>
-              <ul className="list-disc list-inside space-y-2 ml-4">
-                <li>
-                  <strong>AccordionMultiselect (Root):</strong> Manages the selection state (controlled or uncontrolled)
-                  and provides it via Context. It wraps the Radix Accordion primitive.
-                </li>
-                <li>
-                  <strong>Sub-components:</strong> <code>AccordionMultiselectItem</code>,{" "}
-                  <code>AccordionMultiselectTrigger</code>, and <code>AccordionMultiselectContent</code> handle the
-                  structural layout and accordion behavior using Radix primitives.
-                </li>
-                <li>
-                  <strong>AccordionMultiselectServiceItem:</strong> Consumes the context to determine if its service ID
-                  is selected. It renders the checkbox and label, and triggers updates via the context callback.
-                </li>
-                <li>
-                  <strong>Data Attributes:</strong> Uses <code>data-state</code> and <code>data-slot</code> attributes
-                  for reliable styling and animation hooks, consistent with the project architecture.
-                </li>
-              </ul>
             </div>
           </div>
         </div>
@@ -305,10 +328,16 @@ function ControlledDemo() {
       <AccordionMultiselect value={selected} onValueChange={setSelected}>
         {categories.map(category => (
           <AccordionMultiselectItem key={category.nanoid} value={category.nanoid}>
-            <AccordionMultiselectTrigger>{category.name}</AccordionMultiselectTrigger>
+            <AccordionMultiselectTrigger className="px-2">{category.name}</AccordionMultiselectTrigger>
             <AccordionMultiselectContent>
               {servicesByCategory[category.nanoid]?.map(service => (
-                <AccordionMultiselectServiceItem key={service.nanoid} service={service} />
+                <AccordionMultiselectOption
+                  key={service.nanoid}
+                  value={service.nanoid}
+                  className="px-3 py-3"
+                >
+                  <ServiceItemContent service={service} />
+                </AccordionMultiselectOption>
               ))}
             </AccordionMultiselectContent>
           </AccordionMultiselectItem>
