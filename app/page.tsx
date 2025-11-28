@@ -12,7 +12,7 @@ export default function Home() {
     <PageWithBreadcrumbs>
       <Content className="flex flex-col gap-10">
         <p className="text-muted-foreground max-w-[500px] mt-6">
-          A shadcn-compatible registry of reusable components, blocks, and utilities confirming to Vercel&apos;s{" "}
+          A shadcn-compatible registry of reusable components, blocks, and utilities conforming to Vercel&apos;s{" "}
           <Link href="https://www.components.build" className="text-primary hover:underline">
             components.build
           </Link>{" "}
