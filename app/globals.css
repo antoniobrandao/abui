@@ -152,3 +152,7 @@
 @utility debug-cyan {
   @apply border border-cyan-500;
 }
+
+@utility code-text {
+  @apply bg-primary/20 text-primary rounded px-1.5 py-0.5;
+}
