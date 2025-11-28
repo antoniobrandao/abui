@@ -1,6 +1,6 @@
 # ABUI Registry
 
-This is an example registry built using `shadcn/ui`.
+A `shadcn/ui`-compatible registry of reusable components, blocks, and utilities conforming to Vercel's [components.build](https://components.build) specification.
 
 ## Usage
 
@@ -19,10 +19,6 @@ You can then add items using the following command:
 ```bash
 npx shadcn@latest add @abui/spinner
 ```
-
-## Authentication
-
-To see examples of how to use authentication with the registry, see the [API Routes](./app/api/registry/README.md) documentation.
 
 ## Development
 
