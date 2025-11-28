@@ -46,27 +46,27 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">ScrollRevealContentA</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">contentA</code> - ItemContent (required) - First
+                    <code className="code-text">contentA</code> - ItemContent (required) - First
                     section content
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">contentB</code> - ItemContent (required) - Second
+                    <code className="code-text">contentB</code> - ItemContent (required) - Second
                     section content
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">contentC</code> - ItemContent (required) - Third
+                    <code className="code-text">contentC</code> - ItemContent (required) - Third
                     section content
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">titleClass</code> - string - Custom CSS classes for
+                    <code className="code-text">titleClass</code> - string - Custom CSS classes for
                     titles
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">descriptionClass</code> - string - Custom CSS
+                    <code className="code-text">descriptionClass</code> - string - Custom CSS
                     classes for descriptions
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                 </ul>
               </div>
@@ -74,25 +74,25 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">ItemContent (Type)</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">title</code> - string - Section title
+                    <code className="code-text">title</code> - string - Section title
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">description</code> - string - Section description
+                    <code className="code-text">description</code> - string - Section description
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">image</code> - object - Image configuration:
+                    <code className="code-text">image</code> - object - Image configuration:
                     <ul className="ml-4 mt-1 space-y-1">
                       <li>
-                        <code className="bg-muted rounded px-1.5 py-0.5">url</code> - string - Image URL
+                        <code className="code-text">url</code> - string - Image URL
                       </li>
                       <li>
-                        <code className="bg-muted rounded px-1.5 py-0.5">width</code> - number - Image width
+                        <code className="code-text">width</code> - number - Image width
                       </li>
                       <li>
-                        <code className="bg-muted rounded px-1.5 py-0.5">height</code> - number - Image height
+                        <code className="code-text">height</code> - number - Image height
                       </li>
                       <li>
-                        <code className="bg-muted rounded px-1.5 py-0.5">alt</code> - string - Alt text
+                        <code className="code-text">alt</code> - string - Alt text
                       </li>
                     </ul>
                   </li>

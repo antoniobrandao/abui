@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { type TOCItemType, TOCProvider, PageTOC, PageTOCItems } from "@/registry/abui/ui/toc"
 import { getRegistryItemFromJson } from "@/lib/utils/registry"
 import Content from "@/components/custom/Content"
 import { TextGradient } from "@/registry/abui/effects/text-gradient"
@@ -10,6 +11,19 @@ import { Spinner } from "@/registry/abui/ui/spinner"
 
 const componentName = "text-gradient"
 
+const tocItems: TOCItemType[] = [
+  { title: "Examples", url: "#examples", depth: 2 },
+  { title: "Default", url: "#default", depth: 3 },
+  { title: "Fast animation", url: "#fast-animation", depth: 3 },
+  { title: "Large text", url: "#large-text", depth: 3 },
+  { title: "Wide spread", url: "#wide-spread", depth: 3 },
+  { title: "With spinner", url: "#with-spinner", depth: 3 },
+  { title: "Within text", url: "#within-text", depth: 3 },
+  { title: "Features", url: "#features", depth: 2 },
+  { title: "Component Props", url: "#component-props", depth: 2 },
+  { title: "How It Works", url: "#how-it-works", depth: 2 },
+]
+
 export default function Page() {
   const registryItem = getRegistryItemFromJson(componentName)
   if (!registryItem) {
@@ -17,15 +31,17 @@ export default function Page() {
   }
 
   return (
-    <div>
-      <RegistryItemHeader
-        registryItem={registryItem}
-        source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/effects/text-gradient.tsx"
-      />
-      <Content>
-        <div className="w-full flex flex-col gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="text-sm font-medium">Default</div>
+    <TOCProvider toc={tocItems}>
+      <div className="flex gap-8 relative">
+        <div className="flex-1 min-w-0">
+          <RegistryItemHeader
+            registryItem={registryItem}
+            source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/effects/text-gradient.tsx"
+          />
+          <Content>
+            <div className="w-full flex flex-col gap-8" id="examples">
+              <div className="flex flex-col gap-4" id="default">
+                <div className="text-sm font-medium">Default</div>
 
             <ExamplePlusCodeTabs
               demoJSX={
@@ -41,7 +57,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="fast-animation">
             <div className="text-sm font-medium">Fast animation</div>
             <ExamplePlusCodeTabs
               demoJSX={
@@ -61,7 +77,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="large-text">
             <div className="text-sm font-medium">Large text</div>
             <ExamplePlusCodeTabs
               demoJSX={
@@ -77,7 +93,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="wide-spread">
             <div className="text-sm font-medium">Wide spread</div>
             <ExamplePlusCodeTabs
               demoJSX={
@@ -97,7 +113,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="with-spinner">
             <div className="text-sm font-medium">With spinner</div>
             <ExamplePlusCodeTabs
               demoJSX={
@@ -121,7 +137,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="within-text">
             <div className="text-sm font-medium">Within text</div>
             <ExamplePlusCodeTabs
               demoJSX={
@@ -148,7 +164,7 @@ export default function Page() {
       </Content>
 
       <Content>
-        <div className="flex flex-col gap-6 w-full">
+        <div className="flex flex-col gap-6 w-full" id="features">
           <div>
             <h2 className="text-lg font-semibold mb-2">Features</h2>
             <ul className="space-y-2 text-muted-foreground text-sm list-inside list-disc">
@@ -163,34 +179,34 @@ export default function Page() {
             </ul>
           </div>
 
-          <div>
+          <div id="component-props">
             <h2 className="text-lg font-semibold mb-4">Component Props</h2>
             <div className="space-y-6">
               <div className="space-y-2">
                 <h3 className="font-mono text-sm font-medium">TextGradient</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode - The text
+                    <code className="code-text">children</code> - React.ReactNode - The text
                     content to display with the gradient effect
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">spread</code> - number - The spread distance for
+                    <code className="code-text">spread</code> - number - The spread distance for
                     the gradient effect in pixels (default: 22)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">highlightColor</code> - string - The background
+                    <code className="code-text">highlightColor</code> - string - The background
                     color for the gradient highlight (default: &quot;hsl(var(--background))&quot;)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">baseColor</code> - string - The base text color
+                    <code className="code-text">baseColor</code> - string - The base text color
                     (shows through the gradient) (default: &quot;hsl(var(--muted-foreground))&quot;)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">duration</code> - number - Animation duration in
+                    <code className="code-text">duration</code> - number - Animation duration in
                     seconds (default: 3)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string - Additional CSS classes
+                    <code className="code-text">className</code> - string - Additional CSS classes
                     to apply to the component
                   </li>
                 </ul>
@@ -198,7 +214,7 @@ export default function Page() {
             </div>
           </div>
 
-          <div>
+          <div id="how-it-works">
             <h2 className="text-lg font-semibold mb-2">How It Works</h2>
             <div className="space-y-3 text-sm text-muted-foreground">
               <p>The text gradient effect uses a clever combination of CSS properties to create a moving highlight:</p>
@@ -209,12 +225,12 @@ export default function Page() {
                 </li>
                 <li>
                   <strong>Background clipping:</strong> The{" "}
-                  <code className="bg-muted rounded px-1.5 py-0.5">bg-clip-text</code> property clips the background to
+                  <code className="code-text">bg-clip-text</code> property clips the background to
                   the text shape
                 </li>
                 <li>
                   <strong>CSS animation:</strong> Animates the{" "}
-                  <code className="bg-muted rounded px-1.5 py-0.5">background-position</code> from 0% to 200% for a
+                  <code className="code-text">background-position</code> from 0% to 200% for a
                   smooth scrolling effect
                 </li>
                 <li>
@@ -225,6 +241,16 @@ export default function Page() {
           </div>
         </div>
       </Content>
-    </div>
+        </div>
+
+        {/* TOC Sidebar */}
+        <aside className="hidden xl:block w-64 shrink-0">
+          <PageTOC className="sticky top-20">
+            <p className="mb-1 font-medium text-sm">On This Page</p>
+            <PageTOCItems variant="clerk" />
+          </PageTOC>
+        </aside>
+      </div>
+    </TOCProvider>
   )
 }

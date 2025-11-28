@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { type TOCItemType, TOCProvider, PageTOC, PageTOCItems } from "@/registry/abui/ui/toc"
 import { getRegistryItemFromJson } from "@/lib/utils/registry"
 import Content from "@/components/custom/Content"
 import { RadioTabs, RadioTabsItem, RadioTabsItemLabel, RadioTabsItemDescription } from "@/registry/abui/ui/radio-tabs"
@@ -8,6 +9,20 @@ import CodeBlockComponent from "@/components/custom/CodeBlock"
 import { RegistryItemHeader } from "@/components/custom/RegistryItemHeader"
 
 const componentName = "radio-tabs"
+
+const tocItems: TOCItemType[] = [
+  { title: "Examples", url: "#examples", depth: 2 },
+  { title: "Basic Example", url: "#basic-example", depth: 3 },
+  { title: "With More Options", url: "#more-options", depth: 3 },
+  { title: "With Disabled Option", url: "#disabled-option", depth: 3 },
+  { title: "With Descriptions", url: "#with-descriptions", depth: 3 },
+  { title: "Features", url: "#features", depth: 2 },
+  { title: "Component Props", url: "#component-props", depth: 2 },
+  { title: "RadioTabs", url: "#radiotabs-props", depth: 3 },
+  { title: "RadioTabsItem", url: "#radiotabsitem-props", depth: 3 },
+  { title: "RadioTabsItemLabel", url: "#radiotabsitemlabel-props", depth: 3 },
+  { title: "RadioTabsItemDescription", url: "#radiotabsitemdescription-props", depth: 3 },
+]
 
 export default function Page() {
   const [value, setValue] = React.useState("1")
@@ -19,15 +34,17 @@ export default function Page() {
   }
 
   return (
-    <div>
-      <RegistryItemHeader
-        registryItem={registryItem}
-        source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/radio-tabs.tsx"
-      />
-      <Content>
-        <div className="w-full flex flex-col gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="text-sm font-medium">Basic Example</div>
+    <TOCProvider toc={tocItems}>
+      <div className="flex gap-8 relative">
+        <div className="flex-1 min-w-0">
+          <RegistryItemHeader
+            registryItem={registryItem}
+            source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/radio-tabs.tsx"
+          />
+          <Content>
+            <div className="w-full flex flex-col gap-8" id="examples">
+              <div className="flex flex-col gap-4" id="basic-example">
+                <div className="text-sm font-medium">Basic Example</div>
             <div className="w-full flex items-center border rounded-lg justify-center min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <RadioTabs value={value} onValueChange={setValue}>
                 <RadioTabsItem value="1">Option 1</RadioTabsItem>
@@ -52,7 +69,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="more-options">
             <div className="text-sm font-medium">With More Options</div>
             <div className="w-full flex items-center border rounded-lg justify-center min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <RadioTabs value={value2} onValueChange={setValue2}>
@@ -80,7 +97,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="disabled-option">
             <div className="text-sm font-medium">With Disabled Option</div>
             <div className="w-full flex items-center border rounded-lg justify-center min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <RadioTabs defaultValue="email">
@@ -106,7 +123,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="with-descriptions">
             <div className="text-sm font-medium">With Descriptions</div>
             <div className="w-full flex items-center border rounded-lg justify-center min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <RadioTabs value={value3} onValueChange={setValue3}>
@@ -153,7 +170,7 @@ export default function Page() {
       </Content>
 
       <Content>
-        <div className="flex flex-col gap-6 w-full">
+        <div className="flex flex-col gap-6 w-full" id="features">
           <div>
             <h2 className="text-lg font-semibold mb-2">Features</h2>
             <ul className="space-y-2 text-muted-foreground text-sm list-inside list-disc">
@@ -169,83 +186,83 @@ export default function Page() {
             </ul>
           </div>
 
-          <div>
+          <div id="component-props">
             <h2 className="text-lg font-semibold mb-4">Component Props</h2>
             <div className="space-y-6">
-              <div className="space-y-2">
+              <div className="space-y-2" id="radiotabs-props">
                 <h3 className="font-mono text-sm font-medium">RadioTabs</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">value</code> - string - Currently selected value
+                    <code className="code-text">value</code> - string - Currently selected value
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">onValueChange</code> - (value: string) =&gt; void -
+                    <code className="code-text">onValueChange</code> - (value: string) =&gt; void -
                     Callback when value changes
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">defaultValue</code> - string - Default selected
+                    <code className="code-text">defaultValue</code> - string - Default selected
                     value (uncontrolled)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">stackAtBreakpoint</code> - &quot;sm&quot; |
+                    <code className="code-text">stackAtBreakpoint</code> - &quot;sm&quot; |
                     &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot; | &quot;2xl&quot; - Breakpoint at which tabs stack
                     vertically
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">containerClassName</code> - string - Additional
+                    <code className="code-text">containerClassName</code> - string - Additional
                     classes for the container
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                 </ul>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2" id="radiotabsitem-props">
                 <h3 className="font-mono text-sm font-medium">RadioTabsItem</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">value</code> - string (required) - The value for
+                    <code className="code-text">value</code> - string (required) - The value for
                     this radio item
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">disabled</code> - boolean - Whether the item is
+                    <code className="code-text">disabled</code> - boolean - Whether the item is
                     disabled
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">variant</code> - &quot;default&quot; |
+                    <code className="code-text">variant</code> - &quot;default&quot; |
                     &quot;outline&quot; | &quot;highlight&quot; | &quot;outline_highlight&quot; | &quot;primary&quot; |
                     &quot;secondary&quot; (default: &quot;default&quot;)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode - Either simple
+                    <code className="code-text">children</code> - React.ReactNode - Either simple
                     text or RadioTabsItemLabel/Description components
                   </li>
                 </ul>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2" id="radiotabsitemlabel-props">
                 <h3 className="font-mono text-sm font-medium">RadioTabsItemLabel</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode - The label
+                    <code className="code-text">children</code> - React.ReactNode - The label
                     content
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                 </ul>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2" id="radiotabsitemdescription-props">
                 <h3 className="font-mono text-sm font-medium">RadioTabsItemDescription</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode - The description
+                    <code className="code-text">children</code> - React.ReactNode - The description
                     content
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                 </ul>
               </div>
@@ -253,6 +270,16 @@ export default function Page() {
           </div>
         </div>
       </Content>
-    </div>
+        </div>
+
+        {/* TOC Sidebar */}
+        <aside className="hidden xl:block w-64 shrink-0">
+          <PageTOC className="sticky top-20">
+            <p className="mb-1 font-medium text-sm">On This Page</p>
+            <PageTOCItems variant="clerk" />
+          </PageTOC>
+        </aside>
+      </div>
+    </TOCProvider>
   )
 }

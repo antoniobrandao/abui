@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { type TOCItemType, TOCProvider, PageTOC, PageTOCItems } from "@/registry/abui/ui/toc"
 import { getRegistryItemFromJson } from "@/lib/utils/registry"
 import Content from "@/components/custom/Content"
 import { RegistryItemHeader } from "@/components/custom/RegistryItemHeader"
@@ -32,6 +33,16 @@ interface ServiceCategory {
 }
 
 const componentName = "accordion-multiselect"
+
+const tocItems: TOCItemType[] = [
+  { title: "Examples", url: "#examples", depth: 2 },
+  { title: "Default (With Checkbox)", url: "#default-with-checkbox", depth: 3 },
+  { title: "Controlled (No Checkbox)", url: "#controlled-no-checkbox", depth: 3 },
+  { title: "Features", url: "#features", depth: 2 },
+  { title: "Component Props", url: "#component-props", depth: 2 },
+  { title: "AccordionMultiselect", url: "#accordionmultiselect-props", depth: 3 },
+  { title: "AccordionMultiselectOption", url: "#accordionmultiselectoption-props", depth: 3 },
+]
 
 const categories: ServiceCategory[] = [
   {
@@ -122,15 +133,17 @@ export default function Page() {
   }
 
   return (
-    <div>
-      <RegistryItemHeader
-        registryItem={registryItem}
-        source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/accordion-multiselect.tsx"
-      />
-      <Content>
-        <div className="w-full flex flex-col gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="text-sm font-medium">Default (With Checkbox)</div>
+    <TOCProvider toc={tocItems}>
+      <div className="flex gap-8 relative">
+        <div className="flex-1 min-w-0">
+          <RegistryItemHeader
+            registryItem={registryItem}
+            source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/accordion-multiselect.tsx"
+          />
+          <Content>
+            <div className="w-full flex flex-col gap-8" id="examples">
+              <div className="flex flex-col gap-4" id="default-with-checkbox">
+                <div className="text-sm font-medium">Default (With Checkbox)</div>
 
             <ExamplePlusCodeTabs
               demoJSX={
@@ -207,7 +220,7 @@ export default function Example() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="controlled-no-checkbox">
             <div className="text-sm font-medium">Controlled (No Checkbox)</div>
 
             <ExamplePlusCodeTabs
@@ -261,7 +274,7 @@ export default function ControlledDemo() {
       </Content>
 
       <Content>
-        <div className="flex flex-col gap-6 w-full">
+        <div className="flex flex-col gap-6 w-full" id="features">
           <div>
             <h2 className="text-lg font-semibold mb-2">Features</h2>
             <ul className="space-y-2 text-muted-foreground text-sm list-inside list-disc">
@@ -275,40 +288,40 @@ export default function ControlledDemo() {
             </ul>
           </div>
 
-          <div>
+          <div id="component-props">
             <h2 className="text-lg font-semibold mb-4">Component Props</h2>
             <div className="space-y-6">
-              <div className="space-y-2">
+              <div className="space-y-2" id="accordionmultiselect-props">
                 <h3 className="font-mono text-sm font-medium">AccordionMultiselect</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">value</code> - string[] - Controlled selected
+                    <code className="code-text">value</code> - string[] - Controlled selected
                     values
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">defaultValue</code> - string[] - Default selected
+                    <code className="code-text">defaultValue</code> - string[] - Default selected
                     values for uncontrolled mode
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">onValueChange</code> - (value: string[]) =&gt; void
+                    <code className="code-text">onValueChange</code> - (value: string[]) =&gt; void
                     - Callback when selection changes
                   </li>
                 </ul>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2" id="accordionmultiselectoption-props">
                 <h3 className="font-mono text-sm font-medium">AccordionMultiselectOption</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">value</code> - string - The unique identifier for
+                    <code className="code-text">value</code> - string - The unique identifier for
                     this option (used in selection)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">showCheckbox</code> - boolean - Whether to show the
+                    <code className="code-text">showCheckbox</code> - boolean - Whether to show the
                     checkbox (default: false)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - ReactNode - The content to
+                    <code className="code-text">children</code> - ReactNode - The content to
                     display
                   </li>
                 </ul>
@@ -317,7 +330,17 @@ export default function ControlledDemo() {
           </div>
         </div>
       </Content>
-    </div>
+        </div>
+
+        {/* TOC Sidebar */}
+        <aside className="hidden xl:block w-64 shrink-0">
+          <PageTOC className="sticky top-20">
+            <p className="mb-1 font-medium text-sm">On This Page</p>
+            <PageTOCItems variant="clerk" />
+          </PageTOC>
+        </aside>
+      </div>
+    </TOCProvider>
   )
 }
 

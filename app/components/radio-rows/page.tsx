@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { type TOCItemType, TOCProvider, PageTOC, PageTOCItems } from "@/registry/abui/ui/toc"
 import PageWithBreadcrumbs from "@/components/PageWithBreadcrumbs"
 import { getRegistryItemFromJson } from "@/lib/utils/registry"
 import Content from "@/components/custom/Content"
@@ -9,6 +10,22 @@ import CodeBlockComponent from "@/components/custom/CodeBlock"
 import { RegistryItemHeader } from "@/components/custom/RegistryItemHeader"
 
 const componentName = "radio-rows"
+
+const tocItems: TOCItemType[] = [
+  { title: "Examples", url: "#examples", depth: 2 },
+  { title: "Basic Example", url: "#basic-example", depth: 3 },
+  { title: "With Disabled Option", url: "#disabled-option", depth: 3 },
+  { title: "With Descriptions", url: "#with-descriptions", depth: 3 },
+  { title: "Variant: Outline", url: "#variant-outline", depth: 3 },
+  { title: "Variant: Primary", url: "#variant-primary", depth: 3 },
+  { title: "Variant: Secondary", url: "#variant-secondary", depth: 3 },
+  { title: "Features", url: "#features", depth: 2 },
+  { title: "Component Props", url: "#component-props", depth: 2 },
+  { title: "RadioRows", url: "#radiorows-props", depth: 3 },
+  { title: "RadioRowsItem", url: "#radiorowsitem-props", depth: 3 },
+  { title: "RadioRowsItemTitle", url: "#radiorowsitemtitle-props", depth: 3 },
+  { title: "RadioRowsItemDescription", url: "#radiorowsitemdescription-props", depth: 3 },
+]
 
 export default function Page() {
   const [value, setValue] = React.useState("1")
@@ -21,15 +38,18 @@ export default function Page() {
   }
 
   return (
-    <PageWithBreadcrumbs>
-      <RegistryItemHeader
-        registryItem={registryItem}
-        source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/radio-rows.tsx"
-      />
-      <Content>
-        <div className="w-full flex flex-col gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="text-sm font-medium">Basic Example</div>
+    <TOCProvider toc={tocItems}>
+      <PageWithBreadcrumbs>
+        <div className="flex gap-8 relative">
+          <div className="flex-1 min-w-0">
+            <RegistryItemHeader
+              registryItem={registryItem}
+              source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/radio-rows.tsx"
+            />
+            <Content>
+              <div className="w-full flex flex-col gap-8" id="examples">
+                <div className="flex flex-col gap-4" id="basic-example">
+                  <div className="text-sm font-medium">Basic Example</div>
             <div className="w-full flex items-center border rounded-lg justify-center min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <RadioRows value={value} onValueChange={setValue}>
                 <RadioRowsItem value="1">Option 1</RadioRowsItem>
@@ -54,7 +74,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="disabled-option">
             <div className="text-sm font-medium">With Disabled Option</div>
             <div className="w-full flex items-center border rounded-lg justify-center min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <RadioRows defaultValue="email">
@@ -80,7 +100,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="with-descriptions">
             <div className="text-sm font-medium">With Descriptions</div>
             <div className="w-full flex border rounded-lg justify-start min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <RadioRows value={value3} onValueChange={setValue3}>
@@ -124,7 +144,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="variant-outline">
             <div className="text-sm font-medium">Variant: Outline</div>
             <div className="w-full flex border rounded-lg justify-start min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <RadioRows value={value4} onValueChange={setValue4}>
@@ -168,7 +188,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="variant-primary">
             <div className="text-sm font-medium">Variant: Primary</div>
             <div className="w-full flex border rounded-lg justify-start min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <RadioRows value={value4} onValueChange={setValue4}>
@@ -212,7 +232,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="variant-secondary">
             <div className="text-sm font-medium">Variant: Secondary</div>
             <div className="w-full flex border rounded-lg justify-start min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <RadioRows value={value5} onValueChange={setValue5}>
@@ -259,7 +279,7 @@ export default function Page() {
       </Content>
 
       <Content>
-        <div className="flex flex-col gap-6 w-full">
+        <div className="flex flex-col gap-6 w-full" id="features">
           <div>
             <h2 className="text-lg font-semibold mb-2">Features</h2>
             <ul className="space-y-2 text-muted-foreground text-sm list-inside list-disc">
@@ -274,77 +294,77 @@ export default function Page() {
             </ul>
           </div>
 
-          <div>
+          <div id="component-props">
             <h2 className="text-lg font-semibold mb-4">Component Props</h2>
             <div className="space-y-6">
-              <div className="space-y-2">
+              <div className="space-y-2" id="radiorows-props">
                 <h3 className="font-mono text-sm font-medium">RadioRows</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">value</code> - string - Currently selected value
+                    <code className="code-text">value</code> - string - Currently selected value
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">onValueChange</code> - (value: string) =&gt; void -
+                    <code className="code-text">onValueChange</code> - (value: string) =&gt; void -
                     Callback when value changes
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">defaultValue</code> - string - Default selected
+                    <code className="code-text">defaultValue</code> - string - Default selected
                     value (uncontrolled)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">containerClassName</code> - string - Additional
+                    <code className="code-text">containerClassName</code> - string - Additional
                     classes for the inner container
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                 </ul>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2" id="radiorowsitem-props">
                 <h3 className="font-mono text-sm font-medium">RadioRowsItem</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">value</code> - string (required) - The value for
+                    <code className="code-text">value</code> - string (required) - The value for
                     this radio item
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">disabled</code> - boolean - Whether the item is
+                    <code className="code-text">disabled</code> - boolean - Whether the item is
                     disabled
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">variant</code> - &quot;default&quot; |
+                    <code className="code-text">variant</code> - &quot;default&quot; |
                     &quot;outline&quot; | &quot;primary&quot; | &quot;secondary&quot; (default: &quot;default&quot;)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode - Either simple
+                    <code className="code-text">children</code> - React.ReactNode - Either simple
                     text or RadioRowsItemTitle/Description components
                   </li>
                 </ul>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2" id="radiorowsitemtitle-props">
                 <h3 className="font-mono text-sm font-medium">RadioRowsItemTitle</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode - The title
+                    <code className="code-text">children</code> - React.ReactNode - The title
                     content
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                 </ul>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2" id="radiorowsitemdescription-props">
                 <h3 className="font-mono text-sm font-medium">RadioRowsItemDescription</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode - The description
+                    <code className="code-text">children</code> - React.ReactNode - The description
                     content
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                 </ul>
               </div>
@@ -352,6 +372,17 @@ export default function Page() {
           </div>
         </div>
       </Content>
-    </PageWithBreadcrumbs>
+          </div>
+
+          {/* TOC Sidebar */}
+          <aside className="hidden xl:block w-64 shrink-0">
+            <PageTOC className="sticky top-20">
+              <p className="mb-1 font-medium text-sm">On This Page</p>
+              <PageTOCItems variant="clerk" />
+            </PageTOC>
+          </aside>
+        </div>
+      </PageWithBreadcrumbs>
+    </TOCProvider>
   )
 }

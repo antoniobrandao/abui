@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { type TOCItemType, TOCProvider, PageTOC, PageTOCItems } from "@/registry/abui/ui/toc"
 import { getRegistryItemFromJson } from "@/lib/utils/registry"
 import Content from "@/components/custom/Content"
 import { RegistryItemHeader } from "@/components/custom/RegistryItemHeader"
@@ -8,6 +9,19 @@ import ExamplePlusCodeTabs from "@/components/custom/ExamplePlusCodeTabs"
 import { ScrollProgress } from "@/registry/abui/ui/scroll-progress"
 
 const componentName = "scroll-progress"
+
+const tocItems: TOCItemType[] = [
+  { title: "Examples", url: "#examples", depth: 2 },
+  { title: "Default (Viewport Scroll)", url: "#default-viewport", depth: 3 },
+  { title: "Custom Color", url: "#custom-color", depth: 3 },
+  { title: "Bottom Position", url: "#bottom-position", depth: 3 },
+  { title: "Custom Height", url: "#custom-height", depth: 3 },
+  { title: "Container Scroll", url: "#container-scroll", depth: 3 },
+  { title: "Features", url: "#features", depth: 2 },
+  { title: "Component Props", url: "#component-props", depth: 2 },
+  { title: "Positioning Note", url: "#positioning-note", depth: 3 },
+  { title: "Dependencies", url: "#dependencies", depth: 2 },
+]
 
 export default function Page() {
   const registryItem = getRegistryItemFromJson(componentName)
@@ -18,19 +32,21 @@ export default function Page() {
   }
 
   return (
-    <div>
-      {/* Live instance - shows progress as you scroll this page */}
-      <ScrollProgress />
+    <TOCProvider toc={tocItems}>
+      <div className="flex gap-8 relative">
+        <div className="flex-1 min-w-0">
+          {/* Live instance - shows progress as you scroll this page */}
+          <ScrollProgress />
 
-      <RegistryItemHeader
-        registryItem={registryItem}
-        source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/scroll-progress.tsx"
-      />
-      <Content>
-        <div className="w-full flex flex-col gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              <div className="text-sm font-medium">Default (Viewport Scroll)</div>
+          <RegistryItemHeader
+            registryItem={registryItem}
+            source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/scroll-progress.tsx"
+          />
+          <Content>
+            <div className="w-full flex flex-col gap-8" id="examples">
+              <div className="flex flex-col gap-4" id="default-viewport">
+                <div className="flex flex-col gap-2">
+                  <div className="text-sm font-medium">Default (Viewport Scroll)</div>
               <div className="text-sm text-muted-foreground">
                 A primary-colored progress bar at the top of the viewport. Check the top of your screen as you scroll
                 this page!
@@ -52,7 +68,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="custom-color">
             <div className="flex flex-col gap-2">
               <div className="text-sm font-medium">Custom Color</div>
               <div className="text-sm text-muted-foreground">
@@ -71,7 +87,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="bottom-position">
             <div className="flex flex-col gap-2">
               <div className="text-sm font-medium">Bottom Position</div>
               <div className="text-sm text-muted-foreground">
@@ -88,7 +104,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="custom-height">
             <div className="flex flex-col gap-2">
               <div className="text-sm font-medium">Custom Height</div>
               <div className="text-sm text-muted-foreground">Adjust the thickness of the progress bar</div>
@@ -105,7 +121,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="container-scroll">
             <div className="flex flex-col gap-2">
               <div className="text-sm font-medium">Container Scroll</div>
               <div className="text-sm text-muted-foreground">
@@ -189,7 +205,7 @@ export default function Page() {
       </Content>
 
       <Content>
-        <div className="flex flex-col gap-6 w-full">
+        <div className="flex flex-col gap-6 w-full" id="features">
           <div>
             <h2 className="text-lg font-semibold mb-2">Features</h2>
             <ul className="space-y-2 text-muted-foreground text-sm list-inside list-disc">
@@ -206,45 +222,45 @@ export default function Page() {
             </ul>
           </div>
 
-          <div>
+          <div id="component-props">
             <h2 className="text-lg font-semibold mb-4">Component Props</h2>
             <div className="space-y-6">
               <div className="space-y-2">
                 <h3 className="font-mono text-sm font-medium">ScrollProgress</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">height</code> - number (default: 2) - Height of the
+                    <code className="code-text">height</code> - number (default: 2) - Height of the
                     progress bar in pixels
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">color</code> - string (default:
+                    <code className="code-text">color</code> - string (default:
                     &quot;bg-primary&quot;) - Tailwind background color class
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">position</code> - &quot;top&quot; |
+                    <code className="code-text">position</code> - &quot;top&quot; |
                     &quot;bottom&quot; (default: &quot;top&quot;) - Position of the progress bar
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">container</code> -
+                    <code className="code-text">container</code> -
                     React.RefObject&lt;HTMLElement&gt; - Optional container element to track scroll for. If not
                     provided, tracks viewport scroll
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string - Additional CSS classes
+                    <code className="code-text">className</code> - string - Additional CSS classes
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">...props</code> - Extends motion.div props for
+                    <code className="code-text">...props</code> - Extends motion.div props for
                     advanced customization
                   </li>
                 </ul>
-                <div className="flex flex-col gap-2 mt-6">
+                <div className="flex flex-col gap-2 mt-6" id="positioning-note">
                   <h2 className="text-lg font-semibold">Positioning Note:</h2>
                   <p className="text-muted-foreground text-sm">
                     For viewport scroll, the component automatically uses{" "}
-                    <code className="bg-muted px-1 rounded">fixed</code> positioning.
+                    <code className="code-text">fixed</code> positioning.
                   </p>
                   <p className="text-muted-foreground text-sm">
-                    For container scroll, use <code className="bg-muted px-1 rounded">sticky</code> positioning via
+                    For container scroll, use <code className="code-text">sticky</code> positioning via
                     className and place the progress bar outside the scrollable container.
                   </p>
                 </div>
@@ -252,12 +268,22 @@ export default function Page() {
             </div>
           </div>
 
-          <div>
+          <div id="dependencies">
             <h2 className="text-lg font-semibold mb-4">Dependencies</h2>
             <code className="text-orange-500">motion@12</code>
           </div>
         </div>
       </Content>
-    </div>
+        </div>
+
+        {/* TOC Sidebar */}
+        <aside className="hidden xl:block w-64 shrink-0">
+          <PageTOC className="sticky top-20">
+            <p className="mb-1 font-medium text-sm">On This Page</p>
+            <PageTOCItems variant="clerk" />
+          </PageTOC>
+        </aside>
+      </div>
+    </TOCProvider>
   )
 }

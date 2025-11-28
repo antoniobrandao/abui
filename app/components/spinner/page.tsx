@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { type TOCItemType, TOCProvider, PageTOC, PageTOCItems } from "@/registry/abui/ui/toc"
 import { getRegistryItemFromJson } from "@/lib/utils/registry"
 import Content from "@/components/custom/Content"
 import { Spinner } from "@/registry/abui/ui/spinner"
@@ -10,6 +11,18 @@ import { Button } from "@/components/ui/button"
 
 const componentName = "spinner"
 
+const tocItems: TOCItemType[] = [
+  { title: "Examples", url: "#examples", depth: 2 },
+  { title: "Default Spinner", url: "#default-spinner", depth: 3 },
+  { title: "Custom Colors", url: "#custom-colors", depth: 3 },
+  { title: "Sizes", url: "#sizes", depth: 3 },
+  { title: "Speeds", url: "#speeds", depth: 3 },
+  { title: "Custom Stroke Width", url: "#stroke-width", depth: 3 },
+  { title: "Loading Button", url: "#loading-button", depth: 3 },
+  { title: "Features", url: "#features", depth: 2 },
+  { title: "Component Props", url: "#component-props", depth: 2 },
+]
+
 export default function Page() {
   const registryItem = getRegistryItemFromJson(componentName)
   if (!registryItem) {
@@ -17,15 +30,17 @@ export default function Page() {
   }
 
   return (
-    <div>
-      <RegistryItemHeader
-        registryItem={registryItem}
-        source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/spinner.tsx"
-      />
-      <Content>
-        <div className="w-full flex flex-col gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="text-sm font-medium">Default Spinner</div>
+    <TOCProvider toc={tocItems}>
+      <div className="flex gap-8 relative">
+        <div className="flex-1 min-w-0">
+          <RegistryItemHeader
+            registryItem={registryItem}
+            source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/spinner.tsx"
+          />
+          <Content>
+            <div className="w-full flex flex-col gap-8" id="examples">
+              <div className="flex flex-col gap-4" id="default-spinner">
+                <div className="text-sm font-medium">Default Spinner</div>
 
             <ExamplePlusCodeTabs
               demoJSX={
@@ -41,7 +56,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="custom-colors">
             <div className="text-sm font-medium">Custom Colors</div>
             <ExamplePlusCodeTabs
               demoJSX={
@@ -63,7 +78,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="sizes">
             <div className="text-sm font-medium">Sizes</div>
             <ExamplePlusCodeTabs
               demoJSX={
@@ -85,7 +100,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="speeds">
             <div className="text-sm font-medium">Speeds</div>
             <ExamplePlusCodeTabs
               demoJSX={
@@ -114,7 +129,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="stroke-width">
             <div className="text-sm font-medium">Custom Stroke Width</div>
             <ExamplePlusCodeTabs
               demoJSX={
@@ -143,7 +158,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="loading-button">
             <div className="text-sm font-medium">Loading Button</div>
             <ExamplePlusCodeTabs
               demoJSX={
@@ -168,7 +183,7 @@ export default function Page() {
       </Content>
 
       <Content>
-        <div className="flex flex-col gap-6 w-full">
+        <div className="flex flex-col gap-6 w-full" id="features">
           <div>
             <h2 className="text-lg font-semibold mb-2">Features</h2>
             <ul className="space-y-2 text-muted-foreground text-sm list-inside list-disc">
@@ -184,33 +199,33 @@ export default function Page() {
             </ul>
           </div>
 
-          <div>
+          <div id="component-props">
             <h2 className="text-lg font-semibold mb-4">Component Props</h2>
             <div className="space-y-6">
               <div className="space-y-2">
                 <h3 className="font-mono text-sm font-medium">Spinner</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">size</code> - &quot;sm&quot; | &quot;default&quot;
+                    <code className="code-text">size</code> - &quot;sm&quot; | &quot;default&quot;
                     | &quot;lg&quot; | &quot;xl&quot; - Size variant (default: &quot;default&quot;)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">speed</code> - &quot;slow&quot; |
+                    <code className="code-text">speed</code> - &quot;slow&quot; |
                     &quot;default&quot; | &quot;fast&quot; - Animation speed (default: &quot;default&quot;)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">strokeWidth</code> - number - Width of the spinner
+                    <code className="code-text">strokeWidth</code> - number - Width of the spinner
                     stroke (default: 3)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">bgClassName</code> - string - CSS class for the
+                    <code className="code-text">bgClassName</code> - string - CSS class for the
                     background circle (default: &quot;stroke-muted-foreground/20&quot;)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string - Additional CSS classes
+                    <code className="code-text">className</code> - string - Additional CSS classes
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">...props</code> - All native SVG element props are
+                    <code className="code-text">...props</code> - All native SVG element props are
                     supported
                   </li>
                 </ul>
@@ -219,6 +234,16 @@ export default function Page() {
           </div>
         </div>
       </Content>
-    </div>
+        </div>
+
+        {/* TOC Sidebar */}
+        <aside className="hidden xl:block w-64 shrink-0">
+          <PageTOC className="sticky top-20">
+            <p className="mb-1 font-medium text-sm">On This Page</p>
+            <PageTOCItems variant="clerk" />
+          </PageTOC>
+        </aside>
+      </div>
+    </TOCProvider>
   )
 }

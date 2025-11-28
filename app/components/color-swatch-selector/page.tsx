@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { type TOCItemType, TOCProvider, PageTOC, PageTOCItems } from "@/registry/abui/ui/toc"
 import PageWithBreadcrumbs from "@/components/PageWithBreadcrumbs"
 import { getRegistryItemFromJson } from "@/lib/utils/registry"
 import Content from "@/components/custom/Content"
@@ -9,6 +10,23 @@ import CodeBlockComponent from "@/components/custom/CodeBlock"
 import { RegistryItemHeader } from "@/components/custom/RegistryItemHeader"
 
 const componentName = "color-swatch-selector"
+
+const tocItems: TOCItemType[] = [
+  { title: "Examples", url: "#examples", depth: 2 },
+  { title: "Basic Example", url: "#basic-example", depth: 3 },
+  { title: "Without Label", url: "#without-label", depth: 3 },
+  { title: "Custom Gap Spacing", url: "#custom-gap", depth: 3 },
+  { title: "Custom Size", url: "#custom-size", depth: 3 },
+  { title: "With Disabled Option", url: "#disabled-option", depth: 3 },
+  { title: "Many Colors", url: "#many-colors", depth: 3 },
+  { title: "Vertical Layout", url: "#vertical-layout", depth: 3 },
+  { title: "Features", url: "#features", depth: 2 },
+  { title: "Component Props", url: "#component-props", depth: 2 },
+  { title: "ColorSwatchSelector.Root", url: "#colorswatchselector-root-props", depth: 3 },
+  { title: "ColorSwatchSelector.Label", url: "#colorswatchselector-label-props", depth: 3 },
+  { title: "ColorSwatchSelector.Content", url: "#colorswatchselector-content-props", depth: 3 },
+  { title: "ColorSwatchSelector.Item", url: "#colorswatchselector-item-props", depth: 3 },
+]
 
 export default function Page() {
   const [value, setValue] = React.useState("#e91e63")
@@ -23,15 +41,18 @@ export default function Page() {
   }
 
   return (
-    <PageWithBreadcrumbs>
-      <RegistryItemHeader
-        registryItem={registryItem}
-        source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/color-swatch-selector.tsx"
-      />
-      <Content>
-        <div className="w-full flex flex-col gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="text-sm font-medium">Basic Example</div>
+    <TOCProvider toc={tocItems}>
+      <PageWithBreadcrumbs>
+        <div className="flex gap-8 relative">
+          <div className="flex-1 min-w-0">
+            <RegistryItemHeader
+              registryItem={registryItem}
+              source="https://github.com/antoniobrandao/abui/blob/master/registry/abui/ui/color-swatch-selector.tsx"
+            />
+            <Content>
+              <div className="w-full flex flex-col gap-8" id="examples">
+                <div className="flex flex-col gap-4" id="basic-example">
+                  <div className="text-sm font-medium">Basic Example</div>
             <div className="w-full flex items-center border rounded-lg justify-center min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <ColorSwatchSelector.Root value={value} onValueChange={setValue}>
                 <ColorSwatchSelector.Label value="Select color" />
@@ -64,7 +85,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="without-label">
             <div className="text-sm font-medium">Without Label</div>
             <div className="w-full flex items-center border rounded-lg justify-center min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <ColorSwatchSelector.Root value={value2} onValueChange={setValue2}>
@@ -100,7 +121,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="custom-gap">
             <div className="text-sm font-medium">Custom Gap Spacing</div>
             <div className="w-full flex items-center border rounded-lg justify-center min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <ColorSwatchSelector.Root value={value3} onValueChange={setValue3}>
@@ -134,7 +155,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="custom-size">
             <div className="text-sm font-medium">Custom Size</div>
             <div className="w-full flex items-center border rounded-lg justify-center min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <ColorSwatchSelector.Root value={value4} onValueChange={setValue4}>
@@ -166,7 +187,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="disabled-option">
             <div className="text-sm font-medium">With Disabled Option</div>
             <div className="w-full flex items-center border rounded-lg justify-center min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <ColorSwatchSelector.Root defaultValue="#8b5cf6">
@@ -198,7 +219,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="many-colors">
             <div className="text-sm font-medium">Many Colors</div>
             <div className="w-full flex items-center border rounded-lg justify-center min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <ColorSwatchSelector.Root value={value5} onValueChange={setValue5}>
@@ -254,7 +275,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="vertical-layout">
             <div className="text-sm font-medium">Vertical Layout</div>
             <div className="w-full flex items-center border rounded-lg justify-center min-h-[200px] p-4 md:p-10 relative bg-muted/30">
               <ColorSwatchSelector.Root defaultValue="#ec4899" className="flex-col items-start">
@@ -289,7 +310,7 @@ export default function Page() {
       </Content>
 
       <Content>
-        <div className="flex flex-col gap-6 w-full">
+        <div className="flex flex-col gap-6 w-full" id="features">
           <div>
             <h2 className="text-lg font-semibold mb-2">Features</h2>
             <ul className="space-y-2 text-muted-foreground text-sm list-inside list-disc">
@@ -306,68 +327,68 @@ export default function Page() {
             </ul>
           </div>
 
-          <div>
+          <div id="component-props">
             <h2 className="text-lg font-semibold mb-4">Component Props</h2>
             <div className="space-y-6">
-              <div className="space-y-2">
+              <div className="space-y-2" id="colorswatchselector-root-props">
                 <h3 className="font-mono text-sm font-medium">ColorSwatchSelector.Root</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">value</code> - string - Currently selected color
+                    <code className="code-text">value</code> - string - Currently selected color
                     value
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">onValueChange</code> - (value: string) =&gt; void -
+                    <code className="code-text">onValueChange</code> - (value: string) =&gt; void -
                     Callback when value changes
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">defaultValue</code> - string - Default selected
+                    <code className="code-text">defaultValue</code> - string - Default selected
                     value (uncontrolled)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string - Override default
+                    <code className="code-text">className</code> - string - Override default
                     container styles
                   </li>
                 </ul>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2" id="colorswatchselector-label-props">
                 <h3 className="font-mono text-sm font-medium">ColorSwatchSelector.Label</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">value</code> - string (required) - The label text
+                    <code className="code-text">value</code> - string (required) - The label text
                     to display
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                 </ul>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2" id="colorswatchselector-content-props">
                 <h3 className="font-mono text-sm font-medium">ColorSwatchSelector.Content</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string - Useful for customizing
+                    <code className="code-text">className</code> - string - Useful for customizing
                     gap spacing
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode -
+                    <code className="code-text">children</code> - React.ReactNode -
                     ColorSwatchSelector.Item components
                   </li>
                 </ul>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2" id="colorswatchselector-item-props">
                 <h3 className="font-mono text-sm font-medium">ColorSwatchSelector.Item</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">value</code> - string (required) - The color value
+                    <code className="code-text">value</code> - string (required) - The color value
                     (hex format recommended)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">disabled</code> - boolean - Whether the item is
+                    <code className="code-text">disabled</code> - boolean - Whether the item is
                     disabled
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string - Useful for customizing
+                    <code className="code-text">className</code> - string - Useful for customizing
                     swatch size (e.g., h-14 w-14)
                   </li>
                 </ul>
@@ -376,6 +397,17 @@ export default function Page() {
           </div>
         </div>
       </Content>
-    </PageWithBreadcrumbs>
+          </div>
+
+          {/* TOC Sidebar */}
+          <aside className="hidden xl:block w-64 shrink-0">
+            <PageTOC className="sticky top-20">
+              <p className="mb-1 font-medium text-sm">On This Page</p>
+              <PageTOCItems variant="clerk" />
+            </PageTOC>
+          </aside>
+        </div>
+      </PageWithBreadcrumbs>
+    </TOCProvider>
   )
 }

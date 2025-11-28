@@ -195,10 +195,10 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">CalendarYear</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode
+                    <code className="code-text">children</code> - React.ReactNode
                   </li>
                 </ul>
               </div>
@@ -206,18 +206,18 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">CalendarYearContent</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">scrollToCurrentMonth</code> - boolean -
+                    <code className="code-text">scrollToCurrentMonth</code> - boolean -
                     Automatically scroll to current month (default: false)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">timezone</code> - string - Timezone for date
+                    <code className="code-text">timezone</code> - string - Timezone for date
                     calculations (default: &quot;Europe/Lisbon&quot;)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode
+                    <code className="code-text">children</code> - React.ReactNode
                   </li>
                 </ul>
               </div>
@@ -225,17 +225,17 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">CalendarYearMonth</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">name</code> - string (required) - Month name
+                    <code className="code-text">name</code> - string (required) - Month name
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">monthIndex</code> - number (required) - Month index
+                    <code className="code-text">monthIndex</code> - number (required) - Month index
                     (0-11)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode
+                    <code className="code-text">children</code> - React.ReactNode
                   </li>
                 </ul>
               </div>
@@ -243,11 +243,11 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">CalendarYearWeekdayHeader</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">labels</code> - string[] (required) - Array of
+                    <code className="code-text">labels</code> - string[] (required) - Array of
                     weekday labels
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                 </ul>
               </div>
@@ -255,10 +255,10 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">CalendarYearWeek</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">children</code> - React.ReactNode
+                    <code className="code-text">children</code> - React.ReactNode
                   </li>
                 </ul>
               </div>
@@ -266,35 +266,35 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">CalendarYearDay</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">date</code> - string (required) - Date in
+                    <code className="code-text">date</code> - string (required) - Date in
                     YYYY-MM-DD format
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">state</code> - &quot;blocked&quot; |
+                    <code className="code-text">state</code> - &quot;blocked&quot; |
                     &quot;disabled&quot; - Day state
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">variant</code> - &quot;default&quot; |
+                    <code className="code-text">variant</code> - &quot;default&quot; |
                     &quot;default-success&quot; | &quot;accent&quot; | &quot;destructive&quot; | &quot;outline&quot; |
                     &quot;outline-destructive&quot; | &quot;outline-accent&quot; | &quot;outline-success&quot; |
                     &quot;secondary&quot; | &quot;ghost&quot; (default: &quot;outline&quot;)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">disabled</code> - boolean - Whether the day is
+                    <code className="code-text">disabled</code> - boolean - Whether the day is
                     disabled
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">tooltip</code> - string - Tooltip text for the day
+                    <code className="code-text">tooltip</code> - string - Tooltip text for the day
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">timezone</code> - string - Timezone for date
+                    <code className="code-text">timezone</code> - string - Timezone for date
                     calculations (default: &quot;Europe/Lisbon&quot;)
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">onClick</code> - () =&gt; void - Click handler
+                    <code className="code-text">onClick</code> - () =&gt; void - Click handler
                   </li>
                   <li>
-                    <code className="bg-muted rounded px-1.5 py-0.5">className</code> - string
+                    <code className="code-text">className</code> - string
                   </li>
                 </ul>
               </div>
@@ -311,11 +311,11 @@ export default function Page() {
               </p>
               <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                 <li>
-                  <code className="bg-muted rounded px-1.5 py-0.5">year</code> - number (required) - Year to generate
+                  <code className="code-text">year</code> - number (required) - Year to generate
                   calendar for
                 </li>
                 <li>
-                  <code className="bg-muted rounded px-1.5 py-0.5">timezone</code> - string - Timezone for calculations
+                  <code className="code-text">timezone</code> - string - Timezone for calculations
                   (default: &quot;Europe/Lisbon&quot;)
                 </li>
                 <li>Returns: CalendarMonth[] - Array of month structures with date information</li>
