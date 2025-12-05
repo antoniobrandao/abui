@@ -46,24 +46,19 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">ScrollRevealContentA</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="code-text">contentA</code> - ItemContent (required) - First
-                    section content
+                    <code className="code-text">contentA</code> - ItemContent (required) - First section content
                   </li>
                   <li>
-                    <code className="code-text">contentB</code> - ItemContent (required) - Second
-                    section content
+                    <code className="code-text">contentB</code> - ItemContent (required) - Second section content
                   </li>
                   <li>
-                    <code className="code-text">contentC</code> - ItemContent (required) - Third
-                    section content
+                    <code className="code-text">contentC</code> - ItemContent (required) - Third section content
                   </li>
                   <li>
-                    <code className="code-text">titleClass</code> - string - Custom CSS classes for
-                    titles
+                    <code className="code-text">titleClass</code> - string - Custom CSS classes for titles
                   </li>
                   <li>
-                    <code className="code-text">descriptionClass</code> - string - Custom CSS
-                    classes for descriptions
+                    <code className="code-text">descriptionClass</code> - string - Custom CSS classes for descriptions
                   </li>
                   <li>
                     <code className="code-text">className</code> - string

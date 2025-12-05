@@ -145,34 +145,34 @@ export default function Page() {
               <div className="flex flex-col gap-4" id="default-with-checkbox">
                 <div className="text-sm font-medium">Default (With Checkbox)</div>
 
-            <ExamplePlusCodeTabs
-              demoJSX={
-                <div className="w-full max-w-md mx-auto border rounded-lg py-2 px-3">
-                  <AccordionMultiselect>
-                    {categories.map(category => (
-                      <AccordionMultiselectItem key={category.nanoid} value={category.nanoid}>
-                        <AccordionMultiselectTrigger className="px-2">{category.name}</AccordionMultiselectTrigger>
-                        <AccordionMultiselectContent>
-                          {servicesByCategory[category.nanoid]?.map(service => (
-                            <AccordionMultiselectOption
-                              key={service.nanoid}
-                              value={service.nanoid}
-                              showCheckbox={true}
-                              className="px-3 py-3"
-                            >
-                              <ServiceItemContent service={service} />
-                            </AccordionMultiselectOption>
-                          ))}
-                        </AccordionMultiselectContent>
-                      </AccordionMultiselectItem>
-                    ))}
-                  </AccordionMultiselect>
-                </div>
-              }
-              code={{
-                language: "tsx",
-                filename: "example.tsx",
-                code: `import {
+                <ExamplePlusCodeTabs
+                  demoJSX={
+                    <div className="w-full max-w-md mx-auto border rounded-lg py-2 px-3">
+                      <AccordionMultiselect>
+                        {categories.map(category => (
+                          <AccordionMultiselectItem key={category.nanoid} value={category.nanoid}>
+                            <AccordionMultiselectTrigger className="px-2">{category.name}</AccordionMultiselectTrigger>
+                            <AccordionMultiselectContent>
+                              {servicesByCategory[category.nanoid]?.map(service => (
+                                <AccordionMultiselectOption
+                                  key={service.nanoid}
+                                  value={service.nanoid}
+                                  showCheckbox={true}
+                                  className="px-3 py-3"
+                                >
+                                  <ServiceItemContent service={service} />
+                                </AccordionMultiselectOption>
+                              ))}
+                            </AccordionMultiselectContent>
+                          </AccordionMultiselectItem>
+                        ))}
+                      </AccordionMultiselect>
+                    </div>
+                  }
+                  code={{
+                    language: "tsx",
+                    filename: "example.tsx",
+                    code: `import {
   AccordionMultiselect,
   AccordionMultiselectContent,
   AccordionMultiselectItem,
@@ -216,19 +216,19 @@ export default function Example() {
   )
 }
 `,
-              }}
-            />
-          </div>
+                  }}
+                />
+              </div>
 
-          <div className="flex flex-col gap-4" id="controlled-no-checkbox">
-            <div className="text-sm font-medium">Controlled (No Checkbox)</div>
+              <div className="flex flex-col gap-4" id="controlled-no-checkbox">
+                <div className="text-sm font-medium">Controlled (No Checkbox)</div>
 
-            <ExamplePlusCodeTabs
-              demoJSX={<ControlledDemo />}
-              code={{
-                language: "tsx",
-                filename: "controlled.tsx",
-                code: `import * as React from "react"
+                <ExamplePlusCodeTabs
+                  demoJSX={<ControlledDemo />}
+                  code={{
+                    language: "tsx",
+                    filename: "controlled.tsx",
+                    code: `import * as React from "react"
 import {
   AccordionMultiselect,
   AccordionMultiselectContent,
@@ -267,69 +267,67 @@ export default function ControlledDemo() {
   )
 }
 `,
-              }}
-            />
-          </div>
-        </div>
-      </Content>
-
-      <Content>
-        <div className="flex flex-col gap-6 w-full" id="features">
-          <div>
-            <h2 className="text-lg font-semibold mb-2">Features</h2>
-            <ul className="space-y-2 text-muted-foreground text-sm list-inside list-disc">
-              <li>Fully composable architecture using sub-components</li>
-              <li>Built on top of Radix UI primitives (Accordion, Checkbox)</li>
-              <li>Supports both controlled and uncontrolled selection states</li>
-              <li>Agnostic content model - render any React Node as an option</li>
-              <li>Optional checkbox display</li>
-              <li>Accessible keyboard navigation and focus management</li>
-              <li>Styling with Tailwind CSS and data-attributes</li>
-            </ul>
-          </div>
-
-          <div id="component-props">
-            <h2 className="text-lg font-semibold mb-4">Component Props</h2>
-            <div className="space-y-6">
-              <div className="space-y-2" id="accordionmultiselect-props">
-                <h3 className="font-mono text-sm font-medium">AccordionMultiselect</h3>
-                <ul className="text-muted-foreground space-y-1 text-sm ml-4">
-                  <li>
-                    <code className="code-text">value</code> - string[] - Controlled selected
-                    values
-                  </li>
-                  <li>
-                    <code className="code-text">defaultValue</code> - string[] - Default selected
-                    values for uncontrolled mode
-                  </li>
-                  <li>
-                    <code className="code-text">onValueChange</code> - (value: string[]) =&gt; void
-                    - Callback when selection changes
-                  </li>
-                </ul>
-              </div>
-
-              <div className="space-y-2" id="accordionmultiselectoption-props">
-                <h3 className="font-mono text-sm font-medium">AccordionMultiselectOption</h3>
-                <ul className="text-muted-foreground space-y-1 text-sm ml-4">
-                  <li>
-                    <code className="code-text">value</code> - string - The unique identifier for
-                    this option (used in selection)
-                  </li>
-                  <li>
-                    <code className="code-text">showCheckbox</code> - boolean - Whether to show the
-                    checkbox (default: false)
-                  </li>
-                  <li>
-                    <code className="code-text">children</code> - ReactNode - The content to
-                    display
-                  </li>
-                </ul>
+                  }}
+                />
               </div>
             </div>
-          </div>
-        </div>
-      </Content>
+          </Content>
+
+          <Content>
+            <div className="flex flex-col gap-6 w-full" id="features">
+              <div>
+                <h2 className="text-lg font-semibold mb-2">Features</h2>
+                <ul className="space-y-2 text-muted-foreground text-sm list-inside list-disc">
+                  <li>Fully composable architecture using sub-components</li>
+                  <li>Built on top of Radix UI primitives (Accordion, Checkbox)</li>
+                  <li>Supports both controlled and uncontrolled selection states</li>
+                  <li>Agnostic content model - render any React Node as an option</li>
+                  <li>Optional checkbox display</li>
+                  <li>Accessible keyboard navigation and focus management</li>
+                  <li>Styling with Tailwind CSS and data-attributes</li>
+                </ul>
+              </div>
+
+              <div id="component-props">
+                <h2 className="text-lg font-semibold mb-4">Component Props</h2>
+                <div className="space-y-6">
+                  <div className="space-y-2" id="accordionmultiselect-props">
+                    <h3 className="font-mono text-sm font-medium">AccordionMultiselect</h3>
+                    <ul className="text-muted-foreground space-y-1 text-sm ml-4">
+                      <li>
+                        <code className="code-text">value</code> - string[] - Controlled selected values
+                      </li>
+                      <li>
+                        <code className="code-text">defaultValue</code> - string[] - Default selected values for
+                        uncontrolled mode
+                      </li>
+                      <li>
+                        <code className="code-text">onValueChange</code> - (value: string[]) =&gt; void - Callback when
+                        selection changes
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="space-y-2" id="accordionmultiselectoption-props">
+                    <h3 className="font-mono text-sm font-medium">AccordionMultiselectOption</h3>
+                    <ul className="text-muted-foreground space-y-1 text-sm ml-4">
+                      <li>
+                        <code className="code-text">value</code> - string - The unique identifier for this option (used
+                        in selection)
+                      </li>
+                      <li>
+                        <code className="code-text">showCheckbox</code> - boolean - Whether to show the checkbox
+                        (default: false)
+                      </li>
+                      <li>
+                        <code className="code-text">children</code> - ReactNode - The content to display
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Content>
         </div>
 
         {/* TOC Sidebar */}

@@ -249,6 +249,31 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "timeline-steps",
+      "type": "registry:component",
+      "title": "Timeline Steps",
+      "description": "A component for displaying chronological events, activities, or steps",
+      "dependencies": ["class-variance-authority"],
+      "files": [
+        {
+          "path": "registry/abui/ui/timeline-steps.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "toc",
+      "type": "registry:component",
+      "title": "Table of Contents",
+      "description": "A table of contents component with active anchor tracking and depth-aware line styling. Features two variants: default (straight line) and clerk (depth-responsive line that follows hierarchy).",
+      "files": [
+        {
+          "path": "registry/abui/ui/toc.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

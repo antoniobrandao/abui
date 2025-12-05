@@ -159,24 +159,20 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">Availability</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="code-text">value</code> - TimeSpan[] - Array of time slot
-                    objects
+                    <code className="code-text">value</code> - TimeSpan[] - Array of time slot objects
                   </li>
                   <li>
-                    <code className="code-text">onValueChange</code> - (value: TimeSpan[]) ={">"}{" "}
-                    void - Callback when slots change
+                    <code className="code-text">onValueChange</code> - (value: TimeSpan[]) ={">"} void - Callback when
+                    slots change
                   </li>
                   <li>
-                    <code className="code-text">disabled</code> - TimeSpan[] - Array of
-                    disabled/blocked regions
+                    <code className="code-text">disabled</code> - TimeSpan[] - Array of disabled/blocked regions
                   </li>
                   <li>
-                    <code className="code-text">days</code> - number[] - Array of day indices (0-6)
-                    to display
+                    <code className="code-text">days</code> - number[] - Array of day indices (0-6) to display
                   </li>
                   <li>
-                    <code className="code-text">timeIncrements</code> - number - Grid interval in
-                    minutes (default: 30)
+                    <code className="code-text">timeIncrements</code> - number - Grid interval in minutes (default: 30)
                   </li>
                   <li>
                     <code className="code-text">startTime</code> - number - Start hour (0-23)
@@ -185,12 +181,11 @@ export default function Page() {
                     <code className="code-text">endTime</code> - number - End hour (0-23)
                   </li>
                   <li>
-                    <code className="code-text">useAmPm</code> - boolean - Use AM/PM format instead
-                    of 24h
+                    <code className="code-text">useAmPm</code> - boolean - Use AM/PM format instead of 24h
                   </li>
                   <li>
-                    <code className="code-text">mergeAdjacent</code> - boolean - Automatically
-                    merge adjacent blocks (default: true)
+                    <code className="code-text">mergeAdjacent</code> - boolean - Automatically merge adjacent blocks
+                    (default: true)
                   </li>
                 </ul>
               </div>

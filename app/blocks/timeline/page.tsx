@@ -252,25 +252,23 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">TimelineProvider</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="code-text">config</code> - TimelineConfig (required) -
-                    Timeline configuration object
+                    <code className="code-text">config</code> - TimelineConfig (required) - Timeline configuration
+                    object
                   </li>
                   <li>
-                    <code className="code-text">percentageInView</code> - number - Zoom level
-                    (default: 100)
+                    <code className="code-text">percentageInView</code> - number - Zoom level (default: 100)
                   </li>
                   <li>
-                    <code className="code-text">onSlotPositionChange</code> - (slotId: string,
-                    newTime: string, newRowId: string) =&gt; Promise&lt;boolean&gt; - Callback when slot position
-                    changes
+                    <code className="code-text">onSlotPositionChange</code> - (slotId: string, newTime: string,
+                    newRowId: string) =&gt; Promise&lt;boolean&gt; - Callback when slot position changes
                   </li>
                   <li>
-                    <code className="code-text">onValidateDrop</code> - (slotId: string, newTime:
-                    string, newRowId: string) =&gt; boolean - Validation callback for drop operations
+                    <code className="code-text">onValidateDrop</code> - (slotId: string, newTime: string, newRowId:
+                    string) =&gt; boolean - Validation callback for drop operations
                   </li>
                   <li>
-                    <code className="code-text">onSlotClick</code> - (slotId: string) =&gt; void -
-                    Click handler for slots
+                    <code className="code-text">onSlotClick</code> - (slotId: string) =&gt; void - Click handler for
+                    slots
                   </li>
                   <li>
                     <code className="code-text">className</code> - string
@@ -284,12 +282,10 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">Timeline</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="code-text">slots</code> - TimelineSlotData[] (required) -
-                    Array of slot data
+                    <code className="code-text">slots</code> - TimelineSlotData[] (required) - Array of slot data
                   </li>
                   <li>
-                    <code className="code-text">rows</code> - TimelineRowData[] (required) - Array
-                    of row data
+                    <code className="code-text">rows</code> - TimelineRowData[] (required) - Array of row data
                   </li>
                   <li>
                     <code className="code-text">className</code> - string
@@ -306,8 +302,8 @@ export default function Page() {
                     <code className="code-text">className</code> - string
                   </li>
                   <li>
-                    <code className="code-text">children</code> - React.ReactNode - TimelineHeader,
-                    TimelineRow, and TimelineCurrentTime components
+                    <code className="code-text">children</code> - React.ReactNode - TimelineHeader, TimelineRow, and
+                    TimelineCurrentTime components
                   </li>
                 </ul>
               </div>
@@ -315,8 +311,8 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">TimelineHeader</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="code-text">columnLabel</code> - React.ReactNode - Label for
-                    the left column (default: &quot;Row&quot;)
+                    <code className="code-text">columnLabel</code> - React.ReactNode - Label for the left column
+                    (default: &quot;Row&quot;)
                   </li>
                   <li>
                     <code className="code-text">className</code> - string
@@ -327,20 +323,19 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">TimelineRow</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="code-text">row</code> - TimelineRowData (required) - Row data
-                    object
+                    <code className="code-text">row</code> - TimelineRowData (required) - Row data object
                   </li>
                   <li>
-                    <code className="code-text">slots</code> - TimelineSlotData[] (required) -
-                    Array of slots for this row
+                    <code className="code-text">slots</code> - TimelineSlotData[] (required) - Array of slots for this
+                    row
                   </li>
                   <li>
-                    <code className="code-text">children</code> - (slot: TimelineSlotData) =&gt;
-                    React.ReactNode (required) - Render function for slots
+                    <code className="code-text">children</code> - (slot: TimelineSlotData) =&gt; React.ReactNode
+                    (required) - Render function for slots
                   </li>
                   <li>
-                    <code className="code-text">renderRowHeader</code> - (row: TimelineRowData)
-                    =&gt; React.ReactNode - Custom row header renderer
+                    <code className="code-text">renderRowHeader</code> - (row: TimelineRowData) =&gt; React.ReactNode -
+                    Custom row header renderer
                   </li>
                   <li>
                     <code className="code-text">className</code> - string
@@ -351,15 +346,14 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">TimelineSlot</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="code-text">slot</code> - TimelineSlotData (required) - Slot
-                    data object
+                    <code className="code-text">slot</code> - TimelineSlotData (required) - Slot data object
                   </li>
                   <li>
                     <code className="code-text">className</code> - string
                   </li>
                   <li>
-                    <code className="code-text">children</code> - React.ReactNode - Slot content
-                    (use TimelineSlotLabel and TimelineSlotContent)
+                    <code className="code-text">children</code> - React.ReactNode - Slot content (use TimelineSlotLabel
+                    and TimelineSlotContent)
                   </li>
                 </ul>
               </div>
@@ -389,8 +383,8 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">TimelineCurrentTime</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="code-text">nowLabel</code> - string - Label for current time
-                    indicator (default: &quot;Now&quot;)
+                    <code className="code-text">nowLabel</code> - string - Label for current time indicator (default:
+                    &quot;Now&quot;)
                   </li>
                   <li>
                     <code className="code-text">className</code> - string
@@ -407,20 +401,18 @@ export default function Page() {
                 <h3 className="font-mono text-sm font-medium">TimelineConfig</h3>
                 <ul className="text-muted-foreground space-y-1 text-sm ml-4">
                   <li>
-                    <code className="code-text">startHour</code> - number - Start hour (e.g., 9 for
-                    9:00 AM)
+                    <code className="code-text">startHour</code> - number - Start hour (e.g., 9 for 9:00 AM)
                   </li>
                   <li>
-                    <code className="code-text">endHour</code> - number - End hour (e.g., 18 for
-                    6:00 PM)
+                    <code className="code-text">endHour</code> - number - End hour (e.g., 18 for 6:00 PM)
                   </li>
                   <li>
-                    <code className="code-text">snapIntervalMinutes</code> - number - Snap interval
-                    in minutes (default: 15)
+                    <code className="code-text">snapIntervalMinutes</code> - number - Snap interval in minutes (default:
+                    15)
                   </li>
                   <li>
-                    <code className="code-text">columnWidth</code> - number - Width of left column
-                    in pixels (default: 112)
+                    <code className="code-text">columnWidth</code> - number - Width of left column in pixels (default:
+                    112)
                   </li>
                 </ul>
               </div>
@@ -434,8 +426,8 @@ export default function Page() {
                     <code className="code-text">rowId</code> - string - Parent row identifier
                   </li>
                   <li>
-                    <code className="code-text">startTime</code> - string - Start time in
-                    &quot;HH:MM&quot; format (e.g., &quot;14:30&quot;)
+                    <code className="code-text">startTime</code> - string - Start time in &quot;HH:MM&quot; format
+                    (e.g., &quot;14:30&quot;)
                   </li>
                   <li>
                     <code className="code-text">duration</code> - number - Duration in minutes
