@@ -274,6 +274,19 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "animated-chart",
+      "type": "registry:block",
+      "title": "Animated Chart",
+      "description": "An animated column chart with spring physics, viewport-triggered animations, and support for dynamic data transitions.",
+      "dependencies": ["motion@12"],
+      "files": [
+        {
+          "path": "registry/abui/marketing/animated-chart.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
