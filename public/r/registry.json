@@ -42,6 +42,17 @@
       }
     },
     {
+      "name": "text-utils",
+      "type": "registry:style",
+      "title": "Text Utils",
+      "description": "A set of text utility classes.",
+      "css": {
+        "@utility remove-text-box": {
+          "text-box": "trim-both cap alphabetic"
+        }
+      }
+    },
+    {
       "name": "extra-breakpoints",
       "type": "registry:style",
       "title": "Extra Breakpoints",
@@ -284,6 +295,20 @@
       "files": [
         {
           "path": "registry/abui/marketing/animated-chart.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "squeeze-carousel",
+      "type": "registry:block",
+      "title": "Squeeze Carousel",
+      "description": "A canvas-driven news carousel: one wide active card with squeezed companions that stretch on hover and slide into place, with keyboard and screen-reader support and a scroll-snap mobile layout.",
+      "dependencies": ["@radix-ui/react-slot", "@radix-ui/react-use-controllable-state", "lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/abui/marketing/squeeze-carousel.tsx",
           "type": "registry:component"
         }
       ]
