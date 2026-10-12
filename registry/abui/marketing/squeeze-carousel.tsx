@@ -66,6 +66,12 @@ export interface SqueezeCarouselItem {
    * image to the left. Default: 0.
    */
   collapsedOffsetX?: number
+  /**
+   * Link opened when the primary (fully revealed) card is clicked and no
+   * `SqueezeCarouselDetailAction` is registered for the item. When an action exists, clicking
+   * the card activates that action instead, so router links and analytics keep working.
+   */
+  href?: string
 }
 
 export type SqueezeCarouselCrossOrigin = "anonymous" | "use-credentials"
@@ -107,6 +113,8 @@ const SQUEEZE = {
   borderRadius: 6,
   /** The primary column is sized from the canvas height at this ratio; images are cover-fitted into it. */
   primaryAspectRatio: 16 / 9,
+  /** Cap on the share of the canvas width the primary column may take, so tall canvases keep companions. */
+  maxPrimaryShare: 0.75,
   /** Maximum device pixel ratio used for the backing store. */
   maxPixelRatio: 2,
 } as const
@@ -139,6 +147,8 @@ interface SqueezeCanvasEngineOptions {
   initialIndex?: number
   /** Called when a non-primary column is clicked, with the number of steps to advance. */
   onColumnClick: (steps: number) => void
+  /** Called when the primary (fully revealed) column is clicked. */
+  onPrimaryClick?: (event: MouseEvent) => void
   prefersReducedMotion?: boolean
   borderRadius?: number
   crossOrigin?: SqueezeCarouselCrossOrigin
@@ -155,6 +165,7 @@ export class SqueezeCanvasEngine {
   private readonly images: HTMLImageElement[]
   private readonly collapsedOffsets: number[]
   private readonly onColumnClick: (steps: number) => void
+  private readonly onPrimaryClick?: (event: MouseEvent) => void
   private readonly prefersReducedMotion: boolean
   private readonly borderRadius: number
   private readonly animationDuration: number
@@ -192,6 +203,7 @@ export class SqueezeCanvasEngine {
     items,
     initialIndex = 0,
     onColumnClick,
+    onPrimaryClick,
     prefersReducedMotion = false,
     borderRadius = SQUEEZE.borderRadius,
     crossOrigin,
@@ -204,6 +216,7 @@ export class SqueezeCanvasEngine {
     this.dpr = Math.min(window.devicePixelRatio || 1, SQUEEZE.maxPixelRatio)
     this.items = items
     this.onColumnClick = onColumnClick
+    this.onPrimaryClick = onPrimaryClick
     this.prefersReducedMotion = prefersReducedMotion
     this.borderRadius = borderRadius
     this.animationDuration = prefersReducedMotion ? SQUEEZE.reducedMotionDuration : SQUEEZE.duration
@@ -299,7 +312,11 @@ export class SqueezeCanvasEngine {
     this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0)
     this.canvasWidth = width
     this.canvasHeight = height
-    this.primaryBaseWidth = height * SQUEEZE.primaryAspectRatio
+    const fixedWidth = this.totalGap + SQUEEZE.smallCardWidth * this.numSmallCards
+    this.primaryBaseWidth = Math.min(
+      height * SQUEEZE.primaryAspectRatio,
+      Math.max(0, (width - fixedWidth) * SQUEEZE.maxPrimaryShare),
+    )
     this.totalFlexWidth = width - this.primaryBaseWidth - this.totalGap - SQUEEZE.smallCardWidth * this.numSmallCards
     this.imageWidth = this.primaryBaseWidth + this.totalFlexWidth * SQUEEZE.flexStretched[0]
   }
@@ -335,7 +352,8 @@ export class SqueezeCanvasEngine {
     } else {
       this.flex = [...SQUEEZE.flex]
     }
-    this.canvas.style.cursor = hovered > 0 ? "pointer" : ""
+    const clickable = hovered > 0 || (hovered === 0 && !!this.onPrimaryClick)
+    this.canvas.style.cursor = clickable ? "pointer" : ""
     this.startAnimation()
   }
 
@@ -521,6 +539,7 @@ export class SqueezeCanvasEngine {
   private handleClick = (event: MouseEvent) => {
     const column = this.columnAt(event.offsetX)
     if (column > 0) this.onColumnClick(column)
+    else if (column === 0) this.onPrimaryClick?.(event)
   }
 }
 
@@ -590,8 +609,10 @@ interface SqueezeCarouselContextValue {
   actionRefs: React.MutableRefObject<Map<number, HTMLElement>>
   titleId: string
   borderRadius: number
+  imageHeight?: number
   crossOrigin?: SqueezeCarouselCrossOrigin
   prefersReducedMotion: boolean
+  onPrimaryClick: (event: MouseEvent) => void
 }
 
 const SqueezeCarouselContext = React.createContext<SqueezeCarouselContextValue | null>(null)
@@ -634,8 +655,19 @@ export interface SqueezeCarouselProps extends React.ComponentProps<"section"> {
   defaultActiveIndex?: number
   /** Called whenever the active index changes, in both controlled and uncontrolled mode. */
   onActiveIndexChange?: (index: number) => void
-  /** Corner radius of the cards in CSS pixels. @default 6 */
+  /** Corner radius of the cards in CSS pixels. Also exposed as `--squeeze-carousel-radius`. @default 6 */
   borderRadius?: number
+  /**
+   * Height of the images as a percentage of the small viewport height (`svh`), for both the
+   * desktop canvas and the mobile cards. For example `50` makes the images exactly 50svh tall.
+   * When omitted the canvas keeps a 1232:460 aspect ratio and mobile cards 336:350.
+   */
+  imageHeight?: number
+  /**
+   * Called when the primary (fully revealed) card is clicked. Defaults to activating the item's
+   * `SqueezeCarouselDetailAction` (or opening `item.href`), with modifier keys opening a new tab.
+   */
+  onActiveItemClick?: (item: SqueezeCarouselItem, index: number, event: MouseEvent) => void
   /** `crossOrigin` used when loading canvas images. Only needed if you read the canvas pixels back. */
   crossOrigin?: SqueezeCarouselCrossOrigin
   /** Text announced to screen readers when the active item changes. */
@@ -651,6 +683,8 @@ function SqueezeCarousel({
   defaultActiveIndex = 0,
   onActiveIndexChange,
   borderRadius = SQUEEZE.borderRadius,
+  imageHeight,
+  onActiveItemClick,
   crossOrigin,
   announce = defaultAnnounce,
   className,
@@ -719,6 +753,30 @@ function SqueezeCarousel({
     actionRefs.current.get(activeIndex)?.focus()
   }, [focusRequest, activeIndex])
 
+  // Clicking the primary card behaves like clicking the item's action.
+  const onActiveItemClickRef = React.useRef(onActiveItemClick)
+  onActiveItemClickRef.current = onActiveItemClick
+  const onPrimaryClick = React.useCallback(
+    (event: MouseEvent) => {
+      const index = activeIndexRef.current
+      const item = items[index]
+      if (!item) return
+      if (onActiveItemClickRef.current) {
+        onActiveItemClickRef.current(item, index, event)
+        return
+      }
+      const action = actionRefs.current.get(index)
+      const href = action?.getAttribute("href") ?? item.href
+      if (event.metaKey || event.ctrlKey || event.shiftKey) {
+        if (href) window.open(href, "_blank", "noopener")
+        return
+      }
+      if (action) action.click()
+      else if (href) window.location.assign(href)
+    },
+    [items],
+  )
+
   const value = React.useMemo<SqueezeCarouselContextValue>(
     () => ({
       items,
@@ -732,10 +790,25 @@ function SqueezeCarousel({
       actionRefs,
       titleId,
       borderRadius,
+      imageHeight,
       crossOrigin,
       prefersReducedMotion,
+      onPrimaryClick,
     }),
-    [items, count, activeIndex, goTo, goToNext, goToPrevious, titleId, borderRadius, crossOrigin, prefersReducedMotion],
+    [
+      items,
+      count,
+      activeIndex,
+      goTo,
+      goToNext,
+      goToPrevious,
+      titleId,
+      borderRadius,
+      imageHeight,
+      crossOrigin,
+      prefersReducedMotion,
+      onPrimaryClick,
+    ],
   )
 
   const activeItem = items[activeIndex]
@@ -748,7 +821,13 @@ function SqueezeCarousel({
         aria-roledescription="carousel"
         aria-labelledby={titleId}
         className={cn("flex w-full flex-col gap-8", className)}
-        style={{ "--squeeze-carousel-radius": `${borderRadius}px`, ...style } as React.CSSProperties}
+        style={
+          {
+            "--squeeze-carousel-radius": `${borderRadius}px`,
+            ...(imageHeight !== undefined && { "--squeeze-carousel-image-height": `${imageHeight}svh` }),
+            ...style,
+          } as React.CSSProperties
+        }
         {...props}
       >
         {children}
@@ -912,12 +991,23 @@ function SqueezeCarouselNext({ className, children, onClick, onKeyDown, ...props
 export type SqueezeCarouselCanvasProps = React.ComponentProps<"canvas">
 
 function SqueezeCarouselCanvas({ className, ref, ...props }: SqueezeCarouselCanvasProps) {
-  const { items, engineRef, activeIndexRef, goToNext, borderRadius, crossOrigin, prefersReducedMotion } =
-    useSqueezeCarousel()
+  const {
+    items,
+    engineRef,
+    activeIndexRef,
+    goToNext,
+    borderRadius,
+    imageHeight,
+    crossOrigin,
+    prefersReducedMotion,
+    onPrimaryClick,
+  } = useSqueezeCarousel()
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null)
   const isNear = useNearViewport(canvasRef)
   const goToNextRef = React.useRef(goToNext)
   goToNextRef.current = goToNext
+  const onPrimaryClickRef = React.useRef(onPrimaryClick)
+  onPrimaryClickRef.current = onPrimaryClick
 
   React.useEffect(() => {
     const canvas = canvasRef.current
@@ -927,6 +1017,7 @@ function SqueezeCarouselCanvas({ className, ref, ...props }: SqueezeCarouselCanv
       items,
       initialIndex: activeIndexRef.current,
       onColumnClick: steps => goToNextRef.current(steps),
+      onPrimaryClick: event => onPrimaryClickRef.current(event),
       prefersReducedMotion,
       borderRadius,
       crossOrigin,
@@ -943,7 +1034,11 @@ function SqueezeCarouselCanvas({ className, ref, ...props }: SqueezeCarouselCanv
       ref={composeRefs(canvasRef, ref)}
       data-slot="squeeze-carousel-canvas"
       aria-hidden="true"
-      className={cn("hidden aspect-[1232/460] w-full sm:block", className)}
+      className={cn(
+        "hidden w-full sm:block",
+        imageHeight === undefined ? "aspect-[1232/460]" : "h-[var(--squeeze-carousel-image-height)]",
+        className,
+      )}
       {...props}
     />
   )
@@ -1266,12 +1361,13 @@ export type SqueezeCarouselMobileMediaProps = React.ComponentProps<"div">
 /** Image area of a mobile card. Renders the item's `mobileSrc` (or `src`) unless you pass children. */
 function SqueezeCarouselMobileMedia({ className, style, children, ...props }: SqueezeCarouselMobileMediaProps) {
   const { item } = useSqueezeCarouselItem()
-  const { prefersReducedMotion } = useSqueezeCarousel()
+  const { prefersReducedMotion, imageHeight } = useSqueezeCarousel()
   return (
     <div
       data-slot="squeeze-carousel-mobile-media"
       className={cn(
-        "pointer-events-none relative aspect-[336/350] origin-center overflow-hidden rounded-[var(--squeeze-carousel-radius)] bg-muted",
+        "pointer-events-none relative origin-center overflow-hidden rounded-[var(--squeeze-carousel-radius)] bg-muted",
+        imageHeight === undefined ? "aspect-[336/350]" : "h-[var(--squeeze-carousel-image-height)]",
         className,
       )}
       style={

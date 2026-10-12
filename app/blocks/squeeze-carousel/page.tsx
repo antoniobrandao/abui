@@ -35,6 +35,7 @@ const blockName = "squeeze-carousel"
 const tocItems: TOCItemType[] = [
   { title: "Demo", url: "#demo", depth: 1 },
   { title: "Controlled", url: "#controlled", depth: 1 },
+  { title: "Viewport height & radius", url: "#viewport-height", depth: 1 },
   { title: "Usage", url: "#usage", depth: 2 },
   { title: "Features", url: "#features", depth: 2 },
   { title: "Anatomy", url: "#anatomy", depth: 2 },
@@ -164,13 +165,23 @@ function Example({
   items,
   activeIndex,
   onActiveIndexChange,
+  imageHeight,
+  borderRadius,
 }: {
   items: ExampleItem[]
   activeIndex?: number
   onActiveIndexChange?: (index: number) => void
+  imageHeight?: number
+  borderRadius?: number
 }) {
   return (
-    <SqueezeCarousel items={items} activeIndex={activeIndex} onActiveIndexChange={onActiveIndexChange}>
+    <SqueezeCarousel
+      items={items}
+      activeIndex={activeIndex}
+      onActiveIndexChange={onActiveIndexChange}
+      imageHeight={imageHeight}
+      borderRadius={borderRadius}
+    >
       <SqueezeCarouselHeader>
         <SqueezeCarouselHeading>
           <SqueezeCarouselTitle>What&apos;s happening</SqueezeCarouselTitle>
@@ -224,8 +235,9 @@ export default function Page() {
               <div className="flex flex-col gap-4" id="demo">
                 <div className="text-sm font-medium">Demo</div>
                 <p className="text-sm text-muted-foreground">
-                  Hover a column to stretch it, click one to make it active, or use the arrows. Resize below 640px to
-                  see the scroll-snap mobile layout. Photos by Unsplash.
+                  Hover a column to stretch it, click one to make it active, or use the arrows. Clicking the revealed
+                  card opens its link, just like the button. Resize below 640px to see the scroll-snap mobile layout.
+                  Photos by Unsplash.
                 </p>
                 <div className="w-full py-6">
                   <Example items={exampleItems} />
@@ -261,6 +273,28 @@ export default function Page() {
                 <CodeBlockComponent code={[{ language: "tsx", filename: "controlled.tsx", code: controlledCode }]} />
               </div>
 
+              <div className="flex flex-col gap-4" id="viewport-height">
+                <div className="text-sm font-medium">Viewport height &amp; radius</div>
+                <p className="text-sm text-muted-foreground">
+                  <code className="code-text">imageHeight={"{50}"}</code> makes the images exactly 50svh tall on desktop
+                  and mobile, and <code className="code-text">borderRadius={"{16}"}</code> rounds the cards.
+                </p>
+                <div className="w-full py-6">
+                  <Example items={exampleItems} imageHeight={50} borderRadius={16} />
+                </div>
+                <CodeBlockComponent
+                  code={[
+                    {
+                      language: "tsx",
+                      filename: "viewport-height.tsx",
+                      code: `<SqueezeCarousel items={items} imageHeight={50} borderRadius={16}>
+  ...
+</SqueezeCarousel>`,
+                    },
+                  ]}
+                />
+              </div>
+
               <div className="flex flex-col gap-4" id="usage">
                 <h2 className="text-lg font-semibold">Usage</h2>
                 <CodeBlockComponent code={[{ language: "tsx", filename: "whats-happening.tsx", code: usageCode }]} />
@@ -281,6 +315,14 @@ export default function Page() {
                     Hovering a column stretches it and squeezes its neighbours; hovering a sliver widens it by 3px
                   </li>
                   <li>Clicking any non-primary column advances by that many steps; the strip loops infinitely</li>
+                  <li>
+                    Clicking the revealed card activates the item&apos;s action (router links included) or opens{" "}
+                    <code className="code-text">href</code>; modifier keys open a new tab
+                  </li>
+                  <li>
+                    <code className="code-text">imageHeight</code> sizes the images as a percentage of the small
+                    viewport height, <code className="code-text">borderRadius</code> rounds every card
+                  </li>
                   <li>
                     1s ease-out-expo tween of every width, gap and image offset; 200ms and no hover squeeze under
                     reduced motion
@@ -392,6 +434,17 @@ export default function Page() {
                         6). Also exposed as <code className="code-text">--squeeze-carousel-radius</code>
                       </li>
                       <li>
+                        <code className="code-text">imageHeight</code> - number - Image height as a percentage of the
+                        small viewport height (svh), applied to the canvas and the mobile cards. Omit to keep the
+                        default 1232:460 and 336:350 aspect ratios
+                      </li>
+                      <li>
+                        <code className="code-text">onActiveItemClick</code> - (item, index, event) =&gt; void - Called
+                        when the revealed card is clicked. Default: activate the item&apos;s{" "}
+                        <code className="code-text">SqueezeCarouselDetailAction</code>, or open{" "}
+                        <code className="code-text">item.href</code>
+                      </li>
+                      <li>
                         <code className="code-text">crossOrigin</code> - &quot;anonymous&quot; |
                         &quot;use-credentials&quot; - Applied to canvas images. Only needed if you read pixels back from
                         the canvas
@@ -423,6 +476,10 @@ export default function Page() {
                       <li>
                         <code className="code-text">alt</code> - string - Mobile image alt text (default: title). Pass
                         &quot;&quot; for decorative images
+                      </li>
+                      <li>
+                        <code className="code-text">href</code> - string - Link opened when the revealed card is clicked
+                        and no action is rendered for the item
                       </li>
                       <li>
                         <code className="code-text">collapsedOffsetX</code> - number - Horizontal image shift in px
